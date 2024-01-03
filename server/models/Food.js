@@ -1,6 +1,10 @@
 const { Schema, model } = require('mongoose');
 
 const foodSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
     histidine: {
         type: Number,
         default: 0
