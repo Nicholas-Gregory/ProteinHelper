@@ -1,12 +1,15 @@
+import AminoLevelsViewer from "./AminoLevelsViewer";
 import AutoCompleteList from "./AutoCompleteList";
 
 export default function App({}) {
     return (
-        <AutoCompleteList 
-            items={['bread', 'cheese', 'eggs']} 
-            maxHeight={50}
-            onSelect={itemString => console.log(itemString)}
-            onClose={() => console.log('closed')}
+        <AminoLevelsViewer
+            aminos={[
+                {
+                    name: 'Histidine',
+                    amount: 2.3
+                }
+            ]}
         />
     )
 }
