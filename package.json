@@ -4,7 +4,8 @@
   "description": "A web app for constructing foods out of ingredients that make up a complete protein with all 9 essential amino acids. Primarily intended for use by vegans and vegetarians who want a quick, easy and fun way to plan meals.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "concurrently \"cd server && nodemon server.js\" \"cd client && npm run dev\""
   },
   "author": "",
   "license": "ISC"
