@@ -8,7 +8,7 @@ export default function SearchBar({ placeholderText, onSearch }) {
 
         setSearchTerm('');
 
-        onSearch(searchTerm);
+        if (searchTerm !== '') onSearch(searchTerm);
     }
 
     return (

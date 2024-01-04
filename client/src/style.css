@@ -1,0 +1,34 @@
+.list-container {
+    border: thick solid black;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.list-item {
+    border: medium solid black;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.list-item-title {
+    font-weight: bold;
+    width: fit-content;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: thin solid black;
+    border-left: thin solid black;
+    border-right: thin solid black;
+    border-bottom: thin solid white;
+    position: relative;
+    top: 1px;
+}
+
+.list-item-content {
+    border: thin solid black;
+    width: fit-content;
+    padding: 5px;
+}
