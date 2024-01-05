@@ -1,27 +1,28 @@
 import AminoLevelsViewer from "./AminoLevelsViewer";
 import AutoCompleteList from "./AutoCompleteList";
 import FoodList from "./FoodList";
+import FoodViewer from "./FoodViewer";
 import SearchBar from "./SearchBar";
 
 import './style.css';
 
+function handleClick(id) {
+    console.log(id);
+}
+
 export default function App({}) {
     return (
         <>
-            <FoodList foods={[
-                {
+            <FoodViewer
+                food={{
                     _id: 1,
-                    name: 'Food',
+                    name: 'food',
                     histidine: 2,
-                    isoleucine: 1
-                },
-                {
-                    _id: 2,
-                    name: 'Another',
-                    histidine: 1,
-                    isoleucine: 1
-                }
-            ]} onSelect={id => console.log(id)}/>
+                    phenylalanine: 3,
+                    leucine: 4
+                }}
+                onCreateWithButtonClick={handleClick}
+            />
         </>
     )
 }

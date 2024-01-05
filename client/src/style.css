@@ -9,6 +9,7 @@
     border-radius: 5px;
     margin: 5px;
     padding: 5px;
+    cursor: grab;
 }
 
 .list-item-title {
@@ -29,6 +30,18 @@
 
 .list-item-content {
     border: thin solid black;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     width: fit-content;
     padding: 5px;
+    min-width: 100px;
+}
+
+.card {
+    border: medium solid black;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    width: fit-content;
 }

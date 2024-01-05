@@ -8,9 +8,6 @@ export default function FoodList({ foods, onSelect }) {
                     key={food._id}
                     className="list-item"
                     onClick={() => onSelect(food._id)}
-                    style={{
-                        cursor: 'grab'
-                    }}
                 >
                     <div
                         className="list-item-title"
