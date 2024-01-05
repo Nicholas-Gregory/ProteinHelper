@@ -5,10 +5,6 @@ export default function Home({}) {
     return (
         <>
             Home
-            <FoodViewer food={{
-                name: 'food',
-                histidine: 1
-            }}/>
         </>
     )
 }
