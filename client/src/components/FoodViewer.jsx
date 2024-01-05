@@ -3,7 +3,7 @@ import AminoLevelsViewer from "./AminoLevelsViewer";
 export default function FoodViewer({ food, onCreateWithButtonClick }) {
 
     return (
-        <div className="list-container">
+        <div className="th-border pad-5">
             <div className="card">
                 {food.name}
             </div>

@@ -12,6 +12,7 @@ import BrowseFoods from './pages/BrowseFoods.jsx'
 import BrowseCreations from './pages/BrowseCreations.jsx'
 import MyCreations from './pages/MyCreations.jsx'
 import NewCreation from './pages/NewCreation.jsx'
+import './style.css'
 
 const router = createBrowserRouter([
   {

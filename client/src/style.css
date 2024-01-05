@@ -12,7 +12,25 @@
     cursor: grab;
 }
 
-.list-item-title {
+.md-border {
+    border: medium solid black;
+    border-radius: 10px;
+}
+
+.th-border {
+    border: thick solid black;
+    border-radius: 10px;
+}
+
+.pad-5 {
+    padding: 5px;
+}
+
+.mar-5 {
+    margin: 5px;
+}
+
+.tab-title {
     font-weight: bold;
     width: fit-content;
     padding-top: 5px;
@@ -28,7 +46,7 @@
     top: 1px;
 }
 
-.list-item-content {
+.tab-content {
     border: thin solid black;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;

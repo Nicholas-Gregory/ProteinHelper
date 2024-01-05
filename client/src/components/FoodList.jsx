@@ -1,21 +1,21 @@
 export default function FoodList({ foods, onSelect }) {
     return (
         <div
-            className="list-container"
+            className="th-border pad-5"
         >
             {foods.map(food =>
                 <div 
                     key={food._id}
-                    className="list-item"
+                    className="md-border mar-5 pad-5"
                     onClick={() => onSelect(food._id)}
                 >
                     <div
-                        className="list-item-title"
+                        className="tab-title"
                     >
                         {food.name}
                     </div>
                     <div
-                        className="list-item-content"
+                        className="tab-content"
                     >
                         Total Protein (per 100g): &nbsp;
                         {Object.keys(food).reduce((total, key) => {

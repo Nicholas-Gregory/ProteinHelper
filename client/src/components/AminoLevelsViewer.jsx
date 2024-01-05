@@ -18,7 +18,7 @@ export default function AminoLevelsViewer({ aminos }) {
 
     return (
         <>
-            <div className="list-container">
+            <div className="th-border pad-5 mar-5">
                 <label htmlFor="unit-select">
                     Select desired unit:
                 </label>
@@ -44,13 +44,13 @@ export default function AminoLevelsViewer({ aminos }) {
                 />
                 {aminos.map(amino =>
                     <div 
-                        className="list-item"
+                        className="md-border mar-5 pad-5"
                         style={{ cursor: 'default' }}
                     >
-                        <div className="list-item-title">
+                        <div className="tab-title">
                             {amino.name}
                         </div>
-                        <div className="list-item-content">
+                        <div className="tab-content">
                             {getAmountNumber(amino.amount).toFixed(3)}{unit}
                         </div>
                     </div>    
