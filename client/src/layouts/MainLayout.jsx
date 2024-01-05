@@ -4,7 +4,7 @@ import SideNav from "./SideNav";
 import Footer from "./Footer";
 
 export default function MainLayout({}) {
-    let pageName = useLocation().pathname.substring(1);
+    let pageName = useLocation().pathname.substring(1).split('/')[0];
 
     return (
         <>

@@ -4,11 +4,14 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
-import App from './App.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 import Home from './pages/Home.jsx'
-import Browse from './pages/Browse.jsx'
-import Create from './pages/Create.jsx'
+import Browse from './layouts/Browse.jsx'
+import Create from './layouts/Create.jsx'
+import BrowseFoods from './pages/BrowseFoods.jsx'
+import BrowseCreations from './pages/BrowseCreations.jsx'
+import MyCreations from './pages/MyCreations.jsx'
+import NewCreation from './pages/NewCreation.jsx'
 
 const router = createBrowserRouter([
   {
@@ -20,12 +23,32 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'browse',
-        element: <Browse />
+        path: '/browse',
+        element: <Browse />,
+        children: [
+          {
+            path: '/browse/foods',
+            element: <BrowseFoods />
+          },
+          {
+            path: '/browse/creations',
+            element: <BrowseCreations />
+          }
+        ]
       },
       {
         path: '/create',
-        element: <Create />
+        element: <Create />,
+        children: [
+          {
+            path: '/create/my',
+            element: <MyCreations />
+          },
+          {
+            path: '/create/new',
+            element: <NewCreation />
+          }
+        ]
       }
     ]
   }
