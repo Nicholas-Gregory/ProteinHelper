@@ -4,7 +4,8 @@ import SideNav from "./SideNav";
 import Footer from "./Footer";
 
 export default function MainLayout({}) {
-    let pageName = useLocation().pathname.substring(1).split('/')[0];
+    let path = useLocation().pathname;
+    let pageName = path.substring(1).split('/')[0];
 
     return (
         <>
@@ -16,7 +17,7 @@ export default function MainLayout({}) {
                     display: 'flex',
                 }}
             >
-                <SideNav page={pageName}/>
+                <SideNav path={path}/>
                 <div>
                     <Outlet />
                 </div>

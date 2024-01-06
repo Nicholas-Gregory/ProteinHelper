@@ -13,11 +13,17 @@ export default function UserProvider({ children }) {
          setUser({ name: 'n' });
     }
 
-    async function logout() {
+    function logout() {
         setUser(null);
+
+        localStorage.removeItem('protein-helper.auth-token');
     }
 
     async function signup() {
+
+    }
+
+    async function authorize() {
 
     }
 
@@ -25,7 +31,8 @@ export default function UserProvider({ children }) {
         <UserContext.Provider value={{
             user,
             login, logout,
-            signup
+            signup,
+            authorize
         }}>
             {children}
         </UserContext.Provider>
