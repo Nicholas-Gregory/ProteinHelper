@@ -14,6 +14,10 @@ import BrowseFoods from './pages/BrowseFoods.jsx'
 import BrowseCreations from './pages/BrowseCreations.jsx'
 import MyCreations from './pages/MyCreations.jsx'
 import NewCreation from './pages/NewCreation.jsx'
+import UserProvider from './contexts/UserContext'
+import Auth from './layouts/Auth'
+import CreateAccount from './pages/CreateAccount'
+import Login from './pages/Login'
 
 
 const router = createBrowserRouter([
@@ -52,6 +56,20 @@ const router = createBrowserRouter([
             element: <NewCreation />
           }
         ]
+      },
+      {
+        path: '/auth',
+        element: <Auth />,
+        children: [
+          {
+            path: '/auth/signup',
+            element: <CreateAccount />
+          },
+          {
+            path: '/auth/login',
+            element: <Login />
+          }
+        ]
       }
     ]
   }
@@ -59,6 +77,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>,
 )

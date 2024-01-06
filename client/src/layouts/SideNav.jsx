@@ -17,6 +17,13 @@ export default function SideNav({ page }) {
                         <Link to={'/create/new'}>New Creation</Link>
                     </>
                 );
+            case 'auth':
+                return (
+                    <>
+                        <Link to={'/auth/signup'}>Create Account</Link>
+                        <Link to={'/auth/login'}>Login</Link>
+                    </>
+                )
         }
     }
 

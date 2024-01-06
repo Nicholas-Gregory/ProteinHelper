@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import AuthUtils from "./AuthUtils";
 
 export default function Header({ page }) {
     return (
@@ -25,6 +26,8 @@ export default function Header({ page }) {
             >
                 <Link to={'/create'}>Create</Link>
             </div>
+
+            <AuthUtils page={page} />
         </>
     )
 }
