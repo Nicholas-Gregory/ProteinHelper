@@ -65,9 +65,9 @@ export default function Creator({}) {
 
             {searchingState === null && <button onClick={handleNewClick}>+</button>}
 
-            <p>
+            <div className="tab-title-md tab-selected-md">
                 Totals:
-            </p>
+            </div>
             <AminoLevelsViewer
                 aminos={foods.reduce((totals, food) =>
                     totals.map(total => ({ 

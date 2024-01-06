@@ -1,3 +1,7 @@
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 .list-container {
     border: thick solid black;
     border-radius: 10px;
@@ -41,7 +45,6 @@
     border-top: thin solid black;
     border-left: thin solid black;
     border-right: thin solid black;
-    border-bottom: thin solid white;
     position: relative;
     top: 1px;
 }
@@ -56,8 +59,13 @@
     min-width: 100px;
 }
 
+.tab-selected-thin {
+    border-bottom: thin solid white;
+}
+
 .tab-selected-thick {
-    border-bottom: thick solid white;
+    border-bottom: 6px solid white;
+    background-color: white;
 }
 
 .tab-title-md {
@@ -68,22 +76,25 @@
     padding-right: 5px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    border-top: medium solid black;
-    border-left: medium solid black;
-    border-right: medium solid black;
-    border-bottom: thin solid white;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
     position: relative;
-    top: 1px;
+    top: 3px;
 }
 
 .tab-content-md {
-    border: medium solid black;
+    border: 3px solid black;
     border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     width: fit-content;
     padding: 5px;
     min-width: 100px;
+}
+
+.tab-selected-md {
+    border-bottom: 3px solid white;
 }
 
 .tab-title-thick {
@@ -94,15 +105,15 @@
     padding-right: 5px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    border-top: thick solid black;
-    border-left: thick solid black;
-    border-right: thick solid black;
+    border-top: 6px solid black;
+    border-left: 6px solid black;
+    border-right: 6px solid black;
     position: relative;
-    top: 1px;
+    top: 2px;
 }
 
 .tab-content-thick {
-    border: thick solid black;
+    border: 6px solid black;
     border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;

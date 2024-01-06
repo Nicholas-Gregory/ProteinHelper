@@ -7,15 +7,24 @@ export default function Header({ page }) {
                 <Link to={'/home'}>Protein Helper</Link>
             </div>
 
-            <span className={`tab-title-thick${page === 'home' ? ' tab-selected-thick' : ''}`}>
+            <div 
+                className={`tab-title-thick${page === 'home' ? ' tab-selected-thick' : ''}`}
+                style={{ display: 'inline' }}
+            >
                 <Link to={'/home'}>Home</Link>
-            </span>
-            <span className={`tab-title-thick${page === 'browse' ? ' tab-selected-thick' : ''}`}>
+            </div>
+            <div 
+                className={`tab-title-thick${page === 'browse' ? ' tab-selected-thick' : ''}`}
+                style={{ display: 'inline' }}
+            >
                 <Link to={'/browse'}>Browse</Link>
-            </span>
-            <span className={`tab-title-thick${page === 'create' ? ' tab-selected-thick' : ''}`}>
+            </div>
+            <div 
+                className={`tab-title-thick${page === 'create' ? ' tab-selected-thick' : ''}`}
+                style={{ display: 'inline' }}
+            >
                 <Link to={'/create'}>Create</Link>
-            </span>
+            </div>
         </>
     )
 }

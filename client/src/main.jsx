@@ -4,6 +4,8 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
+import 'normalize.css'
+import './style.css'
 import MainLayout from './layouts/MainLayout.jsx'
 import Home from './pages/Home.jsx'
 import Browse from './layouts/Browse.jsx'
@@ -12,7 +14,7 @@ import BrowseFoods from './pages/BrowseFoods.jsx'
 import BrowseCreations from './pages/BrowseCreations.jsx'
 import MyCreations from './pages/MyCreations.jsx'
 import NewCreation from './pages/NewCreation.jsx'
-import './style.css'
+
 
 const router = createBrowserRouter([
   {
