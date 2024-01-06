@@ -65,7 +65,7 @@ export default function Creator({}) {
 
             {searchingState === null && <button onClick={handleNewClick}>+</button>}
 
-            <div className="tab-title-md tab-selected-md">
+            <div className="tab-title tab-selected">
                 Totals:
             </div>
             <AminoLevelsViewer

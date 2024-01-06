@@ -34,6 +34,35 @@
     margin: 5px;
 }
 
+.tab-title {
+    font-weight: bold;
+    width: fit-content;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    position: relative;
+    top: 1px;
+}
+
+.tab-content {
+    border: 1px solid black;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: fit-content;
+    padding: 5px;
+    min-width: 110px;
+}
+
+.tab-selected {
+    border-bottom: 1px solid white;
+}
+
 .tab-title-thin {
     font-weight: bold;
     width: fit-content;

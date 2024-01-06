@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom";
 
 const UNITS = [
     { unit: 'g', factor: 1 },
@@ -18,7 +19,7 @@ export default function AminoLevelsViewer({ aminos }) {
 
     return (
         <>
-            <div className="tab-content-md">
+            <div className="tab-content">
                 <label htmlFor="unit-select">
                     Select desired unit:
                 </label>
@@ -46,10 +47,10 @@ export default function AminoLevelsViewer({ aminos }) {
                     <div 
                         style={{ cursor: 'default' }}
                     >
-                        <div className="tab-title-thin tab-selected-thin">
+                        <div className="tab-title tab-selected">
                             {amino.name}
                         </div>
-                        <div className="tab-content-thin">
+                        <div className="tab-content">
                             {getAmountNumber(amino.amount).toFixed(3)}{unit}
                         </div>
                     </div>    

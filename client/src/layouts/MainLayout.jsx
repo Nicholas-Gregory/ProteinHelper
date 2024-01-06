@@ -11,7 +11,7 @@ export default function MainLayout({}) {
             <Header page={pageName}/>
 
             <div
-                className="tab-content-thick"
+                className="tab-content"
                 style={{
                     display: 'flex',
                 }}

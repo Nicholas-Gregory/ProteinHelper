@@ -8,20 +8,20 @@ export default function Header({ page }) {
             </div>
 
             <div 
-                className={`tab-title-thick${page === 'home' ? ' tab-selected-thick' : ''}`}
-                style={{ display: 'inline' }}
+                className={`tab-title${page === 'home' ? ' tab-selected' : ''}`}
+                style={{ display: 'inline-block' }}
             >
                 <Link to={'/home'}>Home</Link>
             </div>
             <div 
-                className={`tab-title-thick${page === 'browse' ? ' tab-selected-thick' : ''}`}
-                style={{ display: 'inline' }}
+                className={`tab-title${page === 'browse' ? ' tab-selected' : ''}`}
+                style={{ display: 'inline-block' }}
             >
                 <Link to={'/browse'}>Browse</Link>
             </div>
             <div 
-                className={`tab-title-thick${page === 'create' ? ' tab-selected-thick' : ''}`}
-                style={{ display: 'inline' }}
+                className={`tab-title${page === 'create' ? ' tab-selected' : ''}`}
+                style={{ display: 'inline-block' }}
             >
                 <Link to={'/create'}>Create</Link>
             </div>
