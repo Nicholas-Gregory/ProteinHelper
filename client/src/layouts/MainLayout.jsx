@@ -15,6 +15,7 @@ export default function MainLayout({}) {
                 className="tab-content"
                 style={{
                     display: 'flex',
+                    backgroundColor: 'lightseagreen'
                 }}
             >
                 <SideNav path={path}/>

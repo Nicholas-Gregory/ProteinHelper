@@ -35,7 +35,7 @@ export default function SideNav({ path }) {
             {getLinkData().map(link =>
                 <div
                     style={{
-                        backgroundColor: `${subPage === link.path.split('/')[link.path.split('/').length - 1] && path.substring(1).split('/').length > 1 ? 'cornflowerblue' : 'lightblue'}`,
+                        backgroundColor: `${subPage === link.path.split('/')[link.path.split('/').length - 1] && path.substring(1).split('/').length > 1 ? 'cornflowerblue' : 'lightblue'}`, //length > 1 means we are in a subpage and so something should be highlighted
                         borderRadius: '5px',
                         padding: '3px'
                     }}

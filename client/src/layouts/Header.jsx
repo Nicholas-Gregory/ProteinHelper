@@ -10,19 +10,28 @@ export default function Header({ page }) {
 
             <div 
                 className={`tab-title${page === 'home' ? ' tab-selected' : ''}`}
-                style={{ display: 'inline-block' }}
+                style={{ 
+                    display: 'inline-block',
+                    backgroundColor: `${page === 'home' ? 'lightseagreen' : 'revert'}`
+                }}
             >
                 <Link to={'/home'}>Home</Link>
             </div>
             <div 
                 className={`tab-title${page === 'browse' ? ' tab-selected' : ''}`}
-                style={{ display: 'inline-block' }}
+                style={{ 
+                    display: 'inline-block',
+                    backgroundColor: `${page === 'browse' ? 'lightseagreen' : 'revert'}`
+                }}
             >
                 <Link to={'/browse'}>Browse</Link>
             </div>
             <div 
                 className={`tab-title${page === 'create' ? ' tab-selected' : ''}`}
-                style={{ display: 'inline-block' }}
+                style={{ 
+                    display: 'inline-block',
+                    backgroundColor: `${page === 'create' ? 'lightseagreen' : 'revert'}`
+                }}
             >
                 <Link to={'/create'}>Create</Link>
             </div>
