@@ -72,12 +72,11 @@ export default function Creator({}) {
                 aminos={foods.reduce((totals, food) =>
                     totals.map(total => ({ 
                         name: total.name, 
-                        amount: total.amount + food[total
+                        amount: total.amount + (food[total
                             .name
                             .substring(0,1)
-                            .toLowerCase() + total
-                            .name
-                            .substring(1)]
+                            .toLowerCase() + total.name
+                            .substring(1)] || 0)
                     }))
                      , [
                         { name: 'Histidine', amount: 0 },

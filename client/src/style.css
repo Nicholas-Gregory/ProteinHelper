@@ -30,7 +30,7 @@
     margin: 5px;
 }
 
-.tab-title {
+.tab-title-thin {
     font-weight: bold;
     width: fit-content;
     padding-top: 5px;
@@ -46,11 +46,66 @@
     top: 1px;
 }
 
-.tab-content {
+.tab-content-thin {
     border: thin solid black;
     border-top-right-radius: 5px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    width: fit-content;
+    padding: 5px;
+    min-width: 100px;
+}
+
+.tab-selected-thick {
+    border-bottom: thick solid white;
+}
+
+.tab-title-md {
+    font-weight: bold;
+    width: fit-content;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: medium solid black;
+    border-left: medium solid black;
+    border-right: medium solid black;
+    border-bottom: thin solid white;
+    position: relative;
+    top: 1px;
+}
+
+.tab-content-md {
+    border: medium solid black;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: fit-content;
+    padding: 5px;
+    min-width: 100px;
+}
+
+.tab-title-thick {
+    font-weight: bold;
+    width: fit-content;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: thick solid black;
+    border-left: thick solid black;
+    border-right: thick solid black;
+    position: relative;
+    top: 1px;
+}
+
+.tab-content-thick {
+    border: thick solid black;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
     width: fit-content;
     padding: 5px;
     min-width: 100px;
