@@ -5,6 +5,10 @@ const combinationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    name: {
+        type: String,
+        required: true
+    },
     foods: {
         type: [{
             type: Schema.Types.ObjectId,

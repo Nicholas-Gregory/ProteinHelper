@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import FoodList from "./FoodList";
 import AminoLevelsViewer from "./AminoLevelsViewer";
 
-export default function Creator({}) {
+export default function Creator({ editing }) {
     const [foods, setFoods] = useState([]);
     const [searchingState, setSearchingState] = useState(null);
     const [foodSearchResults, setFoodSearchResults] = useState([]);
@@ -63,7 +63,7 @@ export default function Creator({}) {
                 />
             }
 
-            {searchingState === null && <button onClick={handleNewClick}>+</button>}
+            {searchingState === null && editing && <button onClick={handleNewClick}>+</button>}
 
             <div 
                 className="tab-title tab-selected"

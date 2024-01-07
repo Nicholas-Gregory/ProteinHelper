@@ -3,7 +3,7 @@ import Creator from "../components/Creator";
 export default function NewCreation({}) {
     return (
         <>
-            <Creator />
+            <Creator editing={true}/>
         </>
     )
 }
