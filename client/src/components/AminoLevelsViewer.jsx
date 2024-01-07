@@ -24,7 +24,7 @@ export default function AminoLevelsViewer({ aminos }) {
                     Select desired unit:
                 </label>
                 <select
-                    name='unit-select'
+                    id='unit-select'
                     value={unit}
                     onChange={e => setUnit(e.target.value)}
                 >
@@ -37,7 +37,7 @@ export default function AminoLevelsViewer({ aminos }) {
                     Input amount:
                 </label>
                 <input
-                    name='amount-input'
+                    id='amount-input'
                     type='number'
                     step='0.01'
                     value={amount}
