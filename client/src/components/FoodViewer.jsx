@@ -3,8 +3,13 @@ import AminoLevelsViewer from "./AminoLevelsViewer";
 export default function FoodViewer({ food, onCreateWithButtonClick }) {
 
     return (
-        <div className="th-border pad-5">
-            <div className="card">
+        <div
+            style={{
+                marginTop: '5px',
+                marginBottom: '5px'
+            }}
+        >
+            <div className="tab-title tab-selected">
                 {food.name}
             </div>
             <AminoLevelsViewer 
@@ -30,4 +35,5 @@ export default function FoodViewer({ food, onCreateWithButtonClick }) {
             >Create With This Food</button>}
         </div>
     )
+
 }

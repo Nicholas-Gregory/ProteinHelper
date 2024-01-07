@@ -32,7 +32,7 @@ export default function AminoLevelsViewer({ aminos }) {
                         <option value={unitObject.unit}>{unitObject.unit}</option>    
                     )}
                 </select>
-
+                <br />
                 <label htmlFor='amount-input'>
                     Input amount:
                 </label>
@@ -43,18 +43,31 @@ export default function AminoLevelsViewer({ aminos }) {
                     value={amount}
                     onChange={e => setAmount(e.target.value)}
                 />
-                {aminos.map(amino =>
-                    <div 
-                        style={{ cursor: 'default' }}
-                    >
-                        <div className="tab-title tab-selected">
-                            {amino.name}
+                <div
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap'
+                    }}
+                >
+                    {aminos.map(amino =>
+                        <div
+                            style={{
+                                margin: '3px'
+                            }}
+                        >
+                            <div 
+                                style={{ cursor: 'default' }}
+                            >
+                                <div className="tab-title tab-selected">
+                                    {amino.name}
+                                </div>
+                                <div className="tab-content">
+                                    {getAmountNumber(amino.amount).toFixed(3)}{unit}
+                                </div>
+                            </div>    
                         </div>
-                        <div className="tab-content">
-                            {getAmountNumber(amino.amount).toFixed(3)}{unit}
-                        </div>
-                    </div>    
-                )}
+                    )}
+                </div>
             </div>
         </>
     )

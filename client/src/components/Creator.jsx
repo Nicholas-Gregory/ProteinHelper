@@ -65,7 +65,10 @@ export default function Creator({}) {
 
             {searchingState === null && <button onClick={handleNewClick}>+</button>}
 
-            <div className="tab-title tab-selected">
+            <div 
+                className="tab-title tab-selected"
+                style={{ marginTop: '5px' }}    
+            >
                 Totals:
             </div>
             <AminoLevelsViewer
