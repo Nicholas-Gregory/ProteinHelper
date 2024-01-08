@@ -7,7 +7,10 @@ const UNITS = [
     { unit: 'lb', factor: 0.00220462 }
 ]
 
-export default function AminoLevelsViewer({ aminos }) {
+export default function AminoLevelsViewer({ 
+    aminos,
+    frozen
+}) {
     const [unit, setUnit] = useState('g');
     const [amount, setAmount] = useState(100);
 
@@ -20,29 +23,34 @@ export default function AminoLevelsViewer({ aminos }) {
     return (
         <>
             <div className="tab-content">
-                <label htmlFor="unit-select">
-                    Select desired unit:
-                </label>
-                <select
-                    id='unit-select'
-                    value={unit}
-                    onChange={e => setUnit(e.target.value)}
-                >
-                    {UNITS.map(unitObject =>
-                        <option value={unitObject.unit}>{unitObject.unit}</option>    
-                    )}
-                </select>
-                <br />
-                <label htmlFor='amount-input'>
-                    Input amount:
-                </label>
-                <input
-                    id='amount-input'
-                    type='number'
-                    step='0.01'
-                    value={amount}
-                    onChange={e => setAmount(e.target.value)}
-                />
+                {!frozen &&
+                    <>
+                        <label htmlFor="unit-select">
+                            Select desired unit:
+                        </label>
+                        <select
+                            id='unit-select'
+                            value={unit}
+                            onChange={e => setUnit(e.target.value)}
+                        >
+                            {UNITS.map(unitObject =>
+                                <option value={unitObject.unit}>{unitObject.unit}</option>    
+                            )}
+                        </select>
+                        <br />
+                        <label htmlFor='amount-input'>
+                            Input amount:
+                        </label>
+                        <input
+                            id='amount-input'
+                            type='number'
+                            step='0.01'
+                            value={amount}
+                            onChange={e => setAmount(e.target.value)}
+                        />
+                    </>
+                }
+                
                 <div
                     style={{
                         display: 'flex',

@@ -76,7 +76,10 @@ export default function CreationViewer({ creation }) {
                 >
                     Total EAA Levels
                 </div>
-                <AminoLevelsViewer aminos={getTotals()} />
+                <AminoLevelsViewer 
+                    aminos={getTotals()} 
+                    frozen={true}
+                />
             
                 <p>
                     Created By:
