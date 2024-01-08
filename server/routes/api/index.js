@@ -1,13 +1,9 @@
 const router = require('express').Router();
 
-router.get('/test', (req, res, next) => {
-    setTimeout(() => {
-        try {
-            throw new Error('err');
-        } catch (err) {
-            next(err)
-        }
-    }, 100)
+const { auth } = require('../../middleware');
+
+router.get('/test', auth, (req, res, next) => {
+    res.json('authen')
 })
 
 module.exports = router;
