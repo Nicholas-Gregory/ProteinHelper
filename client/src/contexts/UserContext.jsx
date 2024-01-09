@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { apiCall } from '../utils/http';
 
-const LOCAL_STORAGE_KEY = 'protein-helper.auth-token';
+export const LOCAL_STORAGE_KEY = 'protein-helper.auth-token';
 
 export const UserContext = React.createContext();
 

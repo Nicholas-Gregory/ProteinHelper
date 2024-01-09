@@ -1,15 +1,22 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import SideNav from "./SideNav";
 import Footer from "./Footer";
+import { useEffect } from "react";
 
 export default function MainLayout({}) {
-    let path = useLocation().pathname;
-    let pageName = path.substring(1).split('/')[0];
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const path = location.pathname;
+    const pageName = path.substring(1).split('/')[0];
+
+    useEffect(() => {
+        if (path === '/') navigate('/home');
+    }, [])
 
     return (
         <>
-        <Navigate to={'/home'} />
             <Header page={pageName}/>
 
             <div

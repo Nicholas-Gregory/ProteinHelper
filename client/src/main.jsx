@@ -14,11 +14,12 @@ import BrowseFoods from './pages/BrowseFoods.jsx'
 import BrowseCreations from './pages/BrowseCreations.jsx'
 import MyCreations from './pages/MyCreations.jsx'
 import NewCreation from './pages/NewCreation.jsx'
-import UserProvider from './contexts/UserContext'
+import UserProvider, { LOCAL_STORAGE_KEY } from './contexts/UserContext'
 import Auth from './layouts/Auth'
 import CreateAccount from './pages/CreateAccount'
 import Login from './pages/Login'
-import Food, { loader as foodLoader } from './pages/Food'
+import { apiCall } from './utils/http'
+import Food from './pages/Food'
 
 
 const router = createBrowserRouter([
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
               {
                 path: '/browse/foods/:id',
                 element: <Food />,
-                loader: foodLoader
+                loader: ({ params }) => apiCall('GET', `/food/${params.id}`, null, localStorage.getItem(LOCAL_STORAGE_KEY))
               }
             ]
           },

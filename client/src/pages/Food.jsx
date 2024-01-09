@@ -1,12 +1,10 @@
 import { useLoaderData } from "react-router-dom";
 import FoodViewer from "../components/FoodViewer";
 
-export async function loader({ params }) {
-    
-}
-
 export default function Food({}) {
     const food = useLoaderData();
+
+    console.log(food)
 
     function handleCreateWithClick(id) {
 

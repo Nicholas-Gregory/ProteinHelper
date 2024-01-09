@@ -5,7 +5,7 @@ export async function apiCall(method, route, body, token) {
             "Content-Type": "application/json",
             Authorization: token && `Bearer ${token}`
         },
-        body: JSON.stringify(body)
+        body: body && JSON.stringify(body)
     }))
     .json();
 

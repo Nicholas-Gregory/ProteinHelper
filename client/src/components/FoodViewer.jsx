@@ -30,9 +30,13 @@ export default function FoodViewer({ food, onCreateWithButtonClick }) {
                     amount: food[key]
                 }))}
             />
-            { onCreateWithButtonClick && <button
-                onClick={() => onCreateWithButtonClick(food._id)}
-            >Create With This Food</button>}
+            {onCreateWithButtonClick && 
+                <button
+                    onClick={() => onCreateWithButtonClick(food._id)}
+                >
+                    Create With This Food
+                </button>
+            }
         </div>
     )
 
