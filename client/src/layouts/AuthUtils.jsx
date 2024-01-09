@@ -9,8 +9,7 @@ export default function AuthUtils({ page }) {
              <div
                 className={`tab-title${page === 'auth' ? ' tab-selected' : ''}`}
                 style={{ 
-                    display: 'inline-block',
-                    backgroundColor: `${page === 'auth' ? 'lightseagreen' : 'revert'}`
+                    display: 'inline-block'
                 }}
             >
                 {user ? <a href='#' onClick={logout}>Logout</a> : <Link to='/auth'>Login/Signup</Link>}

@@ -47,6 +47,7 @@
     border-right: 1px solid black;
     position: relative;
     top: 1px;
+    background-color: darkseagreen;
 }
 
 .tab-content {
@@ -61,6 +62,7 @@
 
 .tab-selected {
     border-bottom: 1px solid lightseagreen;
+    background-color: lightseagreen;
 }
 
 .tab-title-thin {
