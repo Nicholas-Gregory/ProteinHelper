@@ -1,9 +1,7 @@
 const router = require('express').Router();
 
-const { auth } = require('../../middleware');
+const authRoutes = require('./auth');
 
-router.get('/test', auth, (req, res, next) => {
-    res.json('authen')
-})
+router.use('/auth', authRoutes);
 
 module.exports = router;

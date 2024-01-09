@@ -18,6 +18,7 @@ import UserProvider from './contexts/UserContext'
 import Auth from './layouts/Auth'
 import CreateAccount from './pages/CreateAccount'
 import Login from './pages/Login'
+import Food, { loader as foodLoader } from './pages/Food'
 
 
 const router = createBrowserRouter([
@@ -35,7 +36,14 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/browse/foods',
-            element: <BrowseFoods />
+            element: <BrowseFoods />,
+            children: [
+              {
+                path: '/browse/foods/:id',
+                element: <Food />,
+                loader: foodLoader
+              }
+            ]
           },
           {
             path: '/browse/creations',

@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 
 export default function BrowseFoods({}) {
@@ -9,10 +10,7 @@ export default function BrowseFoods({}) {
         <>
             Foods
 
-            <SearchBar 
-                placeholderText={'Search Foods'}
-                onSearch={handleSearch}
-            />
+            <Outlet />
         </>
     )
 }
