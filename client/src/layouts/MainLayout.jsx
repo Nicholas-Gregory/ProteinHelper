@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import SideNav from "./SideNav";
 import Footer from "./Footer";
@@ -9,6 +9,7 @@ export default function MainLayout({}) {
 
     return (
         <>
+        <Navigate to={'/home'} />
             <Header page={pageName}/>
 
             <div

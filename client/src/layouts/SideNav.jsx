@@ -5,8 +5,6 @@ export default function SideNav({ path }) {
     const page = path.substring(1).split('/')[0];
     const [subPage, setSubPage] = useState(path.split('/')[path.split('/').length - 1]);
 
-    console.log(subPage);
-
     function getLinkData() {
         switch (page) {
             case 'browse':
