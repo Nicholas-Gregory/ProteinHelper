@@ -34,8 +34,8 @@ export default function UserProvider({ children }) {
 
     }
 
-    async function authorize() {
-
+    function authorize() {
+        return localStorage.getItem(LOCAL_STORAGE_KEY);
     }
 
     return (

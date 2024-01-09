@@ -2,7 +2,9 @@ import { Fragment, useState } from "react";
 import SearchBar from "./SearchBar";
 
 export default function FoodSearch({
-    placeholderText
+    placeholderText,
+    onNamedSearch,
+    onAdvancedSearch
 }) {
     const [searchMode, setSearchMode] = useState('named');
     const [advancedSearchOptions, setAdvancedSearchOptions] = useState({
@@ -18,12 +20,13 @@ export default function FoodSearch({
     })
 
     function handleNamedSearch(term) {
-
+        onNamedSearch(term);
     }
 
     function handleAdvancedSearchSubmit(e) {
         e.preventDefault();
 
+        onAdvancedSearch(advancedSearchOptions);
     }
 
     return (

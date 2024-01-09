@@ -1,8 +1,12 @@
 const router = require('express').Router();
 
+const searchRoutes = require('./search.js');
+
 const { auth } = require('../../../middleware');
 const { Food } = require('../../../models');
 const { ResourceNotFoundError } = require('../../../errors');
+
+router.use('/search', searchRoutes);
 
 router.get('/:id', auth, async (req, res, next) => {
     const foodId = req.params.id;
