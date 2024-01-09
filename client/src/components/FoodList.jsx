@@ -38,12 +38,12 @@ export default function FoodList({ foods, onSelect }) {
                                         'threonine',
                                         'tryptophan',
                                         'valine'
-                                    ].includes(key)) {
+                                    ].includes(key)) {                                        
                                         return total + food[key]; 
                                     } else {
-                                        return 0;
+                                        return total + 0;
                                     }
-                            }, 0)}
+                            }, 0).toFixed(3)}
                         </div>
                     </div>    
                 )}

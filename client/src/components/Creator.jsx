@@ -3,33 +3,24 @@ import FoodViewer from "./FoodViewer";
 import SearchBar from "./SearchBar";
 import FoodList from "./FoodList";
 import AminoLevelsViewer from "./AminoLevelsViewer";
+import FoodSearch from "./FoodSearch";
+import { apiCall } from "../utils/http";
+import { useAuth } from "../contexts/UserContext";
 
 export default function Creator({ editing }) {
     const [foods, setFoods] = useState([]);
     const [searchingState, setSearchingState] = useState(null);
     const [foodSearchResults, setFoodSearchResults] = useState([]);
+    const { authorize } = useAuth();
 
     function handleNewClick() {
         setSearchingState('searching');
     }
 
-    function handleSearch() {
+    async function handleNamedSearch(term) {
         setSearchingState('selecting');
 
-        setFoodSearchResults([
-            {
-                _id: 1,
-                name: 'food1',
-                histidine: 1,
-                isoleucine: 2
-            },
-            {
-                _id: 2,
-                name: 'food2',
-                histidine: .5,
-                isoleucine: 1
-            }
-        ])
+        setFoodSearchResults(await apiCall('GET', `/food/search/named?term=${term}`, null, authorize()))
     }
 
     function handleResultSelect(id) {
@@ -50,9 +41,9 @@ export default function Creator({ editing }) {
             )}
 
             {searchingState === 'searching' && 
-                <SearchBar
+                <FoodSearch
                     placeholderText={'Search Foods'}
-                    onSearch={handleSearch}
+                    onNamedSearch={handleNamedSearch}
                 />
             }
 
@@ -93,6 +84,7 @@ export default function Creator({ editing }) {
                         { name: 'Valine', amount: 0 }
                      ]
                 )}
+                frozen={true}
             />
         </>
     )

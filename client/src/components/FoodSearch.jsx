@@ -2,7 +2,6 @@ import { Fragment, useState } from "react";
 import SearchBar from "./SearchBar";
 
 export default function FoodSearch({
-    placeholderText,
     onNamedSearch,
     onAdvancedSearch
 }) {
@@ -54,7 +53,7 @@ export default function FoodSearch({
             <div className="tab-content">
                 {searchMode === 'named' &&
                     <SearchBar
-                        placeholderText={placeholderText}
+                        placeholderText={'Search Foods by Name'}
                         onSearch={handleNamedSearch}
                     />
                 }
