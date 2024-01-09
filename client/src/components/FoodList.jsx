@@ -26,7 +26,7 @@ export default function FoodList({ foods, onSelect }) {
                         <div
                             className="tab-content"
                         >
-                            Total Protein (per 100g): &nbsp;
+                            Total EAA Level (per 100g): &nbsp;
                             {Object.keys(food).reduce((total, key) => {
                                 if ([
                                         'histidine',
