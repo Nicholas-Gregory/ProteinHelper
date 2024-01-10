@@ -1,19 +1,9 @@
 import AminoLevelsViewer from "./AminoLevelsViewer";
 
 export default function FoodViewer({ 
-    food, 
-    onChangeUnit,
-    onChangeAmount,
+    food,
     onCreateWithButtonClick 
 }) {
-    function handleChangeUnit(newValue) {
-        onChangeUnit(food._id, newValue);
-    }
-
-    function handleChangeAmount(newValue) {
-        onChangeAmount(food._id, newValue);
-    }
-
     return (
         <div
             style={{
@@ -24,24 +14,28 @@ export default function FoodViewer({
             <div className="tab-title tab-selected">
                 {food.name}
             </div>
-            <AminoLevelsViewer 
-                aminos={Object.keys(food)
-                .filter(key => [
-                    'histidine',
-                    'isoleucine',
-                    'leucine',
-                    'lysine',
-                    'methionine',
-                    'phenylalanine',
-                    'threonine',
-                    'tryptophan',
-                    'valine'
-                ].includes(key))
-                .map(key => ({
-                    name: `${key.substring(0, 1).toUpperCase()}${key.substring(1)}`,
-                    amount: food[key]
-                }))}
-            />
+            <div className="tab-content">
+                <AminoLevelsViewer 
+                    aminos={Object.keys(food)
+                    .filter(key => [
+                        'histidine',
+                        'isoleucine',
+                        'leucine',
+                        'lysine',
+                        'methionine',
+                        'phenylalanine',
+                        'threonine',
+                        'tryptophan',
+                        'valine'
+                    ].includes(key))
+                    .map(key => ({
+                        name: `${key.substring(0, 1).toUpperCase()}${key.substring(1)}`,
+                        amount: food[key]
+                    }))}
+                />
+            </div>
+
+            <br />
             {onCreateWithButtonClick && 
                 <button
                     onClick={() => onCreateWithButtonClick(food._id)}
