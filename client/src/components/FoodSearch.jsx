@@ -6,16 +6,17 @@ export default function FoodSearch({
     onAdvancedSearch
 }) {
     const [searchMode, setSearchMode] = useState('named');
+    const [advancedSearchNameInput, setAdvancedSearchNameInput] = useState('');
     const [advancedSearchOptions, setAdvancedSearchOptions] = useState({
-        histidine: { modifier: 'gte', value: 0 },
-        isoleucine: { modifier: 'gte', value: 0 },
-        leurcine: { modifier: 'gte', value: 0 },
-        lysine: { modifier: 'gte', value: 0 },
-        methionine: { modifier: 'gte', value: 0 },
-        phenylalanine: { modifier: 'gte', value: 0 },
-        threonine: { modifier: 'gte', value: 0 },
-        tryptophan: { modifier: 'gte', value: 0 },
-        valine: { modifier: 'gte', value: 0 },
+        histidine: { modifier: 'n', value: 0 },
+        isoleucine: { modifier: 'n', value: 0 },
+        leurcine: { modifier: 'n', value: 0 },
+        lysine: { modifier: 'n', value: 0 },
+        methionine: { modifier: 'n', value: 0 },
+        phenylalanine: { modifier: 'n', value: 0 },
+        threonine: { modifier: 'n', value: 0 },
+        tryptophan: { modifier: 'n', value: 0 },
+        valine: { modifier: 'n', value: 0 },
     })
 
     function handleNamedSearch(term) {
@@ -25,7 +26,7 @@ export default function FoodSearch({
     function handleAdvancedSearchSubmit(e) {
         e.preventDefault();
 
-        onAdvancedSearch(advancedSearchOptions);
+        onAdvancedSearch(advancedSearchOptions, advancedSearchNameInput);
     }
 
     return (
@@ -59,6 +60,21 @@ export default function FoodSearch({
                 }
                 {searchMode === 'advanced' &&
                     <>
+                        <label htmlFor="advanced-search-name-input">
+                            Name: 
+                        </label>
+                        &nbsp;
+                        <input
+                            id="advanced-search-name-input"
+                            type='text'
+                            value={advancedSearchNameInput}
+                            onChange={e => setAdvancedSearchNameInput(e.target.value)}
+                            placeholder="Leave blank to not search by name"
+                            size={33}
+                            style={{
+                                marginBottom: '5px'
+                            }}
+                        />
                         <form
                             style={{
                                 display: 'grid',
@@ -102,6 +118,7 @@ export default function FoodSearch({
                                                     }
                                                 })}
                                             >
+                                                <option value='n'>--</option>
                                                 <option value='gte'>At Least</option>
                                                 <option value='e'>Exactly</option>
                                                 <option value='lte'>At Most</option>
@@ -118,6 +135,7 @@ export default function FoodSearch({
                                                         value: Number(e.target.value)
                                                     }
                                                 })}
+                                                disabled={advancedSearchOptions[aminoName].modifier === 'n' ? true : false}
                                             />
                                             g
                                         </div>

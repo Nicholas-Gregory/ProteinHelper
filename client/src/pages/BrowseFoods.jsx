@@ -27,9 +27,23 @@ export default function BrowseFoods({}) {
         setSearchResults(response);
     }
 
-    function handleFoodSelect(id) {
-        setSearchResults(null);
+    async function handleAdvancedSearch(options, name) {
+        const response = await apiCall('post', `/food/search/advanced?name=${name}`, options, authorize());
 
+        setError(null);
+
+        if (response.error) {
+            setError('There was an error processing your request');
+
+            setSearchResults(null);
+
+            return;
+        }
+
+        setSearchResults(response);
+    }
+
+    function handleFoodSelect(id) {
         navigate(`/browse/foods/${id}`);
     }
 
@@ -39,7 +53,10 @@ export default function BrowseFoods({}) {
             <FoodSearch 
                 placeholderText={'Search Foods by Name'} 
                 onNamedSearch={handleNamedSearch}
+                onAdvancedSearch={handleAdvancedSearch}
             />
+
+            <Outlet />
 
             <br />
             {searchResults &&
@@ -54,8 +71,6 @@ export default function BrowseFoods({}) {
                     {error}
                 </p>
             }
-
-            <Outlet />
         </>
     )
 }

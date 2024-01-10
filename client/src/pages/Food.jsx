@@ -4,8 +4,6 @@ import FoodViewer from "../components/FoodViewer";
 export default function Food({}) {
     const food = useLoaderData();
 
-    console.log(food)
-
     function handleCreateWithClick(id) {
 
     }
