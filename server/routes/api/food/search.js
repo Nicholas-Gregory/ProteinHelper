@@ -22,7 +22,13 @@ router.get('/named', auth, async (req, res, next) => {
 router.post('/advanced', auth, async (req, res, next) => {
     const searchOptions = req.body;
     const nameTerm = req.query.name;
-    const query = { name: nameTerm && RegExp(`${nameTerm}`, 'i') };
+    const query = {};
+
+    if (nameTerm) {
+        query.name = RegExp(nameTerm, 'i');
+    }
+
+    console.log(query);
 
     for (let key in searchOptions) {
         const option = searchOptions[key];

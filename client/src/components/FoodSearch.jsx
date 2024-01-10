@@ -75,6 +75,9 @@ export default function FoodSearch({
                                 marginBottom: '5px'
                             }}
                         />
+                        <p>
+                            Per 100g:
+                        </p>
                         <form
                             style={{
                                 display: 'grid',
