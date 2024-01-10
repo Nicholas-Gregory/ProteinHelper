@@ -12,14 +12,15 @@ const UNITS = [
 ]
 
 export default function Creator({ editing }) {
+    const [nameInput, setNameInput] = useState([]);
     const [foods, setFoods] = useState([]);
     const [foodUnits, setFoodUnits] = useState([]);
     const [foodAmounts, setFoodAmounts] = useState([]);
     const [searchingState, setSearchingState] = useState(null);
     const [foodSearchResults, setFoodSearchResults] = useState([]);
     const [totalsUnit, setTotalsUnit] = useState('g');
-    const [error, setError] = useState(null);
-    const { authorize } = useAuth();
+    const [message, setMessage] = useState(null);
+    const { authorize, user } = useAuth();
 
     function getAmountNumber(per100g, amount, unit) {
         return amount / 100 * per100g * UNITS
@@ -34,15 +35,15 @@ export default function Creator({ editing }) {
     async function handleNamedSearch(term) {
         const response = await apiCall('GET', `/food/search/named?term=${term}`, null, authorize());
 
-        setError(null);
+        setMessage(null);
 
         if (response.error) {
             if (response.type === 'JsonWebTokenError') {
-                setError('You must be logged in to view this resource.');
+                setMessage('You must be logged in to view this resource.');
             } else if (response.type === 'TokenExpiredError') {
-                setError('Your session has expired.')
+                setMessage('Your session has expired.')
             } else {
-                setError('There was an error processing your response');
+                setMessage('There was an error processing your response');
             }
 
             return;
@@ -62,8 +63,50 @@ export default function Creator({ editing }) {
         setSearchingState(null);
     }
 
+    async function handleSaveButtonClick() {
+        if (nameInput === '') {
+            setMessage('Creations require a name');
+
+            return;
+        }
+
+        const foodData = foods.map((food, index) => ({
+            foodId: food._id,
+            unit: foodUnits[index],
+            amount: foodAmounts[index]
+        }));
+
+        const creationData = {
+            name: nameInput,
+            userId: user._id,
+            foods: foodData
+        }
+
+        const response = await apiCall('POST', '/creation', creationData, authorize());
+
+        if (response.error) {
+            setMessage('There was an error processing your request.')
+
+            return;
+        }
+
+        setMessage(response.message);
+    }
+
     return (
         <>
+            <br />
+            <label htmlFor="name-input">
+                Creation Name:
+            </label>
+            &nbsp;
+            <input
+                id="name-input"
+                type="text"
+                value={nameInput}
+                onChange={e => setNameInput(e.target.value)}
+            />
+
             <br />
             {foods.map((food, index) => 
                 <>
@@ -234,9 +277,17 @@ export default function Creator({ editing }) {
                 />
             }
 
-            {error &&
+            {foods.length > 0 &&
+                <button
+                    onClick={handleSaveButtonClick}
+                >
+                    Save
+                </button>
+            }
+
+            {message &&
                 <p>
-                    {error}
+                    {message}
                 </p>
             }
         </>

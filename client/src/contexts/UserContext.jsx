@@ -39,12 +39,14 @@ export default function UserProvider({ children }) {
     }
 
     return (
-        <UserContext.Provider value={{
-            user,
-            login, logout,
-            signup,
-            authorize
-        }}>
+        <UserContext.Provider 
+            value={{
+                user,
+                login, logout,
+                signup,
+                authorize
+            }
+        }>
             {children}
         </UserContext.Provider>
     )

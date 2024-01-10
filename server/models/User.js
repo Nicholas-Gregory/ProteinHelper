@@ -19,10 +19,10 @@ const userSchema = new Schema({
         unique: true,
         set: v => bcrypt.hashSync(v, 10)
     },
-    combinations: {
+    creations: {
         type: [{
             type: Schema.Types.ObjectId,
-            ref: 'Combination'
+            ref: 'Creation'
         }]
     }
 });
