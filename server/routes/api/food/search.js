@@ -28,8 +28,6 @@ router.post('/advanced', auth, async (req, res, next) => {
         query.name = RegExp(nameTerm, 'i');
     }
 
-    console.log(query);
-
     for (let key in searchOptions) {
         const option = searchOptions[key];
 

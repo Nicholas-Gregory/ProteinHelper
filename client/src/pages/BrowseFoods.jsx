@@ -17,7 +17,13 @@ export default function BrowseFoods({}) {
         setError(null);
 
         if (response.error) {
-            setError('There was an error processing your request');
+            if (response.type == 'JsonWebTokenError') {
+                setError('You must be logged in to view this resource.');
+            } else if (response.type === 'TokenExpiredError') {
+                setError('Your session has expired.')
+            } else {
+                setError('There was an error processing your response.')
+            }
 
             setSearchResults(null);
 

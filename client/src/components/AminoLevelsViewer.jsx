@@ -1,55 +1,7 @@
-import { useState } from "react"
-
-const UNITS = [
-    { unit: 'g', factor: 1 },
-    { unit: 'oz', factor: 0.035274 },
-    { unit: 'lb', factor: 0.00220462 }
-]
-
-export default function AminoLevelsViewer({ 
-    aminos,
-    frozen
-}) {
-    const [unit, setUnit] = useState('g');
-    const [amount, setAmount] = useState(100);
-
-    function getAmountNumber(per100g) {
-        return amount / 100 * per100g * UNITS
-        .find(unitObject => unitObject.unit === unit)
-        .factor;
-    }
-
+export default function AminoLevelsViewer({ aminos }) {
     return (
         <>
             <div className="tab-content">
-                {!frozen &&
-                    <>
-                        <label htmlFor="unit-select">
-                            Select desired unit:
-                        </label>
-                        <select
-                            id='unit-select'
-                            value={unit}
-                            onChange={e => setUnit(e.target.value)}
-                        >
-                            {UNITS.map(unitObject =>
-                                <option value={unitObject.unit}>{unitObject.unit}</option>    
-                            )}
-                        </select>
-                        <br />
-                        <label htmlFor='amount-input'>
-                            Input amount:
-                        </label>
-                        <input
-                            id='amount-input'
-                            type='number'
-                            step='0.01'
-                            value={amount}
-                            onChange={e => setAmount(e.target.value)}
-                        />
-                    </>
-                }
-                
                 <div
                     style={{
                         display: 'flex',
@@ -69,7 +21,7 @@ export default function AminoLevelsViewer({
                                     {amino.name}
                                 </div>
                                 <div className="tab-content">
-                                    {getAmountNumber(amino.amount).toFixed(3)}{unit}
+                                    {amino.amount.toFixed(3)}{amino.unit}
                                 </div>
                             </div>    
                         </div>

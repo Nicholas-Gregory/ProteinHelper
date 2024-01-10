@@ -1,6 +1,18 @@
 import AminoLevelsViewer from "./AminoLevelsViewer";
 
-export default function FoodViewer({ food, onCreateWithButtonClick }) {
+export default function FoodViewer({ 
+    food, 
+    onChangeUnit,
+    onChangeAmount,
+    onCreateWithButtonClick 
+}) {
+    function handleChangeUnit(newValue) {
+        onChangeUnit(food._id, newValue);
+    }
+
+    function handleChangeAmount(newValue) {
+        onChangeAmount(food._id, newValue);
+    }
 
     return (
         <div
