@@ -58,7 +58,8 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/create/my',
-            element: <MyCreations />
+            element: <MyCreations />,
+            loader: () => apiCall('GET', '/creation/user/')
           },
           {
             path: '/create/new',

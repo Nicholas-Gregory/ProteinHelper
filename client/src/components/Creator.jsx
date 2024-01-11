@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import FoodList from "./FoodList";
 import AminoLevelsViewer from "./AminoLevelsViewer";
 import FoodSearch from "./FoodSearch";
@@ -11,7 +11,7 @@ const UNITS = [
     { unit: 'lb', factor: 0.00220462 }
 ]
 
-export default function Creator({ editing }) {
+export default function Creator({ editing, creationId }) {
     const [nameInput, setNameInput] = useState([]);
     const [foods, setFoods] = useState([]);
     const [foodUnits, setFoodUnits] = useState([]);
@@ -21,6 +21,37 @@ export default function Creator({ editing }) {
     const [totalsUnit, setTotalsUnit] = useState('g');
     const [message, setMessage] = useState(null);
     const { authorize, user } = useAuth();
+
+    useEffect(() => {
+        (async () => {
+            if (creationId) {
+                const response = await apiCall('GET', '/creation', null, authorize());
+
+                if (response.error) {
+                    const type = response.type;
+
+                    if (type === 'TokenExpiredError') {
+                        setMessage('Your session has expired.');
+                        return;
+                    } else if (type === 'JsonWebTokenError') {
+                        setMessage('You must be logged in to do this.');
+                        return;
+                    }
+
+                    setMessage('An error occurred.');
+                    return;
+                }
+
+                setNameInput(response.name);
+                setFoods(response.foods);
+                
+                for (let food in response.foods) {
+                    setFoodUnits([...foodUnits, food.unit]);
+                    setFoodAmounts([...foodAmounts, food.amount]);
+                }
+            }
+        })();
+    }, creationId)
 
     function getAmountNumber(per100g, amount, unit) {
         return amount / 100 * per100g * UNITS
@@ -83,7 +114,7 @@ export default function Creator({ editing }) {
         }
 
         const response = await apiCall('POST', '/creation', creationData, authorize());
-
+        //creationId && separate call for PUT /creation/:id
         if (response.error) {
             setMessage('There was an error processing your request.')
 

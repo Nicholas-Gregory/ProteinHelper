@@ -10,10 +10,24 @@ export default function Food({}) {
 
     return (
         <>
-            <FoodViewer 
-                food={food} 
-                onCreateWithButtonClick={handleCreateWithClick}
-            />
+            {!food.error &&
+                <FoodViewer 
+                    food={food} 
+                    onCreateWithButtonClick={handleCreateWithClick}
+                />
+            }
+
+            {food.type === 'JsonWebTokenError' &&
+                <p>
+                    You must be logged in to view this resource
+                </p>
+            }
+
+            {food.type === 'TokenExpiredError' &&
+                <p>
+                    Your session has expired.
+                </p>
+            }
         </>
     )
 }

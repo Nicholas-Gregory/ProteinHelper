@@ -20,4 +20,17 @@ router.post('/', async (req, res, next) => {
     }
 }); 
 
+router.get('/:id', async (req, res, next) => {
+    const id = req.params.id;
+
+    let creation
+    try {
+        creation = Creation.findById(id);
+
+        return res.status(200).json(creation);
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;
