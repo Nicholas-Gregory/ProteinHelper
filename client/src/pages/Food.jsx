@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/UserContext";
 import { apiCall } from "../utils/http";
 
 export default function Food({}) {
-    const [food, setFood] = useState(null);
+    const [food, setFood] = useState({});
     const { foodId } = useParams();
     const { authorize } = useAuth();
 
@@ -21,20 +21,20 @@ export default function Food({}) {
 
     return (
         <>
-            {food && !food.error &&
+            {!food.error &&
                 <FoodViewer 
                     food={food} 
                     onCreateWithButtonClick={handleCreateWithClick}
                 />
             }
 
-            {food && food.type === 'JsonWebTokenError' &&
+            {food.type === 'JsonWebTokenError' &&
                 <p>
                     You must be logged in to view this resource
                 </p>
             }
 
-            {food && food.type === 'TokenExpiredError' &&
+            {food.type === 'TokenExpiredError' &&
                 <p>
                     Your session has expired.
                 </p>
