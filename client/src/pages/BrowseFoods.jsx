@@ -50,7 +50,7 @@ export default function BrowseFoods({}) {
     }
 
     function handleFoodSelect(id) {
-        navigate(`/browse/foods/${id}`);
+        navigate(`/food/${id}`);
     }
 
     return (

@@ -1,12 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './style.css';
-import { useAuth } from './contexts/UserContext';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Browse from './layouts/Browse';
 import BrowseFoods from './pages/BrowseFoods';
 import Food from './pages/Food';
-import { apiCall } from './utils/http';
 import BrowseCreations from './pages/BrowseCreations';
 import NewCreation from './pages/NewCreation';
 import Create from './layouts/Create';
@@ -14,10 +12,9 @@ import MyCreations from './pages/MyCreations';
 import Auth from './layouts/Auth';
 import CreateAccount from './pages/CreateAccount';
 import Login from './pages/Login';
+import Creation from './pages/Creation';
 
 export default function App({}) {
-    const { user, authorize } = useAuth();
-
     return (
         <>
             <BrowserRouter>
@@ -30,7 +27,7 @@ export default function App({}) {
                             path='/home'
                             element={<Home />}
                         />
-                        <Route
+                        {/* <Route
                             path='/browse'
                             element={<Browse />}
                         >
@@ -47,8 +44,9 @@ export default function App({}) {
                                 path='/browse/creations'
                                 element={<BrowseCreations />}
                             />
-                        </Route>
-                        <Route
+                        </Route> */}
+
+                        {/* <Route
                             path='/create'
                             element={<Create />}
                         >  
@@ -60,7 +58,28 @@ export default function App({}) {
                                 path='/create/new'
                                 element={<NewCreation />}
                             />
+                        </Route> */}
+
+                        <Route
+                            path='/creation'
+                            element={<BrowseCreations />}
+                        >
+                            <Route
+                                path='/creation/:creationId'
+                                element={<Creation />}
+                            />
                         </Route>
+
+                        <Route
+                            path='/food'
+                            element={<BrowseFoods />}
+                        >
+                            <Route
+                                path='/food/:foodId'
+                                element={<Food />}
+                            />
+                        </Route>
+
                         <Route
                             path='/auth'
                             element={<Auth />}

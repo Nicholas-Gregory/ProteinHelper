@@ -17,20 +17,20 @@ export default function Header({ page }) {
                 <Link to={'/home'}>Home</Link>
             </div>
             <div 
-                className={`tab-title${page === 'browse' ? ' tab-selected' : ''}`}
+                className={`tab-title${page === 'food' ? ' tab-selected' : ''}`}
                 style={{ 
                     display: 'inline-block'
                 }}
             >
-                <Link to={'/browse'}>Browse</Link>
+                <Link to={'/food'}>Foods</Link>
             </div>
             <div 
-                className={`tab-title${page === 'create' ? ' tab-selected' : ''}`}
+                className={`tab-title${page === 'creation' ? ' tab-selected' : ''}`}
                 style={{ 
                     display: 'inline-block'
                 }}
             >
-                <Link to={'/create'}>Create</Link>
+                <Link to={'/creation'}>Creations</Link>
             </div>
 
             <AuthUtils page={page} />

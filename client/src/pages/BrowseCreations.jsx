@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CreationViewer from "../components/CreationViewer";
 import SearchBar from '../components/SearchBar'
+import { Outlet } from "react-router-dom";
 
 export default function BrowseCreations({}) {
     const [searchTerms, setSearchTerms] = useState([]);
@@ -55,21 +56,7 @@ export default function BrowseCreations({}) {
             />
 
             <br />
-            <CreationViewer creation={{
-                name: 'creation',
-                foods: [
-                    {
-                        name: 'food1',
-                        histidine: 2,
-                        isoleucine: 1
-                    },
-                    {
-                        name: 'food2',
-                        histidine: 1,
-                        isoleucine: 2
-                    }
-                ]
-            }} />
+            <Outlet />
         </>
     )
 }

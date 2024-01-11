@@ -25,12 +25,12 @@ router.get('/:id', async (req, res, next) => {
 
     let creation
     try {
-        creation = Creation.findById(id);
-
-        return res.status(200).json(creation);
+        creation = await Creation.findById(id);
     } catch (error) {
         next(error);
     }
+
+    res.status(200).json(creation);
 });
 
 module.exports = router;
