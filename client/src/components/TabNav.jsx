@@ -20,6 +20,7 @@ export default function TabNav({
         <>
             {tabs.map(tab =>
                 <div
+                    key={tab.name}
                     className={`tab-title${active === tab.name ? ' tab-selected' : ''}`}
                     style={{
                         display: 'inline-block',
