@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './style.css';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
@@ -12,6 +12,7 @@ import Creation from './pages/Creation';
 import Creations from './pages/Creations';
 import Users from './layouts/Users';
 import User from './pages/User';
+import Browse from './pages/Browse';
 
 export default function App({}) {
     return (
@@ -23,21 +24,35 @@ export default function App({}) {
                         element={<MainLayout />}
                     >
                         <Route
+                            index
+                            element={<Navigate to={'/home'} />}
+                        />
+                        <Route
                             path='/home'
                             element={<Home />}
                         />
                         <Route
                             path='/creations'
                             element={<Creations />}
-                        >
+                        >                        
+                            <Route
+                                index
+                                element={<Navigate to={'/creations/create'} />}
+                            />
+
                             <Route
                                 path='/creations/:creationId'
                                 element={<Creation />}
                             />
 
                             <Route
-                                path='/creations/new'
+                                path='/creations/create'
                                 element={<NewCreation />}
+                            />
+
+                            <Route
+                                path='/creations/browse'
+                                element={<Browse />}
                             />
                         </Route>
 

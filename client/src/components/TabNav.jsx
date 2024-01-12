@@ -2,17 +2,14 @@ import { useState } from "react"
 
 export default function TabNav({ 
     tabs,
-    defaultActiveTabName,
+    active,
     onSelect
 }) {
-    const [active, setActiveName] = useState(defaultActiveTabName);
-
     function handleClick(e) {
         const name = tabs
         .find(tab => tab.text === e.target.innerText)
         .name;
 
-        setActiveName(name);
         onSelect(name);
     }
 

@@ -1,15 +1,27 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import TabNav from "../components/TabNav";
 import { useAuth } from "../contexts/UserContext";
+import { useEffect, useState } from "react";
 
-export default function Header({ page }) {
+export default function Header({}) {
     const navigate = useNavigate();
     const location = useLocation();
-    const { user } = useAuth();
-
     const path = location.pathname.split('/');
+    const { user } = useAuth();
+    const [page, setPage] = useState(path[1]);
+
+    useEffect(() => {
+        if (path[1] === 'users') {
+            if (user && path[2] === user.id) {
+                setPage('profile');
+                return;
+            }
+        }
+        setPage(path[1]);
+    }, [location]);
 
     function handleTopNavSelect(name) {
+        setPage(name);
         if (name === 'profile') {
             navigate(`/users/${user.id}`);
             return;
@@ -46,7 +58,7 @@ export default function Header({ page }) {
                         text: 'Login/Signup'
                     }
                 ]}
-                defaultActiveTabName={path[path.length - 1]}
+                active={page}
                 onSelect={handleTopNavSelect}
             />
         </>
