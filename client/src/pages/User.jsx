@@ -68,7 +68,7 @@ export default function User({}) {
                             text: `${userText()}'s Creations`
                         }
                     ]}
-                    defaultActiveTabName='profile'
+                    active={page}
                     onSelect={handleTabSelect}
                 />
                 {page === 'profile' ? (
