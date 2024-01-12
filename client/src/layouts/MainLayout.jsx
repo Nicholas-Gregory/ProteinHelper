@@ -22,7 +22,8 @@ export default function MainLayout({}) {
                 className="tab-content"
                 style={{
                     display: 'flex',
-                    backgroundColor: 'lightseagreen'
+                    backgroundColor: 'lightseagreen',
+                    width: '100%'
                 }}
             >
                 <div>

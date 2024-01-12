@@ -17,7 +17,14 @@ export default function UserProvider({ children }) {
 
         if (token) {
             (async () => {
-                setUser(await apiCall('GET', '/auth/authorize', null, token));
+                const response = await apiCall('GET', '/auth/authorize', null, token);
+
+                if (response.error) {
+                    setUser(null);
+                    return;
+                }
+
+                setUser(response);
             })();
         }
     }, []);
