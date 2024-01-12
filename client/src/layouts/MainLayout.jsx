@@ -1,6 +1,5 @@
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Header from "./Header";
-import SideNav from "./SideNav";
 import Footer from "./Footer";
 import { useEffect } from "react";
 
@@ -26,7 +25,6 @@ export default function MainLayout({}) {
                     backgroundColor: 'lightseagreen'
                 }}
             >
-                <SideNav path={path}/>
                 <div>
                     <Outlet />
                 </div>

@@ -1,39 +1,49 @@
-import { Link } from "react-router-dom";
-import AuthUtils from "./AuthUtils";
+import { useLocation, useNavigate } from "react-router-dom";
+import TabNav from "../components/TabNav";
+import { useAuth } from "../contexts/UserContext";
 
 export default function Header({ page }) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { user } = useAuth();
+
+    const path = location.pathname.split('/');
+
+    function handleTopNavSelect(name) {
+        navigate(`/${name}`);
+    }
+
     return (
         <>
-            <div style={{ margin: 10 }}>
-                <Link to={'/home'}>Protein Helper</Link>
-            </div>
-
-            <div 
-                className={`tab-title${page === 'home' ? ' tab-selected' : ''}`}
-                style={{ 
-                    display: 'inline-block'
-                }}
-            >
-                <Link to={'/home'}>Home</Link>
-            </div>
-            <div 
-                className={`tab-title${page === 'browse' ? ' tab-selected' : ''}`}
-                style={{ 
-                    display: 'inline-block'
-                }}
-            >
-                <Link to={'/browse'}>Browse</Link>
-            </div>
-            <div 
-                className={`tab-title${page === 'create' ? ' tab-selected' : ''}`}
-                style={{ 
-                    display: 'inline-block'
-                }}
-            >
-                <Link to={'/create'}>Create</Link>
-            </div>
-
-            <AuthUtils page={page} />
+            <TabNav
+                tabs={[
+                    {
+                        name: 'home',
+                        text: 'Home'
+                    },
+                    {
+                        name: 'foods',
+                        text: 'Foods'
+                    },
+                    {
+                        name: 'creations',
+                        text: 'Creations'
+                    },
+                    {
+                        name: 'users',
+                        text: 'Users'
+                    },
+                    user ? {
+                        name: 'profile',
+                        text: 'My Account'
+                    } : {
+                        name: 'auth',
+                        text: 'Login/Signup'
+                    }
+                ]}
+                defaultActiveTabName={path[path.length - 1]}
+                onSelect={handleTopNavSelect}
+            />
         </>
     )
 }

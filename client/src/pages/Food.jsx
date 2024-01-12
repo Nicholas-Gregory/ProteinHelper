@@ -1,8 +1,19 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import FoodViewer from "../components/FoodViewer";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/UserContext";
+import { apiCall } from "../utils/http";
 
 export default function Food({}) {
-    const food = useLoaderData();
+    const [food, setFood] = useState({});
+    const { foodId } = useParams();
+    const { authorize } = useAuth();
+
+    useEffect(() => {
+        (async () => {
+            setFood(await apiCall('GET', `/food/${foodId}`, null, authorize()));
+        })();
+    }, []);
 
     function handleCreateWithClick(id) {
 

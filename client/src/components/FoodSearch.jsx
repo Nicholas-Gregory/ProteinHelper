@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import SearchBar from "./SearchBar";
+import TabNav from "./TabNav";
 
 export default function FoodSearch({
     onNamedSearch,
@@ -29,28 +30,27 @@ export default function FoodSearch({
         onAdvancedSearch(advancedSearchOptions, advancedSearchNameInput);
     }
 
+    function handleSearchModeSelect(name) {
+        setSearchMode(name);
+    }
+
     return (
         <div>
-            <div
-                className={`tab-title${searchMode === 'named' ? ' tab-selected' : ''}`}
-                style={{
-                    display: 'inline-block',
-                    cursor: 'pointer'
-                }}
-                onClick={() => setSearchMode('named')}
-            >
-                Search by Name
-            </div>
-            <div
-                className={`tab-title${searchMode === 'advanced' ? ' tab-selected' : ''}`}
-                style={{
-                    display: 'inline-block',
-                    cursor: 'pointer'
-                }}
-                onClick={() => setSearchMode('advanced')}
-            >
-                Advanced Search
-            </div>
+            <TabNav
+                tabs={[
+                    {
+                        text: 'Search by Name',
+                        name: 'named'
+                    },
+                    {
+                        text: 'Advanced Search',
+                        name: 'advanced'
+                    }
+                ]}
+                defaultActiveTabName={'named'}
+                onSelect={handleSearchModeSelect}
+            />
+            
             <div className="tab-content">
                 {searchMode === 'named' &&
                     <SearchBar

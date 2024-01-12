@@ -14,8 +14,6 @@ router.get('/named', auth, async (req, res, next) => {
         next(error);
     }
 
-    console.log(result[1])
-
     return res.status(200).json(result);
 });
 
