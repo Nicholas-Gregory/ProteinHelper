@@ -63,6 +63,7 @@
 .tab-selected {
     border-bottom: 1px solid lightseagreen;
     background-color: lightseagreen;
+    top: 3px;
 }
 
 .tab-title-thin {
