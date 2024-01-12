@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { apiCall } from '../utils/http';
 
 export const LOCAL_STORAGE_KEY = 'protein-helper.auth-token';
@@ -11,6 +11,16 @@ export function useAuth() {
 
 export default function UserProvider({ children }) {
     const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = authorize();
+
+        if (token) {
+            (async () => {
+                setUser(await apiCall('GET', '/auth/authorize', null, token));
+            })();
+        }
+    }, []);
 
     async function login(data) {
          const response = await apiCall('POST', '/auth/login', data);

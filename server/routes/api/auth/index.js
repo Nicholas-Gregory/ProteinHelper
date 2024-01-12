@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const router = require('express').Router();
 
 const { User } = require('../../../models');
+const { auth } = require('../../../middleware');
 const AuthenticationError = require('../../../errors/AuthenticationError');
 
 const login = async (username, email, password) => {
@@ -60,6 +61,22 @@ router.post('/login', async (req, res, next) => {
     }
 
     return res.status(200).json(result);
-})
+});
+
+router.get('/authorize', auth, async (req, res, next) => {
+    const userId = req.userId;
+
+    try {
+        const { username, email, _id: id } = await User.findById(userId);
+
+        res.status(200).json({
+            username,
+            email,
+            id
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
 module.exports = router;

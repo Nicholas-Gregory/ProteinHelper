@@ -19,6 +19,9 @@ const userSchema = new Schema({
         unique: true,
         set: v => bcrypt.hashSync(v, 10)
     },
+    bio: {
+        type: String
+    },
     creations: {
         type: [{
             type: Schema.Types.ObjectId,

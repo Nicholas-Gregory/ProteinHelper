@@ -10,6 +10,11 @@ export default function Header({ page }) {
     const path = location.pathname.split('/');
 
     function handleTopNavSelect(name) {
+        if (name === 'profile') {
+            navigate(`/users/${user.id}`);
+            return;
+        }
+
         navigate(`/${name}`);
     }
 
