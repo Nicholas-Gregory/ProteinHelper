@@ -1,10 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import AuthUtils from "./AuthUtils";
+import { useLocation, useNavigate } from "react-router-dom";
 import TabNav from "../components/TabNav";
+import { useAuth } from "../contexts/UserContext";
 
 export default function Header({ page }) {
     const navigate = useNavigate();
     const location = useLocation();
+    const { user } = useAuth();
 
     const path = location.pathname.split('/');
 
@@ -21,19 +22,28 @@ export default function Header({ page }) {
                         text: 'Home'
                     },
                     {
-                        name: 'food',
+                        name: 'foods',
                         text: 'Foods'
                     },
                     {
-                        name: 'creation',
+                        name: 'creations',
                         text: 'Creations'
+                    },
+                    {
+                        name: 'users',
+                        text: 'Users'
+                    },
+                    user ? {
+                        name: 'profile',
+                        text: 'My Account'
+                    } : {
+                        name: 'auth',
+                        text: 'Login/Signup'
                     }
                 ]}
                 defaultActiveTabName={path[path.length - 1]}
                 onSelect={handleTopNavSelect}
             />
-
-            <AuthUtils page={page} />
         </>
     )
 }

@@ -1,18 +1,17 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './style.css';
 import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
-import Browse from './layouts/Browse';
 import BrowseFoods from './pages/BrowseFoods';
 import Food from './pages/Food';
-import BrowseCreations from './pages/BrowseCreations';
 import NewCreation from './pages/NewCreation';
-import Create from './layouts/Creation';
-import MyCreations from './pages/MyCreations';
 import Auth from './layouts/Auth';
 import CreateAccount from './pages/CreateAccount';
 import Login from './pages/Login';
 import Creation from './pages/Creation';
+import Creations from './pages/Creations';
+import Users from './layouts/Users';
+import User from './pages/User';
 
 export default function App({}) {
     return (
@@ -28,31 +27,26 @@ export default function App({}) {
                             element={<Home />}
                         />
                         <Route
-                            path='/creation'
-                            element={<Create />}
+                            path='/creations'
+                            element={<Creations />}
                         >
                             <Route
-                                path='/creation/:creationId'
+                                path='/creations/:creationId'
                                 element={<Creation />}
                             />
 
                             <Route
-                                path='/creation/new'
+                                path='/creations/new'
                                 element={<NewCreation />}
-                            />
-
-                            <Route
-                                path='/creation/browse'
-                                element={<BrowseCreations />}
                             />
                         </Route>
 
                         <Route
-                            path='/food'
+                            path='/foods'
                             element={<BrowseFoods />}
                         >
                             <Route
-                                path='/food/:foodId'
+                                path='/foods/:foodId'
                                 element={<Food />}
                             />
                         </Route>
@@ -69,6 +63,15 @@ export default function App({}) {
                             <Route
                                 path='/auth/login'
                                 element={<Login />}
+                            />
+                        </Route>
+                        <Route
+                            path='/users'
+                            element={<Users />}
+                        >
+                            <Route
+                                path='/users/:userId'
+                                element={<User />}
                             />
                         </Route>
                     </Route>
