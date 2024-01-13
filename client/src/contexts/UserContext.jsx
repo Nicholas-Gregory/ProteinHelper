@@ -20,12 +20,25 @@ export default function UserProvider({ children }) {
                 const response = await apiCall('GET', '/auth/authorize', null, token);
 
                 if (response.error) {
-                    setUser(null);
+                    logout();
                     return;
                 }
 
                 setUser(response);
             })();
+        }
+
+        const listener = e => {
+            const { key } = e;
+
+            if (key === null) {
+                setUser(null);
+            }
+        }
+        window.addEventListener('storage', listener);
+
+        return () => {
+            window.removeEventListener('storage', listener);
         }
     }, []);
 

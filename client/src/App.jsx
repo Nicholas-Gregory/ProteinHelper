@@ -4,7 +4,6 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import BrowseFoods from './pages/BrowseFoods';
 import Food from './pages/Food';
-import NewCreation from './pages/NewCreation';
 import Auth from './layouts/Auth';
 import CreateAccount from './pages/CreateAccount';
 import Login from './pages/Login';
@@ -13,6 +12,7 @@ import Creations from './pages/Creations';
 import Users from './layouts/Users';
 import User from './pages/User';
 import Browse from './pages/Browse';
+import Create from './pages/Create';
 
 export default function App({}) {
     return (
@@ -47,7 +47,7 @@ export default function App({}) {
 
                             <Route
                                 path='/creations/create'
-                                element={<NewCreation />}
+                                element={<Create />}
                             />
 
                             <Route
@@ -70,6 +70,10 @@ export default function App({}) {
                             path='/auth'
                             element={<Auth />}
                         >
+                            <Route
+                                index
+                                element={<Navigate to={'/auth/signup'} />}
+                            />
                             <Route
                                 path='/auth/signup'
                                 element={<CreateAccount />}

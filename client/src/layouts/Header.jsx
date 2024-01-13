@@ -7,7 +7,7 @@ export default function Header({}) {
     const navigate = useNavigate();
     const location = useLocation();
     const path = location.pathname.split('/');
-    const { user } = useAuth();
+    const { user, authorize } = useAuth();
     const [page, setPage] = useState(path[1]);
 
     useEffect(() => {

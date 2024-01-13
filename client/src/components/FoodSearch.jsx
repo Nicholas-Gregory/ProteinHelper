@@ -47,7 +47,7 @@ export default function FoodSearch({
                         name: 'advanced'
                     }
                 ]}
-                defaultActiveTabName={'named'}
+                active={searchMode}
                 onSelect={handleSearchModeSelect}
             />
             

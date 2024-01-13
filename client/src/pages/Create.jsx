@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import Creator from "../components/Creator";
 
-export default function NewCreation({}) {
+export default function Create({}) {
     const [query] = useSearchParams();
 
     return (

@@ -51,7 +51,7 @@ export default function Creator({ editing, creationId }) {
                 }
             }
         })();
-    }, creationId)
+    }, [creationId])
 
     function getAmountNumber(per100g, amount, unit) {
         return amount / 100 * per100g * UNITS
