@@ -11,12 +11,11 @@ const UNITS = [
     { unit: 'lb', factor: 0.00220462 }
 ]
 
-export default function Creator({ editing, creationId }) {
+export default function Creator({ creationId }) {
     const [nameInput, setNameInput] = useState([]);
     const [foods, setFoods] = useState([]);
     const [foodUnits, setFoodUnits] = useState([]);
     const [foodAmounts, setFoodAmounts] = useState([]);
-    const [searchingState, setSearchingState] = useState(null);
     const [foodSearchResults, setFoodSearchResults] = useState([]);
     const [totalsUnit, setTotalsUnit] = useState('g');
     const [message, setMessage] = useState(null);
@@ -59,10 +58,6 @@ export default function Creator({ editing, creationId }) {
         .factor;
     }
 
-    function handleNewClick() {
-        setSearchingState('searching');
-    }
-
     async function handleNamedSearch(term) {
         const response = await apiCall('GET', `/food/search/named?term=${term}`, null, authorize());
 
@@ -80,8 +75,6 @@ export default function Creator({ editing, creationId }) {
             return;
         }
 
-        setSearchingState('selecting');
-
         setFoodSearchResults(response);
     }
 
@@ -91,7 +84,6 @@ export default function Creator({ editing, creationId }) {
         setFoodAmounts([...foodAmounts, 100]);
 
         setFoodSearchResults([]);
-        setSearchingState(null);
     }
 
     async function handleSaveButtonClick() {
@@ -126,19 +118,28 @@ export default function Creator({ editing, creationId }) {
 
     return (
         <>
-            <br />
-            <label htmlFor="name-input">
-                Creation Name:
-            </label>
-            &nbsp;
-            <input
-                id="name-input"
-                type="text"
-                value={nameInput}
-                onChange={e => setNameInput(e.target.value)}
-            />
+            {foods.length > 0 &&
+                <>
+                    <br />
+                    <label htmlFor="name-input">
+                        Creation Name:
+                    </label>
+                    &nbsp;
+                    <input
+                        id="name-input"
+                        type="text"
+                        value={nameInput}
+                        onChange={e => setNameInput(e.target.value)}
+                    />
+                </>
+            }
 
             <br />
+            <FoodSearch
+                placeholderText={'Search Foods'}
+                onNamedSearch={handleNamedSearch}
+            />
+
             {foods.map((food, index) => 
                 <>
                     <div className="tab-title tab-selected">
@@ -193,115 +194,101 @@ export default function Creator({ editing, creationId }) {
                 </>
             )}
 
-            {searchingState === 'searching' && 
-                <FoodSearch
-                    placeholderText={'Search Foods'}
-                    onNamedSearch={handleNamedSearch}
-                />
+            {foods.length > 1 &&
+                <>
+                    <div 
+                        className="tab-title tab-selected"
+                        style={{ marginTop: '5px' }}    
+                    >
+                        Totals:
+                    </div>
+                    <div className="tab-content">
+                        <label htmlFor="totals-unit">
+                            Unit:
+                        </label>
+                        &nbsp;
+                        <select
+                            id="totals-unit"
+                            value={totalsUnit}
+                            onChange={e => setTotalsUnit(e.target.value)}
+                        >
+                            <option value='g'>g</option>
+                            <option value='oz'>oz</option>
+                            <option value='lb'>lb</option>
+                        </select>
+                        <AminoLevelsViewer
+                            aminos={foods.reduce((totals, food, index) => {
+                                if (foodUnits[index] === 'g') {
+                                    if (totalsUnit === 'g') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g')
+                                        }));
+                                    } else if (totalsUnit === 'oz') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g') * UNITS.find(u => u.unit === 'oz').factor)
+                                        }))
+                                    } else if (totalsUnit === 'lb') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g') * UNITS.find(u => u.unit === 'lb').factor)
+                                        }));
+                                    }
+                                } else if (foodUnits[index] === 'oz') {
+                                    if (totalsUnit === 'oz') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz')
+                                        }))
+                                    } else if (totalsUnit === 'g') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz') * 28.3495)
+                                        }))
+                                    } else if (totalsUnit === 'lb') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz') * 0.0625)
+                                        }));
+                                    }
+                                } else if (foodUnits[index] === 'lb') {
+                                    if (totalsUnit === 'lb') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb')
+                                        }))
+                                    } else if (totalsUnit === 'g') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb') / UNITS.find(u => u.unit === 'lb').factor)
+                                        }))
+                                    } else if (totalsUnit === 'oz') {
+                                        return totals.map(total => ({
+                                            name: total.name,
+                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb') * 16)
+                                        }))
+                                    }
+                                }
+                            }, [
+                                { name: 'Histidine', amount: 0 },
+                                { name: 'Isoleucine', amount: 0 },
+                                { name: 'Leucine', amount: 0 },
+                                { name: 'Lysine', amount: 0 },
+                                { name: 'Methionine', amount: 0 },
+                                { name: 'Phenylalanine', amount: 0 },
+                                { name: 'Threonine', amount: 0 },
+                                { name: 'Tryptophan', amount: 0 },
+                                { name: 'Valine', amount: 0 }
+                            ])}
+                            frozen={true}
+                        />
+                    </div>
+                </>
             }
-
-            {searchingState === null && editing && 
-                <button 
-                    onClick={handleNewClick}
-                    style={{
-                        marginTop: '5px'
-                    }}
-                >
-                    +
-                </button>
-            }
-            
-            <div 
-                className="tab-title tab-selected"
-                style={{ marginTop: '5px' }}    
-            >
-                Totals:
-            </div>
-            <div className="tab-content">
-                <label htmlFor="totals-unit">
-                    Unit:
-                </label>
-                &nbsp;
-                <select
-                    id="totals-unit"
-                    value={totalsUnit}
-                    onChange={e => setTotalsUnit(e.target.value)}
-                >
-                    <option value='g'>g</option>
-                    <option value='oz'>oz</option>
-                    <option value='lb'>lb</option>
-                </select>
-                <AminoLevelsViewer
-                    aminos={foods.reduce((totals, food, index) => {
-                        if (foodUnits[index] === 'g') {
-                            if (totalsUnit === 'g') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g')
-                                }));
-                            } else if (totalsUnit === 'oz') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g') * UNITS.find(u => u.unit === 'oz').factor)
-                                }))
-                            } else if (totalsUnit === 'lb') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g') * UNITS.find(u => u.unit === 'lb').factor)
-                                }));
-                            }
-                        } else if (foodUnits[index] === 'oz') {
-                            if (totalsUnit === 'oz') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz')
-                                }))
-                            } else if (totalsUnit === 'g') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz') * 28.3495)
-                                }))
-                            } else if (totalsUnit === 'lb') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz') * 0.0625)
-                                }));
-                            }
-                        } else if (foodUnits[index] === 'lb') {
-                            if (totalsUnit === 'lb') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb')
-                                }))
-                            } else if (totalsUnit === 'g') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb') / UNITS.find(u => u.unit === 'lb').factor)
-                                }))
-                            } else if (totalsUnit === 'oz') {
-                                return totals.map(total => ({
-                                    name: total.name,
-                                    amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb') * 16)
-                                }))
-                            }
-                        }
-                    }, [
-                        { name: 'Histidine', amount: 0 },
-                        { name: 'Isoleucine', amount: 0 },
-                        { name: 'Leucine', amount: 0 },
-                        { name: 'Lysine', amount: 0 },
-                        { name: 'Methionine', amount: 0 },
-                        { name: 'Phenylalanine', amount: 0 },
-                        { name: 'Threonine', amount: 0 },
-                        { name: 'Tryptophan', amount: 0 },
-                        { name: 'Valine', amount: 0 }
-                    ])}
-                    frozen={true}
-                />
-            </div>
 
             <br />
-            {searchingState === 'selecting' &&
+            {foodSearchResults.length > 0 &&
                 <FoodList
                     foods={foodSearchResults}
                     onSelect={handleResultSelect}

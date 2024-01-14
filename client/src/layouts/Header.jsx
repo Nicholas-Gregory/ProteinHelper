@@ -39,12 +39,8 @@ export default function Header({}) {
                         text: 'Home'
                     },
                     {
-                        name: 'foods',
-                        text: 'Foods'
-                    },
-                    {
                         name: 'creations',
-                        text: 'Creations'
+                        text: 'Explore Foods'
                     },
                     {
                         name: 'users',
