@@ -13,6 +13,9 @@ import Users from './layouts/Users';
 import User from './pages/User';
 import Browse from './pages/Browse';
 import Create from './pages/Create';
+import Social from './layouts/Social';
+import Following from './pages/Following';
+import Discover from './pages/Discover';
 
 export default function App({}) {
     return (
@@ -83,6 +86,28 @@ export default function App({}) {
                                 path='/auth/login'
                                 element={<Login />}
                             />
+                        </Route>
+
+                        <Route
+                            path='/social'
+                            element={<Social />}
+                        >
+
+                            <Route
+                                index
+                                element={<Navigate to={'/social/following'} />}
+                            />
+
+                            <Route
+                                path='/social/following'
+                                element={<Following />}
+                            />
+
+                            <Route
+                                path='/social/discover'
+                                element={<Discover />}
+                            />
+
                         </Route>
                         <Route
                             path='/users'

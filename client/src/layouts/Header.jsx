@@ -43,8 +43,8 @@ export default function Header({}) {
                         text: 'Explore Foods'
                     },
                     {
-                        name: 'users',
-                        text: 'Users'
+                        name: 'social',
+                        text: 'Social'
                     },
                     user ? {
                         name: 'profile',
