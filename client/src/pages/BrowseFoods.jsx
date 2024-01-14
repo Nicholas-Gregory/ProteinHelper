@@ -34,7 +34,7 @@ export default function BrowseFoods({}) {
     }
 
     async function handleAdvancedSearch(options, name) {
-        const response = await apiCall('post', `/food/search/advanced${name ? `?name=${name}` : ''}`, options, authorize());
+        const response = await apiCall('POST', `/food/search/advanced${name ? `?name=${name}` : ''}`, options, authorize());
 
         setError(null);
 

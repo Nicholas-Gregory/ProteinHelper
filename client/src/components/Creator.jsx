@@ -78,6 +78,18 @@ export default function Creator({ creationId }) {
         setFoodSearchResults(response);
     }
 
+    async function handleAdvancedSearch(options, name) {
+        const response = await apiCall('POST', `/food/search/advanced${name ? `?name=${name}` : ''}`, options, authorize());
+
+        setMessage(null);
+
+        if (response.error) {
+            setMessage('There was an error processing your request.');
+        }
+
+        setFoodSearchResults(response);
+    }
+
     function handleResultSelect(id) {
         setFoods([...foods, foodSearchResults.find(food => food._id === id)]);
         setFoodUnits([...foodUnits, 'g'])
@@ -138,6 +150,7 @@ export default function Creator({ creationId }) {
             <FoodSearch
                 placeholderText={'Search Foods'}
                 onNamedSearch={handleNamedSearch}
+                onAdvancedSearch={handleAdvancedSearch}
             />
 
             {foods.map((food, index) => 
