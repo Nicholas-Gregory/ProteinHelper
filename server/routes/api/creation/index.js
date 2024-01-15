@@ -7,7 +7,7 @@ router.post('/', async (req, res, next) => {
 
     try {
         const { _id } = await Creation.create(data);
-        console.log(data.userId)
+        
         await User.findByIdAndUpdate(data.userId, {
             $push: {
                 creations: _id

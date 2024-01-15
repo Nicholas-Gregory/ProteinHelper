@@ -106,7 +106,7 @@ export default function Creator({ creationId }) {
         }
 
         const foodData = foods.map((food, index) => ({
-            foodId: food._id,
+            food: food._id,
             unit: foodUnits[index],
             amount: foodAmounts[index]
         }));

@@ -3,12 +3,21 @@ const router = require('express').Router();
 const { User } = require('../../../models');
 const { ResourceNotFoundError, AuthenticationError } = require('../../../errors');
 const { auth } = require('../../../middleware');
+const { Model } = require('mongoose');
 
 router.get('/:id', auth, async (req, res, next) => {
     const userId = req.params.id;
 
     try {
-        const user = await User.findById(userId).populate('creations');
+        const user = await User
+        .findById(userId)
+        .populate('creations');
+
+        for (let creation of user.creations) {
+            for (let i = 0; i < creation.foods.length; i++) {
+                await creation.populate(`foods.${i}.food`);
+            }
+        }
 
         if (!user) {
             throw new ResourceNotFoundError(`No user exists with ID ${userId}`);
