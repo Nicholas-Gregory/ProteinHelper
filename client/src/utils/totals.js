@@ -14,4 +14,4 @@ export const foodTotal = food => Object.keys(food).reduce((total, key) => {
         } else {
             return total + 0;
         }
-}, 0).toFixed(3)
+}, 0)

@@ -11,8 +11,8 @@ export default function CreationList({ creations }) {
                     <div className='tab-content'>
                         Total EAA Levels (per 100g): &nbsp;
                         {creation.foods.reduce((total, food) =>
-                            total + foodTotal(food)
-                        , 0)}
+                            total + foodTotal(food.food)
+                        , 0).toFixed(3)}
                     </div>
                 </>
             )}
