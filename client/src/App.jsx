@@ -95,7 +95,7 @@ export default function App({}) {
 
                             <Route
                                 index
-                                element={<Navigate to={'/social/following'} />}
+                                element={<Navigate to={'/social/discover'} />}
                             />
 
                             <Route

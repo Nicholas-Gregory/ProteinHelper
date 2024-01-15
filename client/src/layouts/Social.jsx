@@ -22,12 +22,12 @@ export default function Social({}) {
             <TabNav
                 tabs={[
                     {
-                        name: 'following',
-                        text: 'Following'
-                    },
-                    {
                         name: 'discover',
                         text: 'Discover'
+                    },
+                    {
+                        name: 'following',
+                        text: 'Following'
                     }
                 ]}
                 active={page}

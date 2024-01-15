@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const foodEntrySchema = new Schema({
-    foodId: {
+    food: {
         type: Schema.Types.ObjectId,
         ref: 'Food'
     },
@@ -27,7 +27,7 @@ const creationSchema = new Schema({
     foods: {
         type: [foodEntrySchema]
     }
-});
+}, { timestamps: true });
 
 const Creation = model('Creation', creationSchema);
 

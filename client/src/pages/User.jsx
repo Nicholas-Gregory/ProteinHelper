@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/UserContext";
 import { useEffect, useState } from "react";
 import { apiCall } from "../utils/http";
 import TabNav from '../components/TabNav'
+import CreationList from "../components/CreationList";
 
 export default function User({}) {
     const { 
@@ -93,7 +94,7 @@ export default function User({}) {
                     </div>
                 ) : (
                     <div className="tab-content">
-                        creations
+                        <CreationList creations={user.creations} />
                     </div>
                 )}
             </>}

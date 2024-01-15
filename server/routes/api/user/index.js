@@ -8,7 +8,7 @@ router.get('/:id', auth, async (req, res, next) => {
     const userId = req.params.id;
 
     try {
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate('creations');
 
         if (!user) {
             throw new ResourceNotFoundError(`No user exists with ID ${userId}`);
