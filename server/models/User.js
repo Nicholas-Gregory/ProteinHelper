@@ -1,6 +1,45 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const goalsSchema = new Schema({
+    histidine: {
+        type: Number,
+        default: 1.022
+    },
+    isoleucine: {
+        type: Number,
+        default: 1.387
+    },
+    leucine: {
+        type: Number,
+        default: 3.066
+    },
+    lysine: {
+        type: Number,
+        default: 2.774
+    },
+    methionine: {
+        type: Number,
+        default: 1.387
+    },
+    phenylalanine: {
+        type: Number,
+        default: 2.409
+    },
+    threonine: {
+        type: Number,
+        default: 1.46
+    },
+    tryptophan: {
+        type: Number,
+        default: 0.365
+    },
+    valine: {
+        type: Number,
+        default: 1.752
+    }
+})
+
 const userSchema = new Schema({
     username: {
         type: String,
@@ -27,6 +66,10 @@ const userSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Creation'
         }]
+    },
+    goals: {
+        type: goalsSchema, 
+        default: () => ({})
     }
 });
 
