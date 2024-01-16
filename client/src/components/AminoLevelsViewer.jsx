@@ -1,3 +1,5 @@
+import AminoViewer from "./AminoViewer";
+
 export default function AminoLevelsViewer({ aminos }) {
     return (
         <>
@@ -16,12 +18,17 @@ export default function AminoLevelsViewer({ aminos }) {
                         <div 
                             style={{ cursor: 'default' }}
                         >
-                            <div className="tab-title tab-selected">
+                            {/* <div className="tab-title tab-selected">
                                 {amino.name}
                             </div>
                             <div className="tab-content">
                                 {amino.amount.toFixed(3)}{amino.unit}
-                            </div>
+                            </div> */}
+                            <AminoViewer
+                                name={amino.name}
+                                unit={amino.unit}
+                                amount={amino.amount}
+                            />
                         </div>    
                     </div>
                 )}

@@ -30,7 +30,8 @@ export default function FoodViewer({
                     ].includes(key))
                     .map(key => ({
                         name: `${key.substring(0, 1).toUpperCase()}${key.substring(1)}`,
-                        amount: food[key]
+                        amount: food[key],
+                        unit: 'g'
                     }))}
                 />
             </div>
