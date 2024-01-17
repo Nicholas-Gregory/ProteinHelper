@@ -1,21 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreationList from "../components/CreationList";
+
+import { apiCall } from '../utils/http'
 
 export default function Discover({}) {
     const [feed, setFeed] = useState([]);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const result = await apiCall('GET', '/creation?sort=true');
+
+            setError(null);
+
+            if (result.error) {
+                setError(result.type);
+                return;
+            }
+
+            setFeed(result);
+        })();
+    }, []);
 
     return (
         <>
-            {feed.map(item =>
-                <>
-                    <div className="tab-title tab-selected">
-                        {item.name}
-                    </div>
-                    <div className="tab-content">
-                        
-                    </div>
-                </>    
-            )}
+            <CreationList creations={feed} />
+
+            {error &&
+                <p>
+                    {error}
+                </p>
+            }
         </>
     )
 }

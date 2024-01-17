@@ -20,6 +20,31 @@ router.post('/', async (req, res, next) => {
     }
 }); 
 
+router.get('/', async (req, res, next) => {
+    let query;
+    try {
+        query = Creation
+        .find()
+        .populate('foods');
+
+        if (req.query.sort) {
+            query = query.sort({ createdAt: -1 });
+        }
+
+        const results = await query.exec();
+
+        for (let creation of results) {
+            for (let i = 0; i < creation.foods.length; i++) {
+                await creation.populate(`foods.${i}.food`);
+            }
+        }
+
+        return res.status(200).json(results);
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
 
