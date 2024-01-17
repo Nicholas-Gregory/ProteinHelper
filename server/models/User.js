@@ -56,6 +56,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        minLength: 8,
         set: v => bcrypt.hashSync(v, 10)
     },
     bio: {

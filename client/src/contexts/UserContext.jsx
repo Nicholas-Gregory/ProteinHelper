@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { apiCall } from '../utils/http';
 
-export const LOCAL_STORAGE_KEY = 'protein-helper.auth-token';
+const LOCAL_STORAGE_KEY = 'protein-helper.auth-token';
 
 export const UserContext = React.createContext();
 
@@ -60,8 +60,16 @@ export default function UserProvider({ children }) {
         localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
 
-    async function signup() {
+    async function signup(data) {
+        const response = await apiCall('POST', '/auth/create', data);
 
+        if (!response.error) {
+            localStorage.setItem(LOCAL_STORAGE_KEY, response.token);
+
+            setUser(response.user);
+        }
+
+        return response;
     }
 
     function authorize() {

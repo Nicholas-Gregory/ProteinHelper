@@ -35,7 +35,7 @@ const login = async (username, email, password) => {
 router.post('/create', async (req, res, next) => {
     const { username, email, password } = req.body;
 
-    let token;
+    let result;
     try {
         await User.create({
             username,
@@ -43,12 +43,12 @@ router.post('/create', async (req, res, next) => {
             password
         });
 
-        token = await login(username, email, password);
+        result = await login(username, email, password);
     } catch (error) {
         return next(error);
     }
 
-    res.status(201).json(token);
+    res.status(201).json(result);
 });
 
 router.post('/login', async (req, res, next) => {

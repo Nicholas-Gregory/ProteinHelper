@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'normalize.css'
 import './style.css'
-import UserProvider, { LOCAL_STORAGE_KEY } from './contexts/UserContext'
+import UserProvider from './contexts/UserContext'
 import App from './App'
 
 

@@ -51,7 +51,6 @@ export default function Login({}) {
 
     return (
         <>
-            Login
             <form>
                 <input
                     type="text"
@@ -60,6 +59,8 @@ export default function Login({}) {
                     value={usernameOrEmailInput}
                     onChange={handleUsernameOrEmailInputChange}
                 />
+
+                <br />
                 <input
                     type="text"
                     id="password"
@@ -67,6 +68,9 @@ export default function Login({}) {
                     value={passwordInput}
                     onChange={handlePasswordInputChange}
                 />
+
+                <br />
+                <br />
                 <button onClick={handleLoginSubmit}>Submit</button>
             </form>
 
