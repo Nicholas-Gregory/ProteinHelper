@@ -12,7 +12,7 @@ router.post('/', async (req, res, next) => {
             $push: {
                 creations: _id
             }
-        });
+        }, { runValidators: true });
 
         return res.status(201).json({ message: 'Save successful!' });
     } catch (error) {

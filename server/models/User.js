@@ -71,6 +71,12 @@ const userSchema = new Schema({
     goals: {
         type: goalsSchema, 
         default: () => ({})
+    },
+    following: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }]
     }
 });
 
