@@ -27,7 +27,8 @@ const login = async (username, email, password) => {
             username: user.username,
             email: user.email,
             id: user._id,
-            goals: user.goals
+            goals: user.goals,
+            following: user.following
         }
     };
 }
@@ -68,12 +69,18 @@ router.get('/authorize', auth, async (req, res, next) => {
     const userId = req.userId;
 
     try {
-        const { username, email, _id: id } = await User.findById(userId);
+        const { 
+            username, 
+            email, 
+            _id: id,
+            following
+         } = await User.findById(userId);
 
         res.status(200).json({
             username,
             email,
-            id
+            id,
+            following
         });
     } catch (error) {
         next(error);

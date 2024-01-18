@@ -17,6 +17,7 @@ export default function User({}) {
     const [editBioInput, setEditBioInput] = useState('');
     const [page, setPage] = useState('profile');
     const [error, setError] = useState(null);
+    const [followed, setFollowed] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -40,8 +41,9 @@ export default function User({}) {
 
             setUser(response);
             setEditBioInput(response.bio);
+            setFollowed(loggedInUser.following.includes(userId));
         })();
-    }, [userId]);
+    }, [userId, loggedInUser]);
 
     function handleTabSelect(name) {
         setPage(name);
@@ -53,6 +55,25 @@ export default function User({}) {
 
     function checkUser() {
         return loggedInUser && loggedInUser.id === userId;
+    }
+
+    async function handleFollowButtonClick() {
+        const loggedIn = loggedInUser.id;
+
+        setError(null);
+
+        const response = await apiCall('PUT', `/user/${loggedIn}`, {
+            $addToSet: {
+                following: userId
+            }
+        }, authorize());
+
+        if (response.error) {
+            setError(response.type);
+            return;
+        }
+
+        setFollowed(true);
     }
 
     return (
@@ -110,6 +131,23 @@ export default function User({}) {
                 <p>
                     {error}
                 </p>
+            }
+
+            {loggedInUser && loggedInUser.id !== userId &&
+                <button
+                    disabled={followed}
+                    onClick={handleFollowButtonClick}
+                >
+                    {followed ? (
+                        <>
+                            Following
+                        </>
+                    ) : (
+                        <>
+                            Follow {user.username}
+                        </>
+                    )}
+                </button>
             }
         </>
     )
