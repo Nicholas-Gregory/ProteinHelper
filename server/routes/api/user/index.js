@@ -10,7 +10,10 @@ router.get('/:id', auth, async (req, res, next) => {
     try {
         const user = await User
         .findById(userId)
-        .populate('creations');
+        .populate({ 
+            path: 'creations',
+            populate: 'user'
+        });
 
         for (let creation of user.creations) {
             for (let i = 0; i < creation.foods.length; i++) {
