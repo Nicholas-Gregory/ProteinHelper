@@ -62,7 +62,7 @@ export default function Login({}) {
 
                 <br />
                 <input
-                    type="text"
+                    type="password"
                     id="password"
                     placeholder="Password"
                     value={passwordInput}

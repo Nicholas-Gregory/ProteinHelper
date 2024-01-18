@@ -8,7 +8,7 @@ router.post('/', async (req, res, next) => {
     try {
         const { _id } = await Creation.create(data);
         
-        await User.findByIdAndUpdate(data.userId, {
+        await User.findByIdAndUpdate(data.user, {
             $push: {
                 creations: _id
             }
@@ -25,7 +25,8 @@ router.get('/', async (req, res, next) => {
     try {
         query = Creation
         .find()
-        .populate('foods');
+        .populate('foods')
+        .populate('user');
 
         if (req.query.sort) {
             query = query.sort({ createdAt: -1 });

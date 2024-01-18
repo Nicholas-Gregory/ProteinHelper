@@ -113,7 +113,7 @@ export default function Creator({ creationId }) {
 
         const creationData = {
             name: nameInput,
-            userId: user.id,
+            user: user.id,
             foods: foodData
         }
 

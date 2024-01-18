@@ -3,7 +3,6 @@ const router = require('express').Router();
 const { User } = require('../../../models');
 const { ResourceNotFoundError, AuthenticationError } = require('../../../errors');
 const { auth } = require('../../../middleware');
-const { Model } = require('mongoose');
 
 router.get('/:id', auth, async (req, res, next) => {
     const userId = req.params.id;

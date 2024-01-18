@@ -16,7 +16,7 @@ const foodEntrySchema = new Schema({
 })
 
 const creationSchema = new Schema({
-    userId: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },

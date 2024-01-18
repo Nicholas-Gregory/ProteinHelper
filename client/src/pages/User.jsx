@@ -41,7 +41,7 @@ export default function User({}) {
             setUser(response);
             setEditBioInput(response.bio);
         })();
-    }, []);
+    }, [userId]);
 
     function handleTabSelect(name) {
         setPage(name);
