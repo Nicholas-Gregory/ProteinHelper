@@ -1,32 +1,17 @@
-import { useEffect, useState } from "react";
 import CreationList from "../components/CreationList";
-import { useAuth } from '../contexts/UserContext'
-
-import { apiCall } from '../utils/http'
+import Loading from "../components/Loading";
+import useData from "../hooks/useData";
 
 export default function Discover({}) {
-    const [feed, setFeed] = useState([]);
-    const [error, setError] = useState(null);
-    const { authorize } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const result = await apiCall('GET', '/creation?sort=true', null, authorize());
-
-            setError(null);
-
-            if (result.error) {
-                setError(result.type);
-                return;
-            }
-
-            setFeed(result);
-        })();
-    }, []);
+    const { data, error } = useData('GET', '/creation?sort=true', null);
 
     return (
         <>
-            <CreationList creations={feed} />
+            {data ? (
+                <CreationList creations={data} />
+            ) : (
+                <Loading />
+            )}
 
             {error &&
                 <p>
