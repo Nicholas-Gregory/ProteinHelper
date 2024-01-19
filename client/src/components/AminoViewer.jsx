@@ -1,5 +1,6 @@
 import { useAuth } from "../contexts/UserContext";
 import { convert } from '../utils/conversions'
+import TabCard from "./TabCard";
 
 export default function AminoViewer({
     name,
@@ -16,12 +17,9 @@ export default function AminoViewer({
 
     return (
         <>
-            <div className="tab-title tab-selected">
-                {name}
-            </div>
-            <div className="tab-content">
+            <TabCard title={name}>
                 {amount.toFixed(3)}{unit}&emsp;{getPercentDailyGoal().toFixed(3)}% Daily Goal
-            </div>
+            </TabCard>
         </>
     )
 }

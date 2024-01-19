@@ -20,14 +20,6 @@ export default function FoodList({ foods, onSelect }) {
                             marginBottom: '5px'
                         }}
                     >
-                        {/* <div
-                            className="tab-title tab-selected"
-                        >
-                            {food.name}
-                        </div>
-                        <div
-                            className="tab-content"
-                        > */}
                         <TabCard title={food.name}>
                             Total EAA Level (per 100g): &nbsp;
                             {Object.keys(food).reduce((total, key) => {
@@ -48,7 +40,6 @@ export default function FoodList({ foods, onSelect }) {
                                     }
                             }, 0).toFixed(3)}
                         </TabCard>
-                        {/* </div> */}
                     </div>    
                 )}
             </div>

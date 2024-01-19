@@ -4,6 +4,7 @@ import AminoLevelsViewer from "./AminoLevelsViewer";
 import FoodSearch from "./FoodSearch";
 import { apiCall } from "../utils/http";
 import { useAuth } from "../contexts/UserContext";
+import TabCard from "./TabCard";
 
 const UNITS = [
     { unit: 'g', factor: 1 },
@@ -155,10 +156,7 @@ export default function Creator({ creationId }) {
 
             {foods.map((food, index) => 
                 <>
-                    <div className="tab-title tab-selected">
-                        {food.name}
-                    </div>
-                    <div className="tab-content">
+                    <TabCard title={food.name}>
                         <label htmlFor={`food-${index}-unit-select`}>
                             Unit: 
                         </label>
@@ -203,7 +201,7 @@ export default function Creator({ creationId }) {
                                 unit: foodUnits[index]
                             }))}
                         />
-                    </div>
+                    </TabCard>
                 </>
             )}
 
