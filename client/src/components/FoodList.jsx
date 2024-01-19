@@ -1,3 +1,4 @@
+import FoodListItem from "./FoodListItem";
 import TabCard from "./TabCard";
 
 export default function FoodList({ foods, onSelect }) {
@@ -14,32 +15,15 @@ export default function FoodList({ foods, onSelect }) {
                 {foods.map(food =>
                     <div 
                         key={food._id}
-                        onClick={() => onSelect(food._id)}
                         style={{
                             marginTop: '5px',
                             marginBottom: '5px'
                         }}
                     >
-                        <TabCard title={food.name}>
-                            Total EAA Level (per 100g): &nbsp;
-                            {Object.keys(food).reduce((total, key) => {
-                                if ([
-                                        'histidine',
-                                        'isoleucine',
-                                        'leucine',
-                                        'lysine',
-                                        'methionine',
-                                        'phenylalanine',
-                                        'threonine',
-                                        'tryptophan',
-                                        'valine'
-                                    ].includes(key)) {                                        
-                                        return total + food[key]; 
-                                    } else {
-                                        return total + 0;
-                                    }
-                            }, 0).toFixed(3)}
-                        </TabCard>
+                        <FoodListItem 
+                            food={food} 
+                            onSelect={id => onSelect(id)}
+                        />
                     </div>    
                 )}
             </div>

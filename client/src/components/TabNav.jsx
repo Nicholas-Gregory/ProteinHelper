@@ -1,10 +1,19 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function TabNav({ 
     tabs,
     active,
-    onSelect
+    onSelect,
+    useWidth
 }) {
+    const outerDivRef = useRef(null);
+
+    useEffect(() => {
+        if (useWidth) {
+            useWidth(outerDivRef.current.clientWidth);
+        }
+    }, [outerDivRef]);
+
     function handleClick(e) {
         const name = tabs
         .find(tab => tab.text === e.target.innerText)
@@ -14,7 +23,7 @@ export default function TabNav({
     }
 
     return (
-        <>
+        <div ref={outerDivRef}>
             {tabs.map(tab =>
                 <div
                     key={tab.name}
@@ -28,6 +37,6 @@ export default function TabNav({
                     {tab.text}
                 </div>
             )}
-        </>
+        </div>
     )
 }

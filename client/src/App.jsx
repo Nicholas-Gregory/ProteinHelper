@@ -8,7 +8,7 @@ import Auth from './layouts/Auth';
 import CreateAccount from './pages/CreateAccount';
 import Login from './pages/Login';
 import Creation from './pages/Creation';
-import Creations from './pages/Creations';
+import Creations from './layouts/Creations';
 import Users from './layouts/Users';
 import User from './pages/User';
 import Browse from './pages/Browse';

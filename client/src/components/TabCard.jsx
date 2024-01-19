@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const COLOR = 'darkcyan';
+const COLOR = 'cadetblue';
 
 export default function TabCard({
     title,

@@ -58,6 +58,7 @@
     width: fit-content;
     padding: 5px;
     min-width: 110px;
+    background-color: lightseagreen;
 }
 
 .tab-selected {
