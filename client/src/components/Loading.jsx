@@ -4,7 +4,7 @@ export default function Loading({}) {
     const [dots, setDots] = useState(['.']);
 
     useEffect(() => {
-        const interval = setInterval(() => setDots(prevDots => [...prevDots, '.']), 50);
+        const interval = setInterval(() => setDots(prevDots => [...prevDots, '.']), 70);
 
         return () => clearInterval(interval);
     }, []);

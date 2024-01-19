@@ -1,5 +1,4 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
 import TabNav from "../components/TabNav";
 import { useEffect, useState } from "react";
 
@@ -19,8 +18,6 @@ export default function Creations({}) {
 
     return (
         <>
-            Creations
-
             <br />
             <TabNav
                 tabs={[

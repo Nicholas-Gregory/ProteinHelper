@@ -1,31 +1,17 @@
-import { useEffect, useState } from "react";
 import CreationList from '../components/CreationList'
-import { apiCall } from "../utils/http";
-import { useAuth } from "../contexts/UserContext";
+import useData from "../hooks/useData";
+import Loading from "../components/Loading";
 
 export default function Following({}) {
-    const [feed, setFeed] = useState([]);
-    const [error, setError] = useState(null);
-    const { authorize } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const response = await apiCall('GET', '/creation?following=true&sort=true', null, authorize());
-
-            setError(null);
-
-            if (response.error) {
-                setError(response.type);
-                return;
-            }
-
-            setFeed(response);
-        })();
-    }, []);
+    const { data, error } = useData('GET', '/creation?following=true&sort=true', null);
 
     return (
         <>
-            <CreationList creations={feed} />
+            {data ? (
+                <CreationList creations={data} />
+            ) : (
+                <Loading />
+            )}
 
             {error &&
                 <p>
