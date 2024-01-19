@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
 const { Creation, User } = require('../../../models');
+const { auth } = require('../../../middleware');
 
 router.post('/', async (req, res, next) => {
     const data = req.body;
@@ -20,11 +21,21 @@ router.post('/', async (req, res, next) => {
     }
 }); 
 
-router.get('/', async (req, res, next) => {
+router.get('/', auth, async (req, res, next) => {
     let query;
+    let filter;
+
+    if (req.query.following) {
+        const { following } = await User.findById(req.userId);
+
+        filter = {
+            user: { $in: following }
+        }
+    }
+
     try {
         query = Creation
-        .find()
+        .find(filter)
         .populate('foods')
         .populate('user');
 
