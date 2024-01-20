@@ -12,7 +12,7 @@ export default function useData(method, route, body) {
             const response = await apiCall(method, route, body, authorize());
 
             if (response.error) {
-                setError(response.error);
+                setError(response.type);
             } else {
                 setData(response);
             }

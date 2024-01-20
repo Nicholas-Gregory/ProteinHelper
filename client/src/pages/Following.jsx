@@ -10,7 +10,9 @@ export default function Following({}) {
             {data ? (
                 <CreationList creations={data} />
             ) : (
-                <Loading />
+                <>
+                    {!error && <Loading />}
+                </>
             )}
 
             {error &&

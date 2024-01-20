@@ -22,7 +22,7 @@ export default function Creations({}) {
             <TabNav
                 tabs={[
                     {
-                        name: 'create',
+                        name: 'new',
                         text: 'Create'
                     },
                     {

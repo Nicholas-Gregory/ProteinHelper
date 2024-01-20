@@ -10,7 +10,9 @@ export default function Discover({}) {
             {data ? (
                 <CreationList creations={data} />
             ) : (
-                <Loading />
+                <>
+                    {!error && <Loading />}
+                </>
             )}
 
             {error &&
