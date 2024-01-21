@@ -57,12 +57,16 @@ router.get('/', auth, async (req, res, next) => {
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', auth, async (req, res, next) => {
     const id = req.params.id;
 
     let creation
     try {
         creation = await Creation.findById(id);
+
+        for (let i = 0; i < creation.foods.length; i++) {
+            await creation.populate(`foods.${i}.food`);
+        }
     } catch (error) {
         next(error);
     }

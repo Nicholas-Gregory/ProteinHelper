@@ -16,6 +16,7 @@ import Create from './pages/Create';
 import Social from './layouts/Social';
 import Following from './pages/Following';
 import Discover from './pages/Discover';
+import Creator from './components/Creator';
 
 export default function App({}) {
     return (
@@ -53,7 +54,18 @@ export default function App({}) {
                                 element={<Create />}
                             >
                                 <Route
+                                    index
+                                    element={<Navigate to={'/creations/create/new'} />}
+                                />
+
+                                <Route
                                     path='/creations/create/:creationId'
+                                    element={<Creator />}
+                                />
+
+                                <Route
+                                    path='/creations/create/new'
+                                    element={<Creator />}
                                 />
                             </Route>
 
