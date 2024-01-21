@@ -80,7 +80,12 @@ export default function FoodListItem({
                     {tab === 'levels' &&
                         <>
                             <AminoLevelsViewer
-                                aminos={getAminosArray(food)}
+                                aminos={getAminosArray(food)
+                                .map(amino => ({
+                                    name: amino.name,
+                                    unit,
+                                    amount: convertAmountSameUnit(convertUnitsSameAmount('g', unit, amino.amount), convertUnitsSameAmount('g', unit, 100), amount)
+                                }))}
                             />
                         </>
                     }
@@ -88,7 +93,7 @@ export default function FoodListItem({
 
                 <br />
                 <button
-                    onClick={() => onSelect(food._id)}
+                    onClick={() => onSelect(food._id, unit, amount)}
                 >
                     Use This Food
                 </button>

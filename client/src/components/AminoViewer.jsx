@@ -18,7 +18,7 @@ export default function AminoViewer({
     return (
         <>
             <TabCard title={name}>
-                {amount.toFixed(3)}{unit}&emsp;{getPercentDailyGoal().toFixed(3)}% Daily Goal
+                {amount.toFixed(3)}{unit}&emsp;{getPercentDailyGoal().toFixed(2)}% Daily Goal
             </TabCard>
         </>
     )
