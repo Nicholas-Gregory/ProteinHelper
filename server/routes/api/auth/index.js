@@ -75,7 +75,8 @@ router.get('/authorize', auth, async (req, res, next) => {
             email, 
             _id: id,
             following,
-            goals
+            goals,
+            creations
          } = await User.findById(userId);
 
         res.status(200).json({

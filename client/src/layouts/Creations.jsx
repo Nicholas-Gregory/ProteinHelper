@@ -8,7 +8,6 @@ export default function Creations({}) {
     const location = useLocation();
     const path = location.pathname.split('/');
     const [page, setPage] = useState(path[path.length - 1]);
-    const { user: { creations: userCreations } } = useAuth();
 
     useEffect(() => {
         if (path.length === 3) {
