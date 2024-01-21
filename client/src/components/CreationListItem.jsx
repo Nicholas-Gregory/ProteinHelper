@@ -4,10 +4,12 @@ import TabCard from "./TabCard";
 import { Link } from "react-router-dom";
 import { foodTotal } from "../utils/totals";
 import FoodListItem from "./FoodListItem";
+import { useAuth } from "../contexts/UserContext";
 
 export default function CreationListItem({ creation }) {
     const [tab, setTab] = useState('total');
     const [contentWidth, setContentWidth] = useState(0);
+    const { user: { creations: userCreations } } = useAuth();
 
     function useTabWidth(width) {
         setContentWidth(width);
@@ -21,7 +23,11 @@ export default function CreationListItem({ creation }) {
         <>
             <TabCard 
                 title={creation.name}
-                tabLink={`/creations/${creation._id}`}
+                tabLink={`/creations/${
+                    userCreations ?
+                        userCreations.includes(creation._id) ? 'create' : 'browse'
+                    : 'browse'
+                }/${creation._id}`}
             >
                 <TabNav
                     tabs={[

@@ -40,7 +40,7 @@ export default function App({}) {
                         >                        
                             <Route
                                 index
-                                element={<Navigate to={'/creations/new'} />}
+                                element={<Navigate to={'/creations/create'} />}
                             />
 
                             <Route
@@ -51,12 +51,20 @@ export default function App({}) {
                             <Route
                                 path='/creations/create'
                                 element={<Create />}
-                            />
+                            >
+                                <Route
+                                    path='/creations/create/:creationId'
+                                />
+                            </Route>
 
                             <Route
                                 path='/creations/browse'
                                 element={<Browse />}
-                            />
+                            >
+                                <Route
+                                    path='/creations/browse/:creationId'
+                                />
+                            </Route>
                         </Route>
 
                         <Route

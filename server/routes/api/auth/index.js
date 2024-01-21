@@ -83,7 +83,8 @@ router.get('/authorize', auth, async (req, res, next) => {
             email,
             id,
             following,
-            goals
+            goals,
+            creations
         });
     } catch (error) {
         next(error);

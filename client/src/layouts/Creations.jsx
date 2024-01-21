@@ -11,19 +11,10 @@ export default function Creations({}) {
     const { user: { creations: userCreations } } = useAuth();
 
     useEffect(() => {
-        const creationId = path[path.length - 1];
-
-        switch (creationId) {
-            case 'create':
-            case 'browse':
-                setPage(path[path.length - 1]);
-                break;
-            default:
-                if (userCreations.includes(creationId)) {
-                    setPage('create');
-                } else {
-                    setPage('browse');
-                }
+        if (path.length === 3) {
+            setPage(path[path.length - 1]);
+        } else {
+            setPage(path[path.length - 2]);
         }
     }, [location])
 
