@@ -2,6 +2,7 @@ import { useState } from "react";
 import TabNav from "./TabNav";
 import TabCard from "./TabCard";
 import { Link } from "react-router-dom";
+import { foodTotal } from "../utils/totals";
 
 export default function CreationListItem({ creation }) {
     const [tab, setTab] = useState('total');
@@ -43,7 +44,9 @@ export default function CreationListItem({ creation }) {
                 >
                     {tab === 'total' &&
                         <>
-                            total
+                            {creation.foods.reduce((total, food) =>
+                                total + foodTotal(food.food)
+                            , 0).toFixed(3)}g
                         </>
                     }
 

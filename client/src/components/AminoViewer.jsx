@@ -1,5 +1,5 @@
 import { useAuth } from "../contexts/UserContext";
-import { convert } from '../utils/conversions'
+import { convertUnitsSameAmount } from '../utils/conversions'
 import TabCard from "./TabCard";
 
 export default function AminoViewer({
@@ -12,7 +12,7 @@ export default function AminoViewer({
     function getPercentDailyGoal() {
         const goal = goals[name.toLowerCase()];
 
-        return convert(unit, 'g', amount) / goal * 100;
+        return convertUnitsSameAmount(unit, 'g', amount) / goal * 100;
     }
 
     return (

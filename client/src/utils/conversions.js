@@ -10,7 +10,7 @@ export const ouncesToPounds = amount => amount * 0.0625;
 
 export const poundsToOunces = amount => amount * 16;
 
-export const convert = (from, to, amount) => {
+export const convertUnitsSameAmount = (from, to, amount) => {
     if (from === 'g') {
         if (to === 'oz') {
             return gramsToOunces(amount);
@@ -37,3 +37,5 @@ export const convert = (from, to, amount) => {
         }
     }
 }
+
+export const convertAmountSameUnit = (oldAmount, oldDenominator, newDenominator) => oldAmount * newDenominator / oldDenominator;
