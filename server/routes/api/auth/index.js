@@ -28,7 +28,8 @@ const login = async (username, email, password) => {
             email: user.email,
             id: user._id,
             goals: user.goals,
-            following: user.following
+            following: user.following,
+            creations: user.creations
         }
     };
 }

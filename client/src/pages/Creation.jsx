@@ -1,18 +1,37 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { apiCall } from "../utils/http";
+import useData from "../hooks/useData";
+import TabCard from "../components/TabCard";
+import { useState } from "react";
 import { useAuth } from "../contexts/UserContext";
+import Loading from "../components/Loading";
 
 export default function Creation() {
-    const [creation, setCreation] = useState();
     const { creationId } = useParams();
-    const { user, authorize } = useAuth();
+    const { data: creation, error } = useData('GET', `/creation/${creationId}`, null);
+    const [editing, setEditing] = useState(false);
+    const { user } = useAuth();
 
-    useEffect(() => {
-        (async ()=> {
-            setCreation(await apiCall('GET', `/creation/${creationId}`, null, authorize()));
-        })();
-    }, []);
+    return (
+        <>
+            {creation ? (
+                <TabCard title={creation.name}>
 
-    return <>{creation && <p>{creation.name}</p>}</>
+
+                    {user.id === creation.user && (
+                        <button
+                            onClick={() => setEditing(!editing)}
+                        >
+                            {editing ? (
+                                'Save'   
+                            ) : (
+                                'Edit'
+                            )}
+                        </button>
+                    )}
+                </TabCard>
+            ) : (
+                <Loading />
+            )}
+        </>
+    )
 }

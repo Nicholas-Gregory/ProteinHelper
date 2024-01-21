@@ -49,7 +49,7 @@ export default function App({}) {
                             />
 
                             <Route
-                                path='/creations/new'
+                                path='/creations/create'
                                 element={<Create />}
                             />
 

@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const COLOR = 'cadetblue';
 
 export default function TabCard({
     title,
-    children
+    children,
+    tabLink
 }) {
     const titleRef = useRef(null);
     const [minContentWidth, setMinContentWidth] = useState(0);
@@ -23,7 +25,13 @@ export default function TabCard({
                     borderBottom: `1px solid ${COLOR}`
                 }}
             >
-                {title}
+                {tabLink ? (
+                    <Link to={tabLink}>
+                        {title}
+                    </Link>
+                ) : (
+                    `${title}`
+                )}
             </div>
             <div
                 className="tab-content"

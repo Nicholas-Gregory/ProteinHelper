@@ -19,7 +19,10 @@ export default function CreationListItem({ creation }) {
 
     return (
         <>
-            <TabCard title={creation.name}>
+            <TabCard 
+                title={creation.name}
+                tabLink={`/creations/${creation._id}`}
+            >
                 <TabNav
                     tabs={[
                         {
