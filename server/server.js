@@ -7,8 +7,6 @@ const routes = require('./routes');
 const app = express();
 const db = require('./config/connection.js');
 
-app.disable('etag');
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

@@ -5,6 +5,7 @@ import FoodListItem from "./FoodListItem";
 import { apiCall } from "../utils/http";
 import Loading from "./Loading";
 import { useAuth } from "../contexts/UserContext";
+import TabCard from "./TabCard";
 
 export default function Creator({}) {
     const creation = useOutletContext();
@@ -71,16 +72,20 @@ export default function Creator({}) {
                 </>
             ))}
 
-            {loading && <Loading />}
-
-            {searchResults.map(food => (
-                <FoodListItem
-                    food={food}
-                    select
-                    use
-                    onSelect={handleSearchResultSelect}
-                />
-            ))}
+            {(loading || searchResults.length) > 0 && (
+                <TabCard title={'Search Results'}>
+                    {loading && <Loading />}
+                
+                    {searchResults.map(food => (
+                        <FoodListItem
+                            food={food}
+                            select
+                            use
+                            onSelect={handleSearchResultSelect}
+                        />
+                    ))}
+                </TabCard>
+            )}
         </>
     )
 }
