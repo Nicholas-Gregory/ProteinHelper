@@ -1,7 +1,12 @@
 import FoodListItem from "./FoodListItem";
 import TabCard from "./TabCard";
 
-export default function FoodList({ foods, onSelect }) {
+export default function FoodList({ 
+    foods, 
+    onSelect,
+    use,
+    select 
+}) {
     return (
         <>
             <div
@@ -23,6 +28,8 @@ export default function FoodList({ foods, onSelect }) {
                         <FoodListItem 
                             food={food} 
                             onSelect={id => onSelect(id)}
+                            use={use}
+                            select={select}
                         />
                     </div>    
                 )}

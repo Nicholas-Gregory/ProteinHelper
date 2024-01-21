@@ -3,6 +3,7 @@ import TabNav from "./TabNav";
 import TabCard from "./TabCard";
 import { Link } from "react-router-dom";
 import { foodTotal } from "../utils/totals";
+import FoodListItem from "./FoodListItem";
 
 export default function CreationListItem({ creation }) {
     const [tab, setTab] = useState('total');
@@ -58,7 +59,13 @@ export default function CreationListItem({ creation }) {
 
                     {tab === 'foods' &&
                         <>
-                            foods
+                            {creation.foods.map(food =>
+                                <FoodListItem
+                                    food={food.food}
+                                    defaultAmount={food.amount}
+                                    defaultUnit={food.unit}
+                                />
+                            )}
                         </>
                     }
                 </div>

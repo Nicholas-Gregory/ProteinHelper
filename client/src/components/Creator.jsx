@@ -303,6 +303,8 @@ export default function Creator({ creationId }) {
                 <FoodList
                     foods={foodSearchResults}
                     onSelect={handleResultSelect}
+                    use
+                    select
                 />
             }
 

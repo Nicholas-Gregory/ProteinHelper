@@ -8,12 +8,16 @@ import { convertAmountSameUnit, convertUnitsSameAmount } from "../utils/conversi
 
 export default function FoodListItem({ 
     food,
-    onSelect
+    onSelect,
+    defaultAmount,
+    defaultUnit,
+    use,
+    select
 }) {
     const [tab, setTab] = useState('total');
     const [contentWidth, setContentWidth] = useState(0);
-    const [amount, setAmount] = useState(100);
-    const [unit, setUnit] = useState('g');
+    const [amount, setAmount] = useState(defaultAmount || 100);
+    const [unit, setUnit] = useState(defaultUnit || 'g');
     const { user: { goals } } = useAuth();
 
     function handleTabSelect(name) {
@@ -38,10 +42,12 @@ export default function FoodListItem({
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         step={.01}
+                        disabled={!select}
                     />
                     <select
                         value={unit}
                         onChange={(e) => setUnit(e.target.value)}
+                        disabled={!select}
                     >
                         <option value="g">g</option>
                         <option value='oz'>oz</option>
@@ -92,11 +98,13 @@ export default function FoodListItem({
                 </div>
 
                 <br />
-                <button
-                    onClick={() => onSelect(food._id, unit, amount)}
-                >
-                    Use This Food
-                </button>
+                {use &&
+                    <button
+                        onClick={() => onSelect(food._id, unit, amount)}
+                    >
+                        Use This Food
+                    </button>
+                }
             </TabCard>
         </>
     )
