@@ -12,7 +12,8 @@ export default function FoodListItem({
     defaultAmount,
     defaultUnit,
     use,
-    select
+    select,
+    children
 }) {
     const [tab, setTab] = useState('total');
     const [contentWidth, setContentWidth] = useState(0);
@@ -105,6 +106,8 @@ export default function FoodListItem({
                         Use This Food
                     </button>
                 }
+
+                {children}
             </TabCard>
         </>
     )

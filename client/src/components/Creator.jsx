@@ -54,6 +54,10 @@ export default function Creator({}) {
         }]);
     }
 
+    function handleRemoveClick(foodId) {
+        setFoods(foods.filter(food => food._id !== foodId));
+    }
+
     return (
         <>
             <FoodSearch
@@ -61,16 +65,22 @@ export default function Creator({}) {
                 onAdvancedSearch={handleAdvancedSearch}
             />
 
-            {foods.map(food => (
-                <>
-                    <FoodListItem
-                        food={food.food}
-                        defaultAmount={food.amount}
-                        defaultUnit={food.unit}
-                        select
-                    />
-                </>
-            ))}
+            {foods.length > 0 && (
+                <TabCard title={'Foods'}>
+                    {foods.map(food => (
+                        <>
+                            <FoodListItem
+                                food={food.food}
+                                defaultAmount={food.amount}
+                                defaultUnit={food.unit}
+                                select
+                            >
+                                <button onClick={() => handleRemoveClick(food._id)}>Remove</button>
+                            </FoodListItem>
+                        </>
+                    ))}
+                </TabCard>
+            )}
 
             {(loading || searchResults.length) > 0 && (
                 <TabCard title={'Search Results'}>
