@@ -10,7 +10,7 @@ export function useAuth() {
 }
 
 export default function UserProvider({ children }) {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({});
 
     useEffect(() => {
         const token = authorize();

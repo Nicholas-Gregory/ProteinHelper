@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { Creation, User } = require('../../../models');
 const { auth } = require('../../../middleware');
 
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
     const data = req.body;
 
     try {
