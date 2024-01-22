@@ -10,7 +10,7 @@ import AminoLevelsViewer from "./AminoLevelsViewer";
 import { convertUnitsSameAmount, convertAmountSameUnit } from "../utils/conversions";
 import { AMINO_NAMES } from "../utils/totals";
 
-export default function Creator({}) {
+export default function Creator({ }) {
     const creation = useOutletContext();
     const { authorize, user: { id: userId } } = useAuth();
     const [foods, setFoods] = useState([]);
@@ -96,7 +96,16 @@ export default function Creator({}) {
         }
 
         if (creation) {
-            // PUT
+            const response = await apiCall('PUT', `/creation/${creation._id}`, data, authorize());
+
+            setMessage(null);
+
+            if (response.error) {
+                setMessage(response.type);
+                return;
+            }
+
+            setMessage('Save Successful!');
         } else {
             const response = await apiCall('POST', '/creation', data, authorize());
 
@@ -109,6 +118,11 @@ export default function Creator({}) {
 
             setMessage(response.message);
         }
+    }
+
+    function handleSearchResultsCancelClick() {
+        setLoading(false);
+        setSearchResults([]);
     }
 
     return (
@@ -151,8 +165,12 @@ export default function Creator({}) {
                 </>
             )}
 
-            {(loading || searchResults.length) > 0 && (
+            {(loading || searchResults.length > 0) && (
                 <TabCard title={'Search Results'}>
+                    <button onClick={handleSearchResultsCancelClick}>
+                        Cancel
+                    </button>
+
                     {loading && <Loading />}
                 
                     {searchResults.map(food => (
