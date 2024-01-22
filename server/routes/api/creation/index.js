@@ -1,9 +1,11 @@
 const router = require('express').Router();
+const { Types: { ObjectId } } = require('mongoose');
 
 const { Creation, User } = require('../../../models');
+const { ResourceNotFoundError, AuthenticationError } = require('../../../errors');
 const { auth } = require('../../../middleware');
 
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
     const data = req.body;
 
     try {
@@ -20,6 +22,33 @@ router.post('/', async (req, res, next) => {
         next(error);
     }
 }); 
+
+router.put('/:creationId', auth, async (req, res, next) => {
+    const data = req.body;
+    const creationId = req.params.creationId;
+
+    try {
+        const creation = await Creation.findById(creationId);
+
+        if (!creation) {
+            throw new ResourceNotFoundError(`No Creation with id ${creationId} exists.`);
+        }
+
+        console.log(new ObjectId(req.userId).equals(creation.user));
+
+        if (!new ObjectId(req.userId).equals(creation.user)) {
+            throw new AuthenticationError('Must be logged in as owner of Creation to edit it.');
+        }
+
+        Object.assign(creation, data);
+
+        await creation.save();
+
+        return res.status(200).json(creation);
+    } catch (error) {
+        next(error);
+    }
+});
 
 router.get('/', auth, async (req, res, next) => {
     let query;
@@ -57,12 +86,16 @@ router.get('/', auth, async (req, res, next) => {
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', auth, async (req, res, next) => {
     const id = req.params.id;
 
     let creation
     try {
         creation = await Creation.findById(id);
+
+        for (let i = 0; i < creation.foods.length; i++) {
+            await creation.populate(`foods.${i}.food`);
+        }
     } catch (error) {
         next(error);
     }

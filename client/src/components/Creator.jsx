@@ -1,326 +1,223 @@
-import { useEffect, useState } from "react"
-import FoodList from "./FoodList";
-import AminoLevelsViewer from "./AminoLevelsViewer";
+import { useOutletContext } from "react-router-dom"
 import FoodSearch from "./FoodSearch";
+import { Fragment, useEffect, useState } from "react";
+import FoodListItem from "./FoodListItem";
 import { apiCall } from "../utils/http";
+import Loading from "./Loading";
 import { useAuth } from "../contexts/UserContext";
 import TabCard from "./TabCard";
+import AminoLevelsViewer from "./AminoLevelsViewer";
+import { convertUnitsSameAmount, convertAmountSameUnit } from "../utils/conversions";
+import { AMINO_NAMES } from "../utils/totals";
 
-const UNITS = [
-    { unit: 'g', factor: 1 },
-    { unit: 'oz', factor: 0.035274 },
-    { unit: 'lb', factor: 0.00220462 }
-]
-
-export default function Creator({ creationId }) {
-    const [nameInput, setNameInput] = useState([]);
+export default function Creator({ }) {
+    const creation = useOutletContext();
+    const { authorize, user: { id: userId } } = useAuth();
     const [foods, setFoods] = useState([]);
-    const [foodUnits, setFoodUnits] = useState([]);
-    const [foodAmounts, setFoodAmounts] = useState([]);
-    const [foodSearchResults, setFoodSearchResults] = useState([]);
-    const [totalsUnit, setTotalsUnit] = useState('g');
+    const [searchResults, setSearchResults] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
-    const { authorize, user } = useAuth();
+    const [totalsUnit, setTotalsUnit] = useState('g');
+    const [nameInput, setNameInput] = useState('');
 
     useEffect(() => {
-        (async () => {
-            if (creationId) {
-                const response = await apiCall('GET', '/creation', null, authorize());
+        if (creation) {
+            setFoods(creation.foods);
+            setNameInput(creation.name);
+        } else {
+            setFoods([]);
+            setNameInput('');
+        }
+    }, [creation])
 
-                if (response.error) {
-                    const type = response.type;
+    function handleNamedSearch(term) {
+        setLoading(true);
 
-                    if (type === 'TokenExpiredError') {
-                        setMessage('Your session has expired.');
-                        return;
-                    } else if (type === 'JsonWebTokenError') {
-                        setMessage('You must be logged in to do this.');
-                        return;
-                    }
+        apiCall('GET', `/food/search/named?term=${term}`, null, authorize())
+        .then(response => {
+            setLoading(false);
+            setMessage(null);
 
-                    setMessage('An error occurred.');
-                    return;
-                }
-
-                setNameInput(response.name);
-                setFoods(response.foods);
-                
-                for (let food in response.foods) {
-                    setFoodUnits([...foodUnits, food.unit]);
-                    setFoodAmounts([...foodAmounts, food.amount]);
-                }
-            }
-        })();
-    }, [creationId])
-
-    function getAmountNumber(per100g, amount, unit) {
-        return amount / 100 * per100g * UNITS
-        .find(unitObject => unitObject.unit === unit)
-        .factor;
-    }
-
-    async function handleNamedSearch(term) {
-        const response = await apiCall('GET', `/food/search/named?term=${term}`, null, authorize());
-
-        setMessage(null);
-
-        if (response.error) {
-            if (response.type === 'JsonWebTokenError') {
-                setMessage('You must be logged in to view this resource.');
-            } else if (response.type === 'TokenExpiredError') {
-                setMessage('Your session has expired.')
-            } else {
-                setMessage('There was an error processing your response');
+            if (response.error) {                
+                setMessage(response.type);
+                return;
             }
 
-            return;
-        }
-
-        setFoodSearchResults(response);
+            setSearchResults(response);
+        })
+        
     }
 
-    async function handleAdvancedSearch(options, name) {
-        const response = await apiCall('POST', `/food/search/advanced${name ? `?name=${name}` : ''}`, options, authorize());
-
-        setMessage(null);
-
-        if (response.error) {
-            setMessage('There was an error processing your request.');
-        }
-
-        setFoodSearchResults(response);
+    function handleAdvancedSearch(options, name) {
+        
     }
 
-    function handleResultSelect(id) {
-        setFoods([...foods, foodSearchResults.find(food => food._id === id)]);
-        setFoodUnits([...foodUnits, 'g'])
-        setFoodAmounts([...foodAmounts, 100]);
+    function handleSearchResultSelect(foodId, unit, amount) {
+        setSearchResults([]);
 
-        setFoodSearchResults([]);
+        setFoods([...foods, {
+            unit,
+            amount,
+            food: searchResults.find(food => food._id === foodId)
+        }]);
     }
 
-    async function handleSaveButtonClick() {
-        if (nameInput === '') {
-            setMessage('Creations require a name');
+    function handleRemoveClick(foodId) {
+        setFoods(foods.filter((food, index) => index !== foodId));
+    }
 
-            return;
-        }
+    function handleChangeFoodAmount(id, value) {
+        setFoods(foods.map((food, index) => index === id ? { 
+            ...food,
+            amount: value
+         } : food));
+    }
 
-        const foodData = foods.map((food, index) => ({
-            food: food._id,
-            unit: foodUnits[index],
-            amount: foodAmounts[index]
-        }));
+    function handleChangeFoodUnit(id, value) {
+        setFoods(foods.map((food, index) => index === id ? {
+            ...food,
+            unit: value
+        } : food));
+    }
 
-        const creationData = {
+    async function handleSaveClick() {
+        const data = {
+            user: userId,
             name: nameInput,
-            user: user.id,
-            foods: foodData
+            foods: []
+        };
+
+        for (let food of foods) {
+            data.foods.push({
+                food: food.food._id,
+                unit: food.unit,
+                amount: food.amount
+            });
         }
 
-        const response = await apiCall('POST', '/creation', creationData, authorize());
-        //creationId && separate call for PUT /creation/:id
-        if (response.error) {
-            setMessage('There was an error processing your request.')
+        if (creation) {
+            const response = await apiCall('PUT', `/creation/${creation._id}`, data, authorize());
 
-            return;
+            setMessage(null);
+
+            if (response.error) {
+                setMessage(response.type);
+                return;
+            }
+
+            setMessage('Save Successful!');
+        } else {
+            const response = await apiCall('POST', '/creation', data, authorize());
+
+            setMessage(null);
+
+            if (response.error) {
+                setMessage(response.type);
+                return;
+            }
+
+            setMessage(response.message);
         }
+    }
 
-        setMessage(response.message);
+    function handleSearchResultsCancelClick() {
+        setLoading(false);
+        setSearchResults([]);
     }
 
     return (
         <>
-            {foods.length > 0 &&
-                <>
-                    <br />
-                    <label htmlFor="name-input">
-                        Creation Name:
-                    </label>
-                    &nbsp;
-                    <input
-                        id="name-input"
-                        type="text"
-                        value={nameInput}
-                        onChange={e => setNameInput(e.target.value)}
-                    />
-                </>
-            }
-
-            <br />
             <FoodSearch
-                placeholderText={'Search Foods'}
                 onNamedSearch={handleNamedSearch}
                 onAdvancedSearch={handleAdvancedSearch}
             />
 
-            {foods.map((food, index) => 
+            {foods.length > 0 && (
                 <>
-                    <TabCard title={food.name}>
-                        <label htmlFor={`food-${index}-unit-select`}>
-                            Unit: 
-                        </label>
-                        &nbsp;
-                        <select
-                            id={`food-${index}-unit-select`}
-                            value={foodUnits[index]}
-                            onChange={e => setFoodUnits(foodUnits.map((u, i) => i === index ? e.target.value : u))}
-                        >
-                            {UNITS.map(unitObject =>
-                                <option value={unitObject.unit}>{unitObject.unit}</option>    
-                            )}
-                        </select>
-                        <br />
-                        <label htmlFor={`food-${index}-amount-input`}>
-                            Amount:
-                        </label>
-                        &nbsp;
-                        <input
-                            id={`food-${index}-amount-input`}
-                            type="number"
-                            step={0.01}
-                            value={foodAmounts[index]}
-                            onChange={e => setFoodAmounts(foodAmounts.map((u, i) => i === index ? e.target.value : u))}
-                        />
-                        <AminoLevelsViewer 
-                            aminos={Object.keys(food)
-                            .filter(key => [
-                                'histidine',
-                                'isoleucine',
-                                'leucine',
-                                'lysine',
-                                'methionine',
-                                'phenylalanine',
-                                'threonine',
-                                'tryptophan',
-                                'valine'
-                            ].includes(key))
-                            .map(key => ({
-                                name: `${key.substring(0, 1).toUpperCase()}${key.substring(1)}`,
-                                amount: getAmountNumber(food[key], foodAmounts[index], foodUnits[index]),
-                                unit: foodUnits[index]
-                            }))}
-                        />
+                    <input
+                        placeholder="Creation Name"
+                        type="text"
+                        value={nameInput}
+                        onChange={e => setNameInput(e.target.value)}
+                    />
+                    <button
+                        onClick={handleSaveClick}
+                    >
+                        Save
+                    </button>
+                    <TabCard title={'Foods'}>
+                        {foods.map((food, index) => (
+                            <Fragment key={index}>
+                                <FoodListItem
+                                    food={food.food}
+                                    id={index}
+                                    defaultAmount={food.amount}
+                                    defaultUnit={food.unit}
+                                    onChangeAmount={handleChangeFoodAmount}
+                                    onChangeUnit={handleChangeFoodUnit}
+                                    select
+                                >
+                                    <button onClick={() => handleRemoveClick(index)}>Remove</button>
+                                </FoodListItem>
+                            </Fragment>
+                        ))}
                     </TabCard>
                 </>
             )}
 
-            {foods.length > 1 &&
-                <>
-                    <div 
-                        className="tab-title tab-selected"
-                        style={{ marginTop: '5px' }}    
-                    >
-                        Totals:
-                    </div>
-                    <div className="tab-content">
-                        <label htmlFor="totals-unit">
-                            Unit:
-                        </label>
-                        &nbsp;
-                        <select
-                            id="totals-unit"
-                            value={totalsUnit}
-                            onChange={e => setTotalsUnit(e.target.value)}
-                        >
-                            <option value='g'>g</option>
-                            <option value='oz'>oz</option>
-                            <option value='lb'>lb</option>
-                        </select>
-                        <AminoLevelsViewer
-                            aminos={foods.reduce((totals, food, index) => {
-                                if (foodUnits[index] === 'g') {
-                                    if (totalsUnit === 'g') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g')
-                                        }));
-                                    } else if (totalsUnit === 'oz') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g') * UNITS.find(u => u.unit === 'oz').factor)
-                                        }))
-                                    } else if (totalsUnit === 'lb') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'g') * UNITS.find(u => u.unit === 'lb').factor)
-                                        }));
-                                    }
-                                } else if (foodUnits[index] === 'oz') {
-                                    if (totalsUnit === 'oz') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz')
-                                        }))
-                                    } else if (totalsUnit === 'g') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz') * 28.3495)
-                                        }))
-                                    } else if (totalsUnit === 'lb') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'oz') * 0.0625)
-                                        }));
-                                    }
-                                } else if (foodUnits[index] === 'lb') {
-                                    if (totalsUnit === 'lb') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb')
-                                        }))
-                                    } else if (totalsUnit === 'g') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb') / UNITS.find(u => u.unit === 'lb').factor)
-                                        }))
-                                    } else if (totalsUnit === 'oz') {
-                                        return totals.map(total => ({
-                                            name: total.name,
-                                            amount: total.amount + (getAmountNumber(food[total.name.toLowerCase()], foodAmounts[index], 'lb') * 16)
-                                        }))
-                                    }
-                                }
-                            }, [
-                                { name: 'Histidine', amount: 0 },
-                                { name: 'Isoleucine', amount: 0 },
-                                { name: 'Leucine', amount: 0 },
-                                { name: 'Lysine', amount: 0 },
-                                { name: 'Methionine', amount: 0 },
-                                { name: 'Phenylalanine', amount: 0 },
-                                { name: 'Threonine', amount: 0 },
-                                { name: 'Tryptophan', amount: 0 },
-                                { name: 'Valine', amount: 0 }
-                            ])}
-                            frozen={true}
+            {(loading || searchResults.length > 0) && (
+                <TabCard title={'Search Results'}>
+                    <button onClick={handleSearchResultsCancelClick}>
+                        Cancel
+                    </button>
+
+                    {loading && <Loading />}
+                
+                    {searchResults.map(food => (
+                        <FoodListItem
+                            food={food}
+                            select
+                            use
+                            onSelect={handleSearchResultSelect}
                         />
-                    </div>
-                </>
-            }
+                    ))}
+                </TabCard>
+            )}
 
-            <br />
-            {foodSearchResults.length > 0 &&
-                <FoodList
-                    foods={foodSearchResults}
-                    onSelect={handleResultSelect}
-                    use
-                    select
-                />
-            }
+            {foods.length > 0 && (
+                <TabCard title={'Totals'}>
+                    Unit: &nbsp;
+                    <select
+                        value={totalsUnit}
+                        onChange={e => setTotalsUnit(e.target.value)}
+                    >
+                        <option value={'g'}>g</option>
+                        <option value={'oz'}>oz</option>
+                        <option value='lb'>lb</option>
+                    </select>
+                    <AminoLevelsViewer
+                        aminos={foods.reduce((aminos, food) => (
+                            aminos.map(amino => ({
+                                name: amino.name,
+                                unit: totalsUnit,
+                                amount: amino.amount + convertUnitsSameAmount('g', totalsUnit, convertAmountSameUnit(food.food[amino.name.toLowerCase()], 100, convertUnitsSameAmount(food.unit, 'g', food.amount)))
+                            }))
+                        ), AMINO_NAMES.map(name => (
+                            {
+                                name: `${name.substring(0, 1).toUpperCase()}${name.substring(1)}`,
+                                unit: totalsUnit,
+                                amount: 0
+                            }
+                        )))}
+                    />
+                </TabCard>
+            )}
 
-            {foods.length > 0 &&
-                <button
-                    onClick={handleSaveButtonClick}
-                >
-                    Save
-                </button>
-            }
-
-            {message &&
+            {message && (
                 <p>
                     {message}
                 </p>
-            }
+            )}
         </>
     )
 }

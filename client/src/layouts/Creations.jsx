@@ -1,6 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import TabNav from "../components/TabNav";
 import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/UserContext";
 
 export default function Creations({}) {
     const navigate = useNavigate();
@@ -9,7 +10,11 @@ export default function Creations({}) {
     const [page, setPage] = useState(path[path.length - 1]);
 
     useEffect(() => {
-        setPage(path[path.length - 1]);
+        if (path.length === 3) {
+            setPage(path[path.length - 1]);
+        } else {
+            setPage(path[path.length - 2]);
+        }
     }, [location])
 
     function handleSelect(name) {
@@ -22,7 +27,7 @@ export default function Creations({}) {
             <TabNav
                 tabs={[
                     {
-                        name: 'new',
+                        name: 'create',
                         text: 'Create'
                     },
                     {
