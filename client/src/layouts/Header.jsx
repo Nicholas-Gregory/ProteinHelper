@@ -12,7 +12,7 @@ export default function Header({}) {
 
     useEffect(() => {
         if (path[1] === 'users') {
-            if (user && path[2] === user.id) {
+            if (user.id && path[2] === user.id) {
                 setPage('profile');
                 return;
             }
@@ -46,7 +46,7 @@ export default function Header({}) {
                         name: 'social',
                         text: 'Social'
                     },
-                    user ? {
+                    user.id ? {
                         name: 'profile',
                         text: 'My Account'
                     } : {

@@ -32,7 +32,7 @@ export default function UserProvider({ children }) {
             const { key } = e;
 
             if (key === null) {
-                setUser(null);
+                setUser({});
             }
         }
         window.addEventListener('storage', listener);
@@ -55,7 +55,7 @@ export default function UserProvider({ children }) {
     }
 
     function logout() {
-        setUser(null);
+        setUser({});
 
         localStorage.removeItem(LOCAL_STORAGE_KEY);
     }

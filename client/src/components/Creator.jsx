@@ -20,6 +20,10 @@ export default function Creator({ }) {
     const [totalsUnit, setTotalsUnit] = useState('g');
     const [nameInput, setNameInput] = useState('');
 
+    // if (user) {
+    //     const userId = user.id;
+    // }
+
     useEffect(() => {
         if (creation) {
             setFoods(creation.foods);

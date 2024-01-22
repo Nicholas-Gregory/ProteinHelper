@@ -15,7 +15,7 @@ export default function Auth({}) {
     }, [location]);
 
     useEffect(() => {
-        if (user) navigate(`/users/${user.id}`);
+        if (user.id) navigate(`/users/${user.id}`);
     }, [user]);
 
     function handleSelect(name) {
