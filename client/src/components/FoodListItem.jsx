@@ -8,9 +8,12 @@ import { convertAmountSameUnit, convertUnitsSameAmount } from "../utils/conversi
 
 export default function FoodListItem({ 
     food,
+    id,
     onSelect,
     defaultAmount,
     defaultUnit,
+    onChangeAmount,
+    onChangeUnit,
     use,
     select,
     children
@@ -33,6 +36,22 @@ export default function FoodListItem({
         return convertAmountSameUnit(convertUnitsSameAmount('g', unit, foodTotal(food)), convertUnitsSameAmount('g', unit, 100), amount)
     }
 
+    function handleAmountChange(e) {
+        const value = e.target.value;
+
+        setAmount(value);
+
+        onChangeAmount && onChangeAmount(id, value);
+    }
+
+    function handleUnitChange(e) {
+        const value = e.target.value;
+
+        setUnit(value);
+
+        onChangeUnit && onChangeUnit(id, value);
+    }
+
     return (
         <>
             <TabCard title={food.name}>
@@ -41,13 +60,13 @@ export default function FoodListItem({
                     <input
                         type="number"
                         value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={handleAmountChange}
                         step={.01}
                         disabled={!select}
                     />
                     <select
                         value={unit}
-                        onChange={(e) => setUnit(e.target.value)}
+                        onChange={handleUnitChange}
                         disabled={!select}
                     >
                         <option value="g">g</option>

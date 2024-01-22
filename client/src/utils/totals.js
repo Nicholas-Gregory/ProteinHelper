@@ -1,4 +1,4 @@
-const NAMES = [
+export const AMINO_NAMES = [
     'histidine',
     'isoleucine',
     'leucine',
@@ -11,7 +11,7 @@ const NAMES = [
 ];
 
 export const foodTotal = food => Object.keys(food).reduce((total, key) => {
-    if (NAMES.includes(key)) {                                        
+    if (AMINO_NAMES.includes(key)) {                                        
             return total + food[key]; 
         } else {
             return total + 0;
@@ -19,7 +19,7 @@ export const foodTotal = food => Object.keys(food).reduce((total, key) => {
 }, 0)
 
 export const getAminosArray = food => Object.keys(food).reduce((array, key) => {
-    if (NAMES.includes(key)) {
+    if (AMINO_NAMES.includes(key)) {
         return [...array, {
             name: `${key.substring(0, 1).toUpperCase()}${key.substring(1)}`,
             unit: 'g',
