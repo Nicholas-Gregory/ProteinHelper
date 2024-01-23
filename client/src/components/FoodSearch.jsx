@@ -5,7 +5,8 @@ import KeywordSearch from "./KeywordSearch";
 
 export default function FoodSearch({
     onKeywordsChange,
-    onAdvancedSearch
+    onAdvancedSearch,
+    onModeChange
 }) {
     const [searchMode, setSearchMode] = useState('named');
     const [advancedSearchNameInput, setAdvancedSearchNameInput] = useState('');
@@ -33,6 +34,8 @@ export default function FoodSearch({
 
     function handleSearchModeSelect(name) {
         setSearchMode(name);
+
+        onModeChange && onModeChange(name);
     }
 
     return (

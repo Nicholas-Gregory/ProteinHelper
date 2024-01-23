@@ -2,7 +2,6 @@ const router = require('express').Router();
 
 const { auth } = require('../../../middleware');
 const { Food } = require('../../../models');
-const { ResourceNotFoundError } = require('../../../errors');
 
 router.get('/named', auth, async (req, res, next) => {
     const terms = req.query.terms

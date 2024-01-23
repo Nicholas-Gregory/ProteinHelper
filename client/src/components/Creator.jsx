@@ -54,7 +54,20 @@ export default function Creator({ }) {
     }
 
     function handleAdvancedSearch(options, name) {
-        
+        setLoading(true);
+
+        apiCall('POST', `/food/search/advanced${name ? `?name=${name}` : ''}`, options, authorize())
+        .then(response => {
+            setLoading(false);
+            setMessage(null);
+
+            if (response.error) {
+                setMessage(response.type);
+                return;
+            }
+
+            setSearchResults(response);
+        })
     }
 
     function handleSearchResultSelect(foodId, unit, amount) {

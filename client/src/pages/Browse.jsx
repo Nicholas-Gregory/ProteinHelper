@@ -1,17 +1,17 @@
 import { useState } from "react";
 import TabCard from "../components/TabCard";
-import KeywordSearch from "../components/KeywordSearch";
 import { apiCall } from '../utils/http';
 import Loading from '../components/Loading';
 import CreationListItem from '../components/CreationListItem'
 import { useAuth } from "../contexts/UserContext";
+import KeywordSearch from "../components/KeywordSearch";
 
 export default function Browse({}) {
     const [searchResults, setSearchResults] = useState([]);
     const [nameCheckbox, setNameCheckbox] = useState(true);
     const [foodCheckbox, setFoodCheckbox] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null);    
     const { authorize } = useAuth();
 
     function handleKeywordsChange(terms) {
@@ -22,8 +22,6 @@ export default function Browse({}) {
         }
 
         setLoading(true);
-
-        console.log(terms)
 
         apiCall('GET', `/creation/search/keyword?name=${nameCheckbox}&food=${foodCheckbox}&keywords=${terms.join()}`, null, authorize())
         .then(response => {
@@ -37,7 +35,7 @@ export default function Browse({}) {
 
             setSearchResults(response);
             setLoading(false);
-        })
+        });
     }
 
     return (
@@ -64,8 +62,9 @@ export default function Browse({}) {
                     Search by Food Name
                 </label>
             </div>
+            
             <KeywordSearch
-                placeholderText={'Search Creations'}
+                placeholderText={'Search Creations by Name'}
                 onKeywordsChange={handleKeywordsChange}
             />
 
