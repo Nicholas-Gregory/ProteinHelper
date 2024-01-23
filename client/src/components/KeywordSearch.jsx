@@ -25,6 +25,10 @@ export default function KeywordSearch({
 
     return (
         <>
+            <SearchBar 
+                placeholderText={placeholderText} 
+                onSearch={handleSearchInput}
+            />
             <div
                 style={{
                     display: 'flex',
@@ -56,10 +60,6 @@ export default function KeywordSearch({
                     </div>
                 ))}
             </div>
-            <SearchBar 
-                placeholderText={placeholderText} 
-                onSearch={handleSearchInput}
-            />
         </>
     )
 }

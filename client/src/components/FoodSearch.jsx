@@ -1,9 +1,10 @@
 import { Fragment, useState } from "react";
 import SearchBar from "./SearchBar";
 import TabNav from "./TabNav";
+import KeywordSearch from "./KeywordSearch";
 
 export default function FoodSearch({
-    onNamedSearch,
+    onKeywordsChange,
     onAdvancedSearch
 }) {
     const [searchMode, setSearchMode] = useState('named');
@@ -20,8 +21,8 @@ export default function FoodSearch({
         valine: { modifier: 'n', value: 0 },
     })
 
-    function handleNamedSearch(term) {
-        onNamedSearch(term);
+    function handleKeywordsChange(term) {
+        onKeywordsChange(term);
     }
 
     function handleAdvancedSearchSubmit(e) {
@@ -53,9 +54,9 @@ export default function FoodSearch({
             
             <div className="tab-content">
                 {searchMode === 'named' &&
-                    <SearchBar
+                    <KeywordSearch
                         placeholderText={'Search Foods by Name'}
-                        onSearch={handleNamedSearch}
+                        onKeywordsChange={handleKeywordsChange}
                     />
                 }
                 {searchMode === 'advanced' &&

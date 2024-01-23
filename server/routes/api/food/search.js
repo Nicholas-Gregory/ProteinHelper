@@ -5,11 +5,13 @@ const { Food } = require('../../../models');
 const { ResourceNotFoundError } = require('../../../errors');
 
 router.get('/named', auth, async (req, res, next) => {
-    const term = req.query.term;
+    const terms = req.query.terms
+    .split(',')
+    .map(keyword => ({ name: RegExp(keyword, 'i')}));
 
     let result;
     try {
-        result = await Food.find({ name: RegExp(`${term}`, 'i') });
+        result = await Food.find({ $or: terms });
     } catch (error) {
         next(error);
     }

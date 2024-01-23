@@ -30,10 +30,15 @@ export default function Creator({ }) {
         }
     }, [creation])
 
-    function handleNamedSearch(term) {
+    function handleKeywordsChange(terms) {
+        if (terms.length === 0) {
+            setLoading(false);
+            setSearchResults([]);
+            return;
+        }
         setLoading(true);
 
-        apiCall('GET', `/food/search/named?term=${term}`, null, authorize())
+        apiCall('GET', `/food/search/named?terms=${terms.join()}`, null, authorize())
         .then(response => {
             setLoading(false);
             setMessage(null);
@@ -128,7 +133,7 @@ export default function Creator({ }) {
     return (
         <>
             <FoodSearch
-                onNamedSearch={handleNamedSearch}
+                onKeywordsChange={handleKeywordsChange}
                 onAdvancedSearch={handleAdvancedSearch}
             />
 
