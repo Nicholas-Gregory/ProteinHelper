@@ -8,6 +8,8 @@ import { useAuth } from "../contexts/UserContext";
 
 export default function Browse({}) {
     const [searchResults, setSearchResults] = useState([]);
+    const [nameCheckbox, setNameCheckbox] = useState(true);
+    const [foodCheckbox, setFoodCheckbox] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { authorize } = useAuth();
@@ -23,7 +25,7 @@ export default function Browse({}) {
 
         console.log(terms)
 
-        apiCall('GET', `/creation/search/keyword?keywords=${terms.join()}`, null, authorize())
+        apiCall('GET', `/creation/search/keyword?name=${nameCheckbox}&food=${foodCheckbox}&keywords=${terms.join()}`, null, authorize())
         .then(response => {
             setError(null);
 
@@ -40,8 +42,30 @@ export default function Browse({}) {
 
     return (
         <>
+            <div>
+                <input
+                    id="name-checkbox"
+                    type="checkbox"
+                    checked={nameCheckbox}
+                    onChange={e => setNameCheckbox(e.target.checked)}
+                />
+                <label htmlFor="name-checkbox">
+                    Search by Creation Name
+                </label>
+            </div>
+            <div>
+                <input
+                    id="food-checkbox"
+                    type="checkbox"
+                    checked={foodCheckbox}
+                    onChange={e => setFoodCheckbox(e.target.checked)}
+                />
+                <label htmlFor="food-checkbox">
+                    Search by Food Name
+                </label>
+            </div>
             <KeywordSearch
-                placeholderText={'Search Creations by Name or Food'}
+                placeholderText={'Search Creations'}
                 onKeywordsChange={handleKeywordsChange}
             />
 
