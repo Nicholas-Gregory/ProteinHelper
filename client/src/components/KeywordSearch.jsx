@@ -7,16 +7,20 @@ export default function KeywordSearch({
 }) {
     const [terms, setTerms] = useState([]);
 
-    function handleSearchInput(term) {
-        setTerms([...terms, term]);
+    function handleSearchInput(input) {
+        const newTerms = [...terms, ...input.split(' ')];
 
-        onKeywordsChange(terms);
+        setTerms(newTerms);
+
+        onKeywordsChange(newTerms);
     }
 
     function handleRemoveTermClick(removedIndex) {
-        setTerms(terms.filter((term, index) => index !== removedIndex));
+        const newTerms = terms.filter((term, index) => index !== removedIndex);
 
-        onKeywordsChange(terms);
+        setTerms(newTerms);
+
+        onKeywordsChange(newTerms);
     }
 
     return (
