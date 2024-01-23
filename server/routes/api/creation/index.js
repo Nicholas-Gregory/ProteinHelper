@@ -103,4 +103,6 @@ router.get('/:id', auth, async (req, res, next) => {
     res.status(200).json(creation);
 });
 
+router.use('/search', require('./search.js'));
+
 module.exports = router;
