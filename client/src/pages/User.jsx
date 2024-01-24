@@ -14,7 +14,7 @@ export default function User({}) {
     const { userId } = useParams();
     const [user, setUser] = useState({});
     const [editing, setEditing] = useState(false);
-    const [editBioInput, setEditBioInput] = useState('');
+    const [bio, setBio] = useState('');
     const [page, setPage] = useState('profile');
     const [error, setError] = useState(null);
     const [followed, setFollowed] = useState(null);
@@ -40,8 +40,8 @@ export default function User({}) {
             }
 
             setUser(response);
-            setEditBioInput(response.bio);
-            setFollowed(loggedInUser.following.includes(userId));
+            setBio(response.bio);
+            setFollowed(loggedInUser.following?.includes(userId));
         })();
     }, [userId, loggedInUser]);
 
@@ -54,7 +54,7 @@ export default function User({}) {
     }
 
     function checkUser() {
-        return loggedInUser && loggedInUser.id === userId;
+        return loggedInUser.id && loggedInUser.id === userId;
     }
 
     async function handleFollowButtonClick() {
@@ -76,6 +76,23 @@ export default function User({}) {
         setFollowed(true);
     }
 
+    async function handleEditOrSaveButtonClick() {
+        if (editing) {
+            const response = await apiCall('PUT', `/user/${loggedInUser.id}`, {
+                bio
+            }, authorize());
+
+            if (response.error) {
+                setError(response.type);
+                return;
+            }
+
+            setBio(response.bio);
+        }
+
+        setEditing(!editing);
+    }
+
     return (
         <>
             {!error && <>
@@ -93,22 +110,27 @@ export default function User({}) {
                     active={page}
                     onSelect={handleTabSelect}
                 />
+
                 {page === 'profile' ? (
                     <div className='tab-content'>
                         <strong>
-                            About {user.username} <br />
-                            {editing ? (
-                                <textarea
-                                    value={editBioInput}
-                                />
-                            ) : (
-                                <p>
-                                    {user.bio}
-                                </p>
-                            )}
+                            About {user.username}
                         </strong>
+
+                        <br />
+                        {editing ? (
+                            <textarea
+                                value={bio}
+                                onChange={e => setBio(e.target.value)}
+                            />
+                        ) : (
+                            <p>
+                                {bio}
+                            </p>
+                        )}
+                        
                         {checkUser() &&
-                            <button onClick={() => setEditing(!editing)}>
+                            <button onClick={handleEditOrSaveButtonClick}>
                                 {editing ? 'Save' : 'Edit Profile'}
                             </button>
                         }
