@@ -1,6 +1,6 @@
 export const gramsToOunces = amount => amount * 0.034274;
 
-export const ouncesToGrams = amount => amount * 28.3495;
+export const ouncesToGrams = amount => amount / 0.034274/** 28.3495;*/
 
 export const gramsToPounds = amount => amount * 0.00220462;
 

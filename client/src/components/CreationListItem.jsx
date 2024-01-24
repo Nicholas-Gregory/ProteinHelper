@@ -2,14 +2,18 @@ import { useState } from "react";
 import TabNav from "./TabNav";
 import TabCard from "./TabCard";
 import { Link } from "react-router-dom";
-import { foodTotal } from "../utils/totals";
+import { foodTotal, getAminosArray } from "../utils/totals";
 import FoodListItem from "./FoodListItem";
 import { useAuth } from "../contexts/UserContext";
+import { convertAmountSameUnit, convertUnitsSameAmount } from "../utils/conversions";
+import AminoLevelsViewer from "./AminoLevelsViewer";
 
 export default function CreationListItem({ creation }) {
     const [tab, setTab] = useState('total');
     const [contentWidth, setContentWidth] = useState(0);
-    const { user: { creations: userCreations } } = useAuth();
+    const [totalsTabUnitSelect, setTotalsTabUnitSelect] = useState('g');
+    const [levelsTabUnitSelect, setLevelsTabUnitSelect] = useState('g');
+    const { user: { creations: userCreations, goals } } = useAuth();
 
     function useTabWidth(width) {
         setContentWidth(width);
@@ -17,6 +21,12 @@ export default function CreationListItem({ creation }) {
 
     function handleTabSelect(name) {
         setTab(name);
+    }
+
+    function getTotal() {
+        return creation.foods.reduce((total, food) =>
+            total + convertUnitsSameAmount(food.unit, totalsTabUnitSelect, convertAmountSameUnit(convertUnitsSameAmount('g', food.unit, foodTotal(food.food)), convertUnitsSameAmount('g', food.unit, 100), food.amount))
+        , 0)
     }
 
     return (
@@ -54,15 +64,56 @@ export default function CreationListItem({ creation }) {
                 >
                     {tab === 'total' &&
                         <>
-                            {creation.foods.reduce((total, food) =>
-                                total + foodTotal(food.food)
-                            , 0).toFixed(3)}g
+                            {getTotal().toFixed(3)}
+                            &nbsp;
+                            <select
+                                value={totalsTabUnitSelect}
+                                onChange={e => setTotalsTabUnitSelect(e.target.value)}
+                            >
+                                <option value={'g'}>g</option>
+                                <option value={'oz'}>oz</option>
+                                <option value={'lb'}>lb</option>
+                            </select>
+                            <span
+                                style={{ float: 'right' }}
+                            >
+                                {((convertUnitsSameAmount(totalsTabUnitSelect, 'g', getTotal()) / Object.keys(goals).reduce((total, key) => key !== '_id' ? total + goals[key] : total, 0)) * 100).toFixed(2)}% Daily Goal
+                            </span>
                         </>
                     }
 
                     {tab === 'levels' &&
                         <>
-                            levels
+                            Unit: &nbsp;
+                            <select
+                                value={levelsTabUnitSelect}
+                                onChange={e => setLevelsTabUnitSelect(e.target.value)}
+                            >
+                                <option value={'g'}>g</option>
+                                <option value={'oz'}>oz</option>
+                                <option value={'lb'}>lb</option>
+                            </select>
+                            <AminoLevelsViewer
+                                aminos={creation.foods
+                                .map(food => getAminosArray(food.food))
+                                .map((aminoArray, index) => aminoArray
+                                    .map(amino => ({
+                                        name: amino.name,
+                                        unit: levelsTabUnitSelect,
+                                        amount: convertUnitsSameAmount(creation.foods[index].unit, levelsTabUnitSelect, convertAmountSameUnit(convertUnitsSameAmount('g', creation.foods[index].unit, amino.amount), convertUnitsSameAmount('g', creation.foods[index].unit, 100), creation.foods[index].amount))
+                                    })))
+                                .reduce((totals, aminoArray) => totals
+                                    .map(amino => ({
+                                        name: amino.name,
+                                        unit: amino.unit,
+                                        amount: totals
+                                        .find(secondAmino => secondAmino.name === amino.name)
+                                        .amount + aminoArray
+                                        .find(secondAmino => secondAmino.name === amino.name)
+                                        .amount
+                                    }))
+                                )}
+                            />
                         </>
                     }
 
