@@ -10,7 +10,7 @@ export default function TabNav({
 
     useEffect(() => {
         if (useWidth) {
-            useWidth(outerDivRef.current.clientWidth);
+            useWidth(outerDivRef.current.offsetWidth);
         }
     }, [outerDivRef]);
 

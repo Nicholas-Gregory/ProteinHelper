@@ -99,6 +99,11 @@ export default function Creator({ }) {
     }
 
     async function handleSaveClick() {
+        if (nameInput.trim() === '') {
+            setMessage('Creations must have a name');
+            return;
+        }
+
         const data = {
             user: userId,
             name: nameInput,
@@ -152,17 +157,20 @@ export default function Creator({ }) {
 
             {foods.length > 0 && (
                 <>
+                    <br />
                     <input
                         placeholder="Creation Name"
                         type="text"
                         value={nameInput}
                         onChange={e => setNameInput(e.target.value)}
                     />
+                    
                     <button
                         onClick={handleSaveClick}
                     >
                         Save
                     </button>
+                    <br />
                     <TabCard title={'Foods'}>
                         {foods.map((food, index) => (
                             <Fragment key={index}>

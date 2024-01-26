@@ -18,6 +18,7 @@ export default function User({}) {
     const [page, setPage] = useState('profile');
     const [error, setError] = useState(null);
     const [followed, setFollowed] = useState(null);
+    const [profileContentMinWidth, setProfileContentMinWidth] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -93,6 +94,10 @@ export default function User({}) {
         setEditing(!editing);
     }
 
+    function useProfileTabNavWidth(width) {
+        setProfileContentMinWidth(width);
+    }
+
     return (
         <>
             {!error && <>
@@ -109,37 +114,41 @@ export default function User({}) {
                     ]}
                     active={page}
                     onSelect={handleTabSelect}
+                    useWidth={useProfileTabNavWidth}
                 />
 
-                {page === 'profile' ? (
-                    <div className='tab-content'>
-                        <strong>
-                            About {user.username}
-                        </strong>
+                <div
+                    className="tab-content"
+                    style={{ minWidth: profileContentMinWidth }}
+                >
+                    {page === 'profile' ? (
+                        <>
+                            <strong>
+                                About {user.username}
+                            </strong>
 
-                        <br />
-                        {editing ? (
-                            <textarea
-                                value={bio}
-                                onChange={e => setBio(e.target.value)}
-                            />
-                        ) : (
-                            <p>
-                                {bio}
-                            </p>
-                        )}
-                        
-                        {checkUser() &&
-                            <button onClick={handleEditOrSaveButtonClick}>
-                                {editing ? 'Save' : 'Edit Profile'}
-                            </button>
-                        }
-                    </div>
-                ) : (
-                    <div className="tab-content">
-                        <CreationList creations={user.creations} />
-                    </div>
-                )}
+                            <br />
+                            {editing ? (
+                                <textarea
+                                    value={bio}
+                                    onChange={e => setBio(e.target.value)}
+                                />
+                            ) : (
+                                <p>
+                                    {bio}
+                                </p>
+                            )}
+                            
+                            {checkUser() &&
+                                <button onClick={handleEditOrSaveButtonClick}>
+                                    {editing ? 'Save' : 'Edit Profile'}
+                                </button>
+                            }
+                        </>
+                    ) : (
+                        <CreationList creations={user.creations} />                    
+                    )}
+                </div>
             </>}
 
             <br />
