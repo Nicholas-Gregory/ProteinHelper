@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom";
 
-export default function Users({}) {
+export default function Explore({}) {
     return (
         <>
+            explore
+
             <Outlet />
         </>
     )

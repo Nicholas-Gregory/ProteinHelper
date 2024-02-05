@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
 
-export default function MainLayout({}) {
+export default function CombineNew({}) {
     return (
         <>
-            main
-
+            New
             <Outlet />
         </>
     )
