@@ -1,4 +1,9 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { 
+    BrowserRouter, 
+    Navigate, 
+    Route, 
+    Routes 
+} from 'react-router-dom';
 import './style.css';
 import MainLayout from './layouts/MainLayout';
 import Explore from './layouts/Explore';
@@ -12,6 +17,7 @@ import FoodSearch from './pages/FoodSearch';
 import Combination from './layouts/Combination';
 import User from './layouts/User';
 import UserPage from './pages/UserPage';
+import Home from './pages/Home';
 
 export default function App({}) {
     return (
@@ -23,9 +29,24 @@ export default function App({}) {
                         element={<MainLayout />}
                     >
                         <Route
+                            index
+                            element={<Navigate to='/home' />}
+                        />
+
+                        <Route
+                            path='/home'
+                            element={<Home />}
+                        />
+
+                        <Route
                             path='/explore'
                             element={<Explore />}
                         >
+                            <Route
+                                index
+                                element={<Navigate to='/explore/combine' />}
+                            />
+
                             <Route
                                 path='/explore/browse'
                                 element={<Browse />}
@@ -51,9 +72,19 @@ export default function App({}) {
                                 element={<Combine />}
                             >
                                 <Route
+                                    index
+                                    element={<Navigate to='/explore/combine/new' />}
+                                />
+
+                                <Route
                                     path='/explore/combine/new'
                                     element={<CombineNew />}
                                 >
+                                    <Route
+                                        index
+                                        element={<Navigate to='/explore/combine/new/search' />}
+                                    />
+
                                     <Route
                                         path='/explore/combine/new/search'
                                         element={<FoodSearch />}
