@@ -3,12 +3,12 @@ import TabNav from "../contexts/TabNav";
 import Tab from "../components/Tab";
 import { useAuth } from "../contexts/UserContext";
 import TabContent from "../components/TabContent";
-import { useState } from "react";
+import usePageName from "../hooks/usePageName";
 
 export default function MainLayout({}) {
     const { user } = useAuth();
     const navigate = useNavigate();
-    const [page, setPage] = useState('home');
+    const page = usePageName(0);
 
     function handleTabClick(id) {
         if (id === 'profile') {
@@ -16,8 +16,6 @@ export default function MainLayout({}) {
         } else {
             navigate(`/${id}`);
         }
-
-        setPage(id);
     }
 
     return (

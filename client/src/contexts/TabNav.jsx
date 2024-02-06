@@ -8,7 +8,6 @@ export function useTabNav() {
 
 export default function TabNav({ 
     onClick,
-    onInit,
     children 
 }) {
     return (
