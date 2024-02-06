@@ -1,4 +1,13 @@
-export default function Tab({ active, children }) {
+import { useEffect } from "react";
+import { useTabNav } from "../contexts/TabNav"
+
+export default function Tab({ 
+    active, 
+    id,
+    children 
+}) {
+    const { onClick } = useTabNav();
+
     return (
         <span 
             style={{
@@ -14,16 +23,17 @@ export default function Tab({ active, children }) {
                 borderLeft: '1px solid black',
                 borderRight: '1px solid black',
                 marginTop: '5px',
-                marginLeft: '2px',
-                marginRight: '2px',
+                marginLeft: '5px',
                 cursor: 'pointer',
                 fontWeight: `${active ? 'bolder' : 'normal'}`,
                 backgroundColor: `${active ? 'lightseagreen' : 'darkseagreen' }`,
+                top: '1px',
                 ...active ? {
                     borderBottom: '1px solid lightseagreen',
                     top: '3px'
                 } : {}
             }}
+            onClick={() => onClick(id)}
         >
             {children}
         </span>

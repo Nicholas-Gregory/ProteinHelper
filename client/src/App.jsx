@@ -112,6 +112,12 @@ export default function App({}) {
                                 element={<UserPage />}
                             />
                         </Route>
+
+                        <Route
+                            path='/auth'
+                        >
+
+                        </Route>
                     </Route>
                 </Routes>
             </BrowserRouter>
