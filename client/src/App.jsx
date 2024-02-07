@@ -18,6 +18,9 @@ import Combination from './layouts/Combination';
 import User from './layouts/User';
 import UserPage from './pages/UserPage';
 import Home from './pages/Home';
+import Auth from './layouts/Auth';
+import Signup from './pages/SIgnup';
+import Login from './pages/Login';
 
 export default function App({}) {
     return (
@@ -51,6 +54,11 @@ export default function App({}) {
                                 path='/explore/browse'
                                 element={<Browse />}
                             >
+                                <Route
+                                    index
+                                    element={<Navigate to='/explore/browse/search' />}
+                                />
+
                                 <Route
                                     path='/explore/browse/search'
                                     element={<BrowseSearch />}
@@ -115,8 +123,22 @@ export default function App({}) {
 
                         <Route
                             path='/auth'
+                            element={<Auth />}
                         >
+                            <Route
+                                index
+                                element={<Navigate to='/auth/signup' />}
+                            />
 
+                            <Route
+                                path='/auth/signup'
+                                element={<Signup />}
+                            />
+
+                            <Route
+                                path='/auth/login'
+                                element={<Login />}
+                            />
                         </Route>
                     </Route>
                 </Routes>
