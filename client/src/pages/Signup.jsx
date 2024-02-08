@@ -1,12 +1,17 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { useAuth } from '../contexts/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup({}) {
+    const { signup, user } = useAuth();
     const [emailInput, setEmailInput] = useState('');
     const [usernameInput, setUsernameInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [passwordConfirmationInput, setPasswordConfirmationInput] = useState('');
     const formRef = useRef(null);
     const [small, setSmall] = useState(null);
+    const [errors, setErrors] = useState([]);
+    const navigate = useNavigate();
 
     function isSmall() {
         const formWidth = formRef.current.clientWidth;
@@ -26,8 +31,69 @@ export default function Signup({}) {
         return () => window.removeEventListener('resize', handleResizeWindow);
     }, []);
 
-    function handleSubmit(e) {
+    function handleEmailInputChange(e) {
+        const message = 'Must input a valid email address';
+        const value = e.target.value;
+
+        setEmailInput(value);
+
+        if (!/^[\w-.!#$&'*+=?^`{}|~/]+@([\w-]+\.)+[\w-]{2,}$/.test(value)) {
+            setErrors([...errors.filter(error => error !== message), message]);
+        } else {
+            setErrors(errors.filter(error => error !== message));
+        }
+    }
+
+    function checkPasswords(first, second) {
+        const noMatchMessage = 'Passwords do not match';
+        const under8Message = 'Password must be at least 8 characters';
+
+        if (first !== second) {
+            setErrors(errors => [...errors.filter(error => error !== noMatchMessage), noMatchMessage]);
+        } else {
+            setErrors(errors => errors.filter(error => error !== noMatchMessage))
+        }
+        
+        if (first.length < 8) {
+            setErrors(errors => [...errors.filter(error => error !== under8Message), under8Message]);
+        } else {
+            setErrors(errors => errors.filter(error => error !== under8Message));
+        }
+    }
+
+    function handlePasswordInputChange(e) {
+        const value = e.target.value;
+
+        setPasswordInput(value);
+
+        checkPasswords(value, passwordConfirmationInput);
+    }
+
+    function handlePasswordConfirmationInputChange(e) {
+        const value = e.target.value;
+
+        setPasswordConfirmationInput(value);
+
+        checkPasswords(passwordInput, value);
+    }
+
+    async function handleSubmit(e) {
         e.preventDefault();
+
+        if (errors.length === 0) {
+            const response = await signup({
+                username: usernameInput,
+                password: passwordInput,
+                email: emailInput
+            });
+
+            if (response.error) {
+                setErrors([response.type]);
+                return;
+            }
+
+            navigate(`/user/${response.user.id}`);
+        }
     }
 
     return (
@@ -53,7 +119,7 @@ export default function Signup({}) {
                     id="email-input"
                     type="text"
                     value={emailInput}
-                    onChange={e => setEmailInput(e.target.value)}
+                    onChange={handleEmailInputChange}
                     placeholder="Type Your Email Address"
                 />
 
@@ -77,7 +143,7 @@ export default function Signup({}) {
                     id="password-input"
                     type="password"
                     value={passwordInput}
-                    onChange={e => setPasswordInput(e.target.value)}
+                    onChange={handlePasswordInputChange}
                     placeholder="Type Password"
                 />
 
@@ -89,7 +155,7 @@ export default function Signup({}) {
                     id="password-confirmation-input"
                     type="password"
                     value={passwordConfirmationInput}
-                    onChange={e => setPasswordConfirmationInput(e.target.value)}
+                    onChange={handlePasswordConfirmationInputChange}
                     placeholder="Type Password Again"
                 />
 
@@ -98,6 +164,12 @@ export default function Signup({}) {
                     Submit
                 </button>
             </form>
+
+            {errors.map(error => (
+                <p>
+                    {error}
+                </p>
+            ))}
         </>
     )
 }

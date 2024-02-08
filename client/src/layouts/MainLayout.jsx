@@ -9,6 +9,7 @@ export default function MainLayout({}) {
     const { user } = useAuth();
     const navigate = useNavigate();
     const page = usePageName(0);
+    const userId = usePageName(1);
 
     function handleTabClick(id) {
         if (id === 'profile') {
@@ -24,7 +25,7 @@ export default function MainLayout({}) {
                 <Tab active={page === 'home'} id='home'>Home</Tab>
                 <Tab active={page === 'explore'} id='explore'>Explore Foods</Tab>
                 {user.id ? (
-                    <Tab active={page === 'profile'} id='profile'>My Account</Tab>
+                    <Tab active={user.id === userId} id='profile'>My Account</Tab>
                 ) : (
                     <Tab active={page === 'auth'} id='auth'>Login/Signup</Tab>
                 )}
