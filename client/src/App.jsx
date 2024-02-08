@@ -19,7 +19,7 @@ import User from './layouts/User';
 import UserPage from './pages/UserPage';
 import Home from './pages/Home';
 import Auth from './layouts/Auth';
-import Signup from './pages/SIgnup';
+import Signup from './pages/Signup';
 import Login from './pages/Login';
 
 export default function App({}) {
