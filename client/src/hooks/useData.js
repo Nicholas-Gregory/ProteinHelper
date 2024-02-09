@@ -17,7 +17,7 @@ export default function useData(method, route, body) {
                 setData(response);
             }
         })();
-    }, []);
+    }, [method, route, body]);
 
     return { data, error };
 }
