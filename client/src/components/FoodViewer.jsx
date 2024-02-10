@@ -39,7 +39,8 @@ export default function FoodViewer({
     unit,
     amount,
     edit,
-    select    
+    select,
+    children
 }) {
     const [tab, setTab] = useState('protein');
 
@@ -52,6 +53,9 @@ export default function FoodViewer({
             depth={5}
             title={food.name}
         >
+            {children}
+
+            <br />
             <TabNav onClick={handleTabClick}>
                 <Tab
                     active={tab === 'protein'}
@@ -63,7 +67,7 @@ export default function FoodViewer({
                     active={tab === 'vitaoil'}
                     id={'vitaoil'}
                 >
-                    Vitamins/Oils
+                    Vitamins/Acids
                 </Tab>
                 <Tab
                     active={tab === 'minerals'}
@@ -99,6 +103,7 @@ export default function FoodViewer({
                                         return [...array, nutrient];
                                     }
                                 }, [])
+                                // .map(nutrient => )
                                 .map(nutrient => (
                                     <NutrientViewer
                                         name={nutrient.name}
