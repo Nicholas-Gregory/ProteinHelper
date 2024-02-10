@@ -27,7 +27,7 @@ export default function TabCard({
     }
 
     return (
-        <>
+        <div>
             {(
                 <div
                     style={{
@@ -67,6 +67,6 @@ export default function TabCard({
             >
                 {children}
             </div>
-        </>
+        </div>
     )
 }

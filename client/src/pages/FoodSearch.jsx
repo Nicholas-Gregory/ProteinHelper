@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import TabCard from "../components/TabCard";
 import SearchBar from "../components/SearchBar";
 import useData from "../hooks/useData";
+import FoodViewer from "../components/FoodViewer";
 
 export default function FoodSearch({}) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -58,7 +59,7 @@ export default function FoodSearch({}) {
                     </TabNav>
                     
                     {data?.map(datum => (
-                        <p>{datum.name}</p>
+                        <FoodViewer food={datum} />
                     ))}
 
                     {error && (
