@@ -19,7 +19,11 @@ export default function FoodSearch({}) {
     useEffect(() => {
         setAmountsAndUnits(data?.map(food => ({
             amount: 100,
-            unit: 'g'
+            unit: 'g',
+            nutrientUnits: food.nutrients.map(nutrient => ({
+                unit: nutrient.unit,
+                id: nutrient._id
+            }))
         })));
     }, [data]);
 
@@ -45,6 +49,20 @@ export default function FoodSearch({}) {
             ...item,
             unit: value
         } : item));
+    }
+
+    function handleNutrientUnitChange(foodId, nutrientId, value) {
+        setAmountsAndUnits(amountsAndUnits.map((object, index) => (
+            index === foodId ? {
+                ...object,
+                nutrientUnits: object.nutrientUnits.map((unit, index) => (
+                    index === data[foodId].nutrients.findIndex(nutrient => nutrient._id === nutrientId) ? {
+                        ...unit,
+                        unit: value,
+                     } : unit
+                ))
+            } : object
+        )));
     }
 
     return (
@@ -82,10 +100,13 @@ export default function FoodSearch({}) {
                         </TabContent>
                     </TabNav>
                     
-                    {data && data.map((datum, index) => (
+                    {data && amountsAndUnits && data.map((datum, index) => (
                         <Fragment key={datum._id}>
                             <FoodViewer 
-                                food={datum} 
+                                id={index}
+                                food={datum}
+                                amountsAndUnits={amountsAndUnits[index]}
+                                onNutrientUnitChange={handleNutrientUnitChange}
                             >
                                 <button
                                     onClick={() => setFoods([...foods, datum])}
@@ -97,8 +118,8 @@ export default function FoodSearch({}) {
                                 <br />
                                 <UnitAmountForm 
                                     id={index}
-                                    unit={amountsAndUnits.length > 0 ? amountsAndUnits[index].unit : 'g'}
-                                    amount={amountsAndUnits.length > 0 ? amountsAndUnits[index].amount : 100}
+                                    unit={amountsAndUnits?.length > 0 ? amountsAndUnits[index].unit : 'g'}
+                                    amount={amountsAndUnits?.length > 0 ? amountsAndUnits[index].amount : 100}
                                     onAmountChange={handleAmountChange}
                                     onUnitChange={handleUnitChange}
                                 />

@@ -35,17 +35,26 @@ const MINERALS_NAMES = [
 ];
 
 export default function FoodViewer({ 
+    id,
     food,
-    unit,
-    amount,
-    edit,
-    select,
+    amountsAndUnits,
+    onNutrientUnitChange,
     children
 }) {
     const [tab, setTab] = useState('protein');
 
     function handleTabClick(id) {
         setTab(id);
+    }
+
+    function handleNutrientUnitChange(nutrientId, value) {
+        onNutrientUnitChange(id, nutrientId, value);
+    }
+
+    function getNutrientUnit(nutrientId) {
+        const unit = amountsAndUnits?.nutrientUnits[food.nutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+    
+        return unit?.unit;
     }
 
     return (
@@ -104,11 +113,13 @@ export default function FoodViewer({
                                     }
                                 }, [])
                                 // .map(nutrient => )
-                                .map(nutrient => (
+                                .map((nutrient, index) => (
                                     <NutrientViewer
+                                        id={nutrient._id}
                                         name={nutrient.name}
-                                        unit={nutrient.unit}
+                                        unit={getNutrientUnit(nutrient._id)}
                                         amount={nutrient.amount}
+                                        onUnitChange={handleNutrientUnitChange}
                                     />
                                 ))}
                             </>
@@ -180,11 +191,13 @@ export default function FoodViewer({
                                         return [...result, nutrient];
                                     }
                                 }, [])
-                                .map(nutrient => (
+                                .map((nutrient, index) => (
                                     <NutrientViewer
+                                        id={nutrient._id}
                                         name={nutrient.name}
-                                        unit={nutrient.unit}
+                                        unit={getNutrientUnit(nutrient._id)}
                                         amount={nutrient.amount}
+                                        onUnitChange={handleNutrientUnitChange}
                                     />
                                 ))}
                             </>
@@ -197,11 +210,12 @@ export default function FoodViewer({
                                     MINERALS_NAMES
                                     .includes(nutrient.name)
                                 ))
-                                .map(nutrient => (
+                                .map((nutrient, index) => (
                                     <NutrientViewer
                                         name={nutrient.name}
-                                        unit={nutrient.unit}
+                                        unit={getNutrientUnit(nutrient._id)}
                                         amount={nutrient.amount}
+                                        onUnitChange={handleNutrientUnitChange}
                                     />
                                 ))}
                             </>

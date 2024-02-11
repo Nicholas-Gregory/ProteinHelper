@@ -1,4 +1,5 @@
 import { useState } from "react"
+import UnitSelect from "./UnitSelect"
 
 export default function UnitAmountForm({ 
     id,
@@ -17,16 +18,11 @@ export default function UnitAmountForm({
                 onChange={e => onAmountChange(id, e.target.value)}
             />
 
-            <select
-                value={unit}
-                onChange={e => onUnitChange(id, e.target.value)}
-            >
-                <option value={'g'}>g</option>
-                <option value={'mg'}>mg</option>
-                <option value={'µg'}>µg</option>
-                <option value={'oz'}>oz</option>
-                <option value={'lb'}>lb</option>
-            </select>
+            <UnitSelect
+                id={id}
+                onChange={onUnitChange}
+                unit={unit}
+            />
         </form>
     )
 }

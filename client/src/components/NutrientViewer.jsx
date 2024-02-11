@@ -1,9 +1,12 @@
 import TabCard from './TabCard';
+import UnitSelect from './UnitSelect';
 
 export default function NutrientViewer({
+    id,
     name,
     unit,
     amount,
+    onUnitChange
 }) {
     return (
         <TabCard
@@ -11,7 +14,12 @@ export default function NutrientViewer({
             title={name}
         >
             <span>
-                {amount}{unit}
+                {amount}
+                <UnitSelect
+                    id={id}
+                    onChange={(id, value) => onUnitChange(id, value)}
+                    unit={unit}
+                />
             </span>
         </TabCard>
     )
