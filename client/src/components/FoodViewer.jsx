@@ -4,6 +4,7 @@ import NutrientViewer from "./NutrientViewer";
 import Tab from "./Tab";
 import TabContent from "./TabContent";
 import TabCard from "./TabCard";
+import { convertAmount, convertUnits } from "../utils/conversions";
 
 const PROTEIN_NAMES = [
     'Protein',
@@ -112,7 +113,12 @@ export default function FoodViewer({
                                         return [...array, nutrient];
                                     }
                                 }, [])
-                                // .map(nutrient => )
+                                .map(nutrient => (
+                                    {
+                                        ...nutrient,
+                                        amount: convertUnits(convertAmount(convertUnits(nutrient.amount, 'g', nutrient.unit), convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount), nutrient.unit, getNutrientUnit(nutrient._id))
+                                    }
+                                ))
                                 .map((nutrient, index) => (
                                     <NutrientViewer
                                         id={nutrient._id}
