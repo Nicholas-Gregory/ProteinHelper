@@ -37,12 +37,8 @@ export default function FoodViewer({
 
     }
 
-    function convertNutrient(nutrient) {
-        console.log(nutrient)
-        return {
-            ...nutrient,
-            amount: convertUnits(convertAmount(convertUnits(nutrient.amount, 'g', nutrient.unit), convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount), nutrient.unit, getNutrientUnit(nutrient._id))
-        }
+    function getNutrientAmount(nutrient) {
+        return convertUnits(convertAmount(convertUnits(nutrient.amount, 'g', nutrient.unit), convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount), nutrient.unit, getNutrientUnit(nutrient._id));
     }
 
     return (
@@ -87,7 +83,7 @@ export default function FoodViewer({
                                         id={nutrient._id}
                                         name={nutrient.name}
                                         unit={getNutrientUnit(nutrient._id)}
-                                        amount={nutrient.amount}
+                                        amount={getNutrientAmount(nutrient)}
                                         onUnitChange={handleNutrientUnitChange}
                                     />
                                 ))}
@@ -101,7 +97,7 @@ export default function FoodViewer({
                                         id={nutrient._id}
                                         name={nutrient.name}
                                         unit={getNutrientUnit(nutrient._id)}
-                                        amount={nutrient.amount}
+                                        amount={getNutrientAmount(nutrient)}
                                         onUnitChange={handleNutrientUnitChange}
                                     />
                                 ))}
@@ -114,7 +110,7 @@ export default function FoodViewer({
                                     <NutrientViewer
                                         name={nutrient.name}
                                         unit={getNutrientUnit(nutrient._id)}
-                                        amount={nutrient.amount}
+                                        amount={getNutrientAmount(nutrient)}
                                         onUnitChange={handleNutrientUnitChange}
                                     />
                                 ))}
