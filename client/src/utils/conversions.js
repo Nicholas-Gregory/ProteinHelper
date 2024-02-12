@@ -12,6 +12,15 @@ const FACTORS = [
 ];
 
 export const convertUnits = (amount, from, to) => {
+    if (
+        amount === undefined ||
+        amount === null ||
+        from === undefined ||
+        from == null || 
+        to === undefined ||
+        to === null
+    ) return null;
+
     if (from === to) return amount;
 
     const factor = FACTORS.find(factor => factor.some(label => label === from) && factor.some(label => label === to));

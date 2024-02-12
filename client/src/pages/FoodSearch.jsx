@@ -13,14 +13,22 @@ export default function FoodSearch({}) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchTab, setSearchTab] = useState('keyword');
     const { data, error } = useData('GET', `/food/search/named?${searchParams.toString()}`);
-    const [foods, setFoods] = useOutletContext();
+    const [combination, setCombination] = useOutletContext();
     const [amountsAndUnits, setAmountsAndUnits] = useState(null);
 
     useEffect(() => {
         setAmountsAndUnits(data?.map(food => ({
             amount: 100,
             unit: 'g',
-            nutrientUnits: food.nutrients.map(nutrient => ({
+            proteinNutrientUnits: food.proteinNutrients.map(nutrient => ({
+                unit: nutrient.unit,
+                id: nutrient._id
+            })),
+            vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrients.map(nutrient => ({
+                unit: nutrient.unit,
+                id: nutrient._id
+            })),
+            mineralNutrientUnits: food.mineralNutrients.map(nutrient => ({
                 unit: nutrient.unit,
                 id: nutrient._id
             }))
@@ -63,6 +71,22 @@ export default function FoodSearch({}) {
                 ))
             } : object
         )));
+    }
+
+    function handleCombineButtonClick(food, amountAndUnit) {
+        console.log(food);
+        setCombination({
+            ...combination,
+            foods: [...combination.foods, {
+                food,
+                unit: amountAndUnit.unit,
+                amount: amountAndUnit.amount,
+                nutrientUnits: food.nutrients.map(nutrient => ({
+                    unit: nutrient.unit,
+                    id: nutrient._id
+                }))
+            }]
+        })
     }
 
     return (
@@ -109,7 +133,7 @@ export default function FoodSearch({}) {
                                 onNutrientUnitChange={handleNutrientUnitChange}
                             >
                                 <button
-                                    onClick={() => setFoods([...foods, datum])}
+                                    onClick={() => handleCombineButtonClick(datum, amountsAndUnits[index])}
                                 >
                                     Combine With This Food
                                 </button>

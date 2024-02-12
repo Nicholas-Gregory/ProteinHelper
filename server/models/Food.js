@@ -11,7 +11,9 @@ const foodSchema = new Schema({
         type: String,
         required: true
     },
-    nutrients: [nutrientSchema]
+    proteinNutrients: [nutrientSchema],
+    vitaminAndAcidNutrients: [nutrientSchema],
+    mineralNutrients: [nutrientSchema]
 });
 
 const Food = model('Food', foodSchema);

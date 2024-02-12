@@ -14,7 +14,7 @@ export default function NutrientViewer({
             title={name}
         >
             <span>
-                {amount.toFixed(2)}
+                {amount?.toFixed(2)}
                 <UnitSelect
                     id={id}
                     onChange={(id, value) => onUnitChange(id, value)}
