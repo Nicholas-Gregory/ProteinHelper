@@ -60,11 +60,37 @@ export default function FoodSearch({}) {
     }
 
     function handleNutrientUnitChange(foodId, nutrientId, value) {
+        let nutrientsArrayName;
+        let nutrientIndex;
+        let unitsArrayName;
+
+        nutrientIndex = data[foodId].proteinNutrients.findIndex(nutrient => nutrient._id === nutrientId);
+        if (nutrientIndex !== -1) {
+            nutrientsArrayName = 'proteinNutrients';
+            unitsArrayName = 'proteinNutrientUnits';
+        }
+
+        if (!nutrientsArrayName) {
+            nutrientIndex = data[foodId].vitaminAndAcidNutrients.findIndex(nutrient => nutrient._id === nutrientId);
+            if (nutrientIndex !== -1) {
+                nutrientsArrayName = 'vitaminAndAcidNutrients';
+                unitsArrayName = 'vitaminAndAcidNutrientUnits';
+            }
+        }
+
+        if (!nutrientsArrayName) {
+            nutrientIndex = data[foodId].mineralNutrients.findIndex(nutrient => nutrient._id === nutrientId);
+            if (nutrientIndex !== -1) {
+                nutrientsArrayName = 'mineralNutrients';
+                unitsArrayName = 'mineralNutrientUnits';
+            }
+        }
+
         setAmountsAndUnits(amountsAndUnits.map((object, index) => (
             index === foodId ? {
                 ...object,
-                nutrientUnits: object.nutrientUnits.map((unit, index) => (
-                    index === data[foodId].nutrients.findIndex(nutrient => nutrient._id === nutrientId) ? {
+                [unitsArrayName]: object[unitsArrayName].map((unit, index) => (
+                    index === nutrientIndex ? {
                         ...unit,
                         unit: value,
                      } : unit

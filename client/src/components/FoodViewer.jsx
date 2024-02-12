@@ -33,12 +33,16 @@ export default function FoodViewer({
         return unit?.unit;
     }
 
-    function handleNutrientUnitChange(id, value) {
-
+    function handleNutrientUnitChange(nutrientId, value) {
+        onNutrientUnitChange(id, nutrientId, value);
     }
 
     function getNutrientAmount(nutrient) {
-        return convertUnits(convertAmount(convertUnits(nutrient.amount, 'g', nutrient.unit), convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount), nutrient.unit, getNutrientUnit(nutrient._id));
+        // return convertUnits(convertAmount(convertUnits(nutrient.amount, 'g', nutrient.unit), convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount), nutrient.unit, getNutrientUnit(nutrient._id));
+        const newNutrientUnit = getNutrientUnit(nutrient._id);
+        const amountInOriginalUnit = convertAmount(nutrient.amount, convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount);
+
+        return convertUnits(amountInOriginalUnit, nutrient.unit, newNutrientUnit);
     }
 
     return (
@@ -108,6 +112,7 @@ export default function FoodViewer({
                             <>
                                 {food.mineralNutrients.map(nutrient => (
                                     <NutrientViewer
+                                        id={nutrient._id}
                                         name={nutrient.name}
                                         unit={getNutrientUnit(nutrient._id)}
                                         amount={getNutrientAmount(nutrient)}
