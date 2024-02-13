@@ -2,7 +2,7 @@ import FoodViewer from "./FoodViewer";
 import TabCard from "./TabCard";
 import UnitAmountForm from "./UnitAmountForm";
 
-export default function Combination({
+export default function Creator({
     combination,
     onFoodAmountChange,
     onFoodUnitChange,
@@ -31,7 +31,9 @@ export default function Combination({
                         amountsAndUnits={{
                             unit: food.unit,
                             amount: food.amount,
-                            nutrientUnits: food.nutrientUnits
+                            proteinNutrientUnits: food.proteinNutrientUnits,
+                            vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrientUnits,
+                            mineralNutrientUnits: food.mineralNutrientUnits
                         }}
                         onNutrientUnitChange={(foodId, nutrientId, value) => onNutrientUnitChange(foodId, nutrientId, value)}
                     >

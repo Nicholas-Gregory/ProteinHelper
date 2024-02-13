@@ -8,6 +8,7 @@ import SearchBar from "../components/SearchBar";
 import useData from "../hooks/useData";
 import FoodViewer from "../components/FoodViewer";
 import UnitAmountForm from "../components/UnitAmountForm";
+import { getNutrientCategory } from "../utils/nutrients";
 
 export default function FoodSearch({}) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -60,31 +61,7 @@ export default function FoodSearch({}) {
     }
 
     function handleNutrientUnitChange(foodId, nutrientId, value) {
-        let nutrientsArrayName;
-        let nutrientIndex;
-        let unitsArrayName;
-
-        nutrientIndex = data[foodId].proteinNutrients.findIndex(nutrient => nutrient._id === nutrientId);
-        if (nutrientIndex !== -1) {
-            nutrientsArrayName = 'proteinNutrients';
-            unitsArrayName = 'proteinNutrientUnits';
-        }
-
-        if (!nutrientsArrayName) {
-            nutrientIndex = data[foodId].vitaminAndAcidNutrients.findIndex(nutrient => nutrient._id === nutrientId);
-            if (nutrientIndex !== -1) {
-                nutrientsArrayName = 'vitaminAndAcidNutrients';
-                unitsArrayName = 'vitaminAndAcidNutrientUnits';
-            }
-        }
-
-        if (!nutrientsArrayName) {
-            nutrientIndex = data[foodId].mineralNutrients.findIndex(nutrient => nutrient._id === nutrientId);
-            if (nutrientIndex !== -1) {
-                nutrientsArrayName = 'mineralNutrients';
-                unitsArrayName = 'mineralNutrientUnits';
-            }
-        }
+        const { nutrientsArrayName, nutrientIndex, unitsArrayName } = getNutrientCategory(data[foodId], nutrientId);
 
         setAmountsAndUnits(amountsAndUnits.map((object, index) => (
             index === foodId ? {
@@ -100,17 +77,15 @@ export default function FoodSearch({}) {
     }
 
     function handleCombineButtonClick(food, amountAndUnit) {
-        console.log(food);
         setCombination({
             ...combination,
             foods: [...combination.foods, {
                 food,
                 unit: amountAndUnit.unit,
                 amount: amountAndUnit.amount,
-                nutrientUnits: food.nutrients.map(nutrient => ({
-                    unit: nutrient.unit,
-                    id: nutrient._id
-                }))
+                proteinNutrientUnits: [...amountAndUnit.proteinNutrientUnits],
+                vitaminAndAcidNutrientUnits: [...amountAndUnit.vitaminAndAcidNutrientUnits],
+                mineralNutrientUnits: [...amountAndUnit.mineralNutrientUnits]
             }]
         })
     }

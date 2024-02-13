@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import TabCard from '../components/TabCard';
-import FoodViewer from '../components/FoodViewer';
-import Combination from "../components/Combination";
+import Creator from "../components/Creator";
+import { getNutrientCategory } from "../utils/nutrients";
 
 export default function CombineNew({}) {
     const [combination, setCombination] = useState({ foods: [] });
@@ -32,17 +31,17 @@ export default function CombineNew({}) {
     }
 
     function handleNutrientUnitChange(foodId, nutrientId, value) {
+        const { nutrientsArrayName, nutrientIndex, unitsArrayName } = getNutrientCategory(combination.foods[foodId].food, nutrientId);
+
         setCombination({
             ...combination,
             foods: combination.foods.map((foodObject, index) => (
                 foodId === index ? {
                     ...foodObject,
-                    nutrientUnits: foodObject.nutrientUnits.map((unit, index) => (
-                        index === combination.foods[foodId].food.nutrients.findIndex(nutrient => nutrient._id === nutrientId) ? {
-                            ...unit,
-                            unit: value
-                        } : unit
-                    ))
+                    [unitsArrayName]: combination.foods[index][unitsArrayName].map((unitObject, index) => index === nutrientIndex ? {
+                        ...unitObject,
+                        unit: value
+                    } : unitObject)
                 } : foodObject
             ))
         })
@@ -51,7 +50,7 @@ export default function CombineNew({}) {
     return (
         <>
             {combination.foods.length > 0 && (
-                <Combination
+                <Creator
                     combination={combination}
                     onFoodAmountChange={handleFoodAmountChange}
                     onFoodUnitChange={handleFoodUnitChange}
@@ -59,6 +58,7 @@ export default function CombineNew({}) {
                 />
             )}
 
+            <br />
             <Outlet context={[combination, setCombination]}/>
         </>
     )
