@@ -143,8 +143,8 @@ export default function FoodSearch({}) {
                                 <br />
                                 <UnitAmountForm 
                                     id={index}
-                                    unit={amountsAndUnits?.length > 0 ? amountsAndUnits[index].unit : 'g'}
-                                    amount={amountsAndUnits?.length > 0 ? amountsAndUnits[index].amount : 100}
+                                    unit={amountsAndUnits?.length > 0 ? amountsAndUnits[index]?.unit : 'g'}
+                                    amount={amountsAndUnits?.length > 0 ? amountsAndUnits[index]?.amount : 100}
                                     onAmountChange={handleAmountChange}
                                     onUnitChange={handleUnitChange}
                                 />
