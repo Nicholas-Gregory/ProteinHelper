@@ -21,6 +21,9 @@ import Home from './pages/Home';
 import Auth from './layouts/Auth';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import UserInfo from './pages/UserInfo';
+import UserCombinations from './pages/UserCombinations';
+import UserGoals from './pages/UserGoals';
 
 export default function App({}) {
     return (
@@ -118,7 +121,22 @@ export default function App({}) {
                             <Route
                                 path='/user/:userId'
                                 element={<UserPage />}
-                            />
+                            >
+                                <Route
+                                    path='/user/:userId/info'
+                                    element={<UserInfo />}
+                                />
+
+                                <Route
+                                    path='/user/:userId/combinations'
+                                    element={<UserCombinations />}
+                                />
+
+                                <Route
+                                    path='/user/:userId/goals'
+                                    element={<UserGoals />}
+                                />
+                            </Route>
                         </Route>
 
                         <Route

@@ -42,7 +42,45 @@ router.post('/create', async (req, res, next) => {
         await User.create({
             username,
             email,
-            password
+            password,
+            goals: [
+                {
+                    name: 'Histidine',
+                    amount: 1.022
+                },
+                {
+                    name: 'Isoleucine',
+                    amount: 1.387
+                },
+                {
+                    name: 'Leucine',
+                    amount: 3.066
+                },
+                {
+                    name: 'Lysine',
+                    amount: 2.774
+                },
+                {
+                    name: 'Methionine',
+                    amount: 1.387
+                },
+                {
+                    name: 'Phenylalanine',
+                    amount: 2.409
+                },
+                {
+                    name: 'Threonine',
+                    amount: 1.46
+                },
+                {
+                    name: 'Tryptophan',
+                    amount: 0.365
+                },
+                {
+                    name: 'Valine',
+                    amount: 1.752
+                }
+            ]
         });
 
         result = await login(username, email, password);
