@@ -1,15 +1,25 @@
+import { useState } from "react";
 import GoalWidget from "../components/GoalWidget";
 import { useAuth } from "../contexts/UserContext"
 
 export default function UserGoals({}) {
-    const { user: { goals } } = useAuth();
+    const { user: { goals }, updateGoals } = useAuth();
+    const [message, setMessage] = useState('');
 
-    function handleGoalDelete(id) {
-
+    async function handleGoalDelete(id) {
+        await updateGoals(goals.filter(goal => goal._id !== id));
     }
 
-    function handleGoalSave(name, amount) {
+    async function handleGoalSave(name, amount) {
+        setMessage('');
 
+        if (goals.find(goal => goal.name === name)) {
+            setMessage('Cannot set more than one goal for the same nutrient.');
+
+            return;
+        }
+
+        await updateGoals([...goals, { name, amount }]);
     }
 
     return (
@@ -18,17 +28,27 @@ export default function UserGoals({}) {
                 My Goals
             </h2>
 
-            {goals?.map((goal, index) => (
-                <GoalWidget
-                    id={index}
-                    goal={goal}
-                    onDelete={handleGoalDelete}
-                />
+            {goals?.map(goal => (
+                <div
+                    key={goal._id}
+                    style={{ margin: '5px' }}
+                >
+                    <GoalWidget
+                        goal={goal}
+                        onDelete={handleGoalDelete}
+                    />
+                </div>
             ))}
-            
+
             <GoalWidget
                 onSave={handleGoalSave}
             />
+
+            {message && (
+                <p>
+                    {message}
+                </p>
+            )}
         </>
     )
 }
