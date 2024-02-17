@@ -15,10 +15,10 @@ export default function UserPage({}) {
     const { data: user, error } = useData('GET', `/user/${userId}`, null, authorize())
 
     useEffect(() => {
-        if (page === undefined) {
+        if (page === '') {
             navigate(`/user/${userId}/info`);
         }
-    })
+    }, [page]);
 
     return (
         <>
