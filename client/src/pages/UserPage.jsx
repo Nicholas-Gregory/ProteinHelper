@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import TabNav from "../contexts/TabNav";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import usePageName from "../hooks/usePageName";
 import Tab from "../components/Tab";
 import { useAuth } from "../contexts/UserContext";
@@ -12,10 +12,10 @@ export default function UserPage({}) {
     const { user: loggedInUser, authorize } = useAuth();
     const page = usePageName(2);
     const navigate = useNavigate();
-    const { data: user, error } = useData('GET', `/user/${userId}`, null, authorize())
+    const { data: user, error } = useData('GET', `/user/${userId}`, null, authorize());
 
     useEffect(() => {
-        if (page === '') {
+        if (page === '' || page === undefined) {
             navigate(`/user/${userId}/info`);
         }
     }, [page]);
@@ -46,7 +46,7 @@ export default function UserPage({}) {
                 )}
 
                 <TabContent>
-                    <Outlet />
+                    <Outlet context={ user }/>
                 </TabContent>
             </TabNav>
         </>
