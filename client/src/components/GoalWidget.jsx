@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UnitSelect from './UnitSelect';
 
 export default function GoalWidget({ 
     goal,
@@ -7,6 +8,7 @@ export default function GoalWidget({
 }) {
     const [nameInput, setNameInput] = useState(goal ? goal.name : 'Histidine');
     const [amountInput, setAmountInput] = useState(goal ? goal.amount : '');
+    const [newGoalUnit, setNewGoalUnit] = useState('g');
 
     function handleNameInputChange(e) {
         const value = e.target.value;
@@ -23,6 +25,7 @@ export default function GoalWidget({
     return (
         <div>
             <select
+                className="mar-5"
                 value={nameInput}
                 onChange={handleNameInputChange}
                 disabled={goal}
@@ -48,13 +51,20 @@ export default function GoalWidget({
                 <option value='Iodine'>Iodine</option>
             </select>
             <input
+                className="mar-5"
                 type="number"
                 value={amountInput}
                 onChange={handleAmountInputChange}
                 disabled={goal}
             />
+            {goal && (
+                <>
+                    {goal.unit}
+                </>
+            )}
             {goal ? (
                 <button
+                    className="mar-5"
                     onClick={() => onDelete(goal._id)}
                     style={{ 
                         backgroundColor: 'red'
@@ -63,14 +73,18 @@ export default function GoalWidget({
                     X
                 </button>
             ) : (
-                <button
-                    onClick={() => onSave(nameInput, amountInput)}
-                    style={{
-                        backgroundColor: 'green'
-                    }}
-                >
-                    +
-                </button>
+                <>
+                    <UnitSelect onChange={(id, value) => setNewGoalUnit(value)} />
+                    <button
+                        className="mar-5"
+                        onClick={() => onSave(nameInput, amountInput, newGoalUnit)}
+                        style={{
+                            backgroundColor: 'green'
+                        }}
+                    >
+                        +
+                    </button>
+                </>
             )}
         </div>
     )

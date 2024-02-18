@@ -9,6 +9,11 @@ const goalsSchema = new Schema({
     amount: {
         type: Number,
         required: true
+    },
+    unit: {
+        type: String,
+        required: true,
+        match: /^g|mg|µg|oz|lb$/
     }
 });
 

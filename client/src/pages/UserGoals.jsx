@@ -10,7 +10,7 @@ export default function UserGoals({}) {
         await updateGoals(goals.filter(goal => goal._id !== id));
     }
 
-    async function handleGoalSave(name, amount) {
+    async function handleGoalSave(name, amount, unit) {
         setMessage('');
 
         if (goals.find(goal => goal.name === name)) {
@@ -19,7 +19,7 @@ export default function UserGoals({}) {
             return;
         }
 
-        await updateGoals([...goals, { name, amount }]);
+        await updateGoals([...goals, { name, amount, unit }]);
     }
 
     return (
