@@ -28,7 +28,7 @@ export default function GoalWidget({
                 className="mar-5"
                 value={nameInput}
                 onChange={handleNameInputChange}
-                disabled={goal}
+                disabled={goal.name}
             >
                 <option value='Histidine'>Histidine</option>
                 <option value='Isoleucine'>Isoleucine</option>
@@ -55,14 +55,14 @@ export default function GoalWidget({
                 type="number"
                 value={amountInput}
                 onChange={handleAmountInputChange}
-                disabled={goal}
+                disabled={goal.amount}
             />
             {goal && (
                 <>
                     {goal.unit}
                 </>
             )}
-            {goal ? (
+            {goal.name && goal.amount ? (
                 <button
                     className="mar-5"
                     onClick={() => onDelete(goal._id)}
