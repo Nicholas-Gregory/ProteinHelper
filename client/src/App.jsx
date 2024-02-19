@@ -36,7 +36,7 @@ export default function App({}) {
                     >
                         <Route
                             index
-                            element={<Navigate to='/home' />}
+                            element={<Navigate to='/home' replace={true}/>}
                         />
 
                         <Route
@@ -50,7 +50,7 @@ export default function App({}) {
                         >
                             <Route
                                 index
-                                element={<Navigate to='/explore/combine' />}
+                                element={<Navigate to='/explore/combine' replace={true}/>}
                             />
 
                             <Route
@@ -59,7 +59,7 @@ export default function App({}) {
                             >
                                 <Route
                                     index
-                                    element={<Navigate to='/explore/browse/search' />}
+                                    element={<Navigate to='/explore/browse/search' replace={true}/>}
                                 />
 
                                 <Route
@@ -84,7 +84,7 @@ export default function App({}) {
                             >
                                 <Route
                                     index
-                                    element={<Navigate to='/explore/combine/new' />}
+                                    element={<Navigate to='/explore/combine/new' replace={true}/>}
                                 />
 
                                 <Route
@@ -93,7 +93,7 @@ export default function App({}) {
                                 >
                                     <Route
                                         index
-                                        element={<Navigate to='/explore/combine/new/search' />}
+                                        element={<Navigate to='/explore/combine/new/search' replace={true}/>}
                                     />
 
                                     <Route
@@ -145,7 +145,7 @@ export default function App({}) {
                         >
                             <Route
                                 index
-                                element={<Navigate to='/auth/signup' />}
+                                element={<Navigate to='/auth/signup' replace={true}/>}
                             />
 
                             <Route

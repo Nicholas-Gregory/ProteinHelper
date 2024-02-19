@@ -16,7 +16,7 @@ export default function UserPage({}) {
 
     useEffect(() => {
         if (page === '' || page === undefined) {
-            navigate(`/user/${userId}/info`);
+            navigate(`/user/${userId}/info`, { replace: true });
         }
     }, [page]);
 
