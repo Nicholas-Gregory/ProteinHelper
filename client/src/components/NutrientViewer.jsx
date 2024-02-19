@@ -42,7 +42,7 @@ export default function NutrientViewer({
             <span>
                 {goalNutrient ? (
                     <>
-                        {amount / convertUnits(goalNutrient.amount, goalNutrient.unit, unit) * 100}% of Daily Goal
+                        {(amount / convertUnits(goalNutrient.amount, goalNutrient.unit, unit) * 100).toFixed(2)}% of Daily Goal
                     </>
                 ) : (
                     <button onClick={() => setSetting(!setting)}>

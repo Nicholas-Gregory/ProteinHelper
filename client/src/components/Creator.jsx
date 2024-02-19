@@ -19,6 +19,10 @@ export default function Creator({
     const [totalsVitaminAndAcidNutrientUnits, setTotalsVitaminAndAcidNutrientUnits] = useState(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits'));
     const [totalsMineralNutrientUnits, setTotalsMineralNutrientUnits] = useState(getTotalsNutrientUnitsArray('mineralNutrientUnits'));
     const [totalsTab, setTotalsTab] = useState('protein');
+    const [naming, setNaming] = useState(false);
+    const [namingInput, setNamingInput] = useState('');
+    const namingBoxWidth = 250;
+    const namingBoxHeight = 150;
 
     function getTotalsNutrientUnitsArray(arrayName) {
         let result = [...combination.foods[0][arrayName]];
@@ -47,14 +51,70 @@ export default function Creator({
         return result;
     }
 
+    function handleSaveNewClick() {
+
+    }
+
     return (
         <>
+            {naming && (
+                <div
+                    style={{
+                        width: `${namingBoxWidth}px`,
+                        height: `${namingBoxHeight}px`,
+                        position: 'fixed',
+                        top: `${window.innerHeight / 2 - namingBoxHeight / 2}px`,
+                        left: `${window.innerWidth / 2 - namingBoxWidth / 2}px`,
+                        backgroundColor: 'crimson',
+                        borderRadius: '5px',
+                        border: 'thin solid black',
+                        boxShadow: '7px 7px 15px black',
+                        padding: '5px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        zIndex: 1
+                    }}
+                >
+                    <div>
+                        Name your Combination:
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Type Combination Name"
+                        value={namingInput}
+                        onChange={e => setNamingInput(e.target.value)}
+                        style={{
+                            position: 'absolute',
+                            top: '45%'
+                        }}
+                    />
+                    <div
+                        style={{
+                            position: 'absolute',
+                            bottom: '5px'
+                        }}
+                    >
+                        <button 
+                            onClick={handleSaveNewClick}
+                        >
+                            Save
+                        </button>
+                        &nbsp;
+                        <button
+                            onClick={() => setNaming(false)}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
             <TabCard
                 depth={4}
                 title={combination.name || 'New Combination'}
             >
-                <button>
-                    Edit Name
+                <button onClick={() => setNaming(true)}>
+                    Save
                 </button>
                 
                 <br />
