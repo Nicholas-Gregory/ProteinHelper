@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useTabNav } from "../contexts/TabNav"
 
 export default function Tab({ 
