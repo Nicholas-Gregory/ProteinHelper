@@ -8,6 +8,8 @@ import TabNav from "../contexts/TabNav";
 import TabContent from "./TabContent";
 import NutrientViewer from "./NutrientViewer";
 import Tab from "./Tab";
+import { apiCall } from "../utils/http";
+import { useAuth } from "../contexts/UserContext";
 
 export default function Creator({
     combination,
@@ -21,6 +23,8 @@ export default function Creator({
     const [totalsTab, setTotalsTab] = useState('protein');
     const [naming, setNaming] = useState(false);
     const [namingInput, setNamingInput] = useState('');
+    const [namingError, setNamingError] = useState(null);
+    const { user: { id }, authorize } = useAuth();
     const namingBoxWidth = 250;
     const namingBoxHeight = 150;
 
@@ -51,8 +55,25 @@ export default function Creator({
         return result;
     }
 
-    function handleSaveNewClick() {
+    async function handleSaveNewClick() {
+        const response = await apiCall('POST', '/creation', {
+            user: id,
+            name: namingInput,
+            foods: combination.foods.map(food => ({
+                food: food.food._id,
+                unit: food.unit,
+                amount: food.amount
+            }))
+        }, authorize());
 
+        setNamingError(null);
+
+        if (response.error) {
+            setNamingError(response.type);
+            return;
+        }
+
+        setNaming('done')
     }
 
     return (
@@ -88,32 +109,50 @@ export default function Creator({
                             position: 'absolute',
                             top: '45%'
                         }}
+                        disabled={naming === 'done'}
                     />
-                    <div
-                        style={{
-                            position: 'absolute',
-                            bottom: '5px'
-                        }}
-                    >
-                        <button 
-                            onClick={handleSaveNewClick}
+                    {naming !== 'done' && (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: '5px'
+                            }}
                         >
-                            Save
-                        </button>
-                        &nbsp;
-                        <button
-                            onClick={() => setNaming(false)}
-                        >
-                            Cancel
-                        </button>
-                    </div>
+                            <button 
+                                onClick={handleSaveNewClick}
+                            >
+                                Save
+                            </button>
+                            &nbsp;
+                            <button
+                                onClick={() => setNaming(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    )}
+                    {namingError && (
+                        <div>
+                            {namingError}
+                        </div>
+                    )}
+                    {naming === 'done' && (
+                        <>
+                            <div>
+                                Save Successful!
+                            </div>
+                            <button onClick={() => setNaming(false)}>
+                                OK
+                            </button>
+                        </>
+                    )}
                 </div>
             )}
             <TabCard
                 depth={4}
                 title={combination.name || 'New Combination'}
             >
-                <button onClick={() => setNaming(true)}>
+                <button onClick={() => setNaming('naming')}>
                     Save
                 </button>
                 
