@@ -76,13 +76,27 @@ export default function UserProvider({ children }) {
         return localStorage.getItem(LOCAL_STORAGE_KEY);
     }
 
+    async function updateGoals(goals) {
+        const response = await apiCall('PUT', `/user/${user.id}`, { goals }, authorize());
+
+        if (!response.error) {
+            setUser({
+                ...user,
+                goals: [...response.goals]
+            });
+        }
+
+        return response;
+    }
+
     return (
         <UserContext.Provider 
             value={{
                 user,
                 login, logout,
                 signup,
-                authorize
+                authorize,
+                updateGoals
             }
         }>
             {children}

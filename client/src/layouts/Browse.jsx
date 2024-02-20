@@ -1,35 +1,41 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import TabNav from "../contexts/TabNav";
 import usePageName from "../hooks/usePageName";
+import TabNav from "../contexts/TabNav";
 import Tab from "../components/Tab";
 import TabContent from "../components/TabContent";
 
-export default function Auth({}) {
+export default function Browse({}) {
     const navigate = useNavigate();
-    const page = usePageName(1);
+    const page = usePageName(2);
 
     function handleTabClick(id) {
-        navigate(`/auth/${id}`);
+        navigate(`/explore/browse/${id}`);
     }
 
     return (
         <>
-            <h1>
-                Login/Sign Up
-            </h1>
+            <h2>
+                Browse
+            </h2>
 
             <TabNav onClick={handleTabClick}>
                 <Tab
-                    active={page === 'signup'}
-                    id='signup'
+                    id={'search'}
+                    active={page === 'search'}
                 >
-                    Sign Up
+                    Search
                 </Tab>
                 <Tab
-                    active={page === 'login'}
-                    id={'login'}
+                    id='new'
+                    active={page === 'new'}
                 >
-                    Log In
+                    New
+                </Tab>
+                <Tab
+                    id='friends'
+                    active={page === 'friends'}
+                >
+                    Friends
                 </Tab>
 
                 <TabContent>

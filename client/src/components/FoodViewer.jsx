@@ -1,50 +1,129 @@
-import AminoLevelsViewer from "./AminoLevelsViewer";
+import { useEffect, useState } from "react";
+import TabNav from "../contexts/TabNav";
+import NutrientViewer from "./NutrientViewer";
+import Tab from "./Tab";
+import TabContent from "./TabContent";
+import TabCard from "./TabCard";
+import { convertAmount, convertUnits } from "../utils/conversions";
 
 export default function FoodViewer({ 
+    id,
     food,
-    onCreateWithButtonClick 
+    amountsAndUnits,
+    onNutrientUnitChange,
+    children
 }) {
+    const [tab, setTab] = useState('protein');
+
+    function handleTabClick(id) {
+        setTab(id);
+    }
+
+    function getNutrientUnit(nutrientId) {
+        let unit;
+
+        unit = amountsAndUnits?.proteinNutrientUnits[food.proteinNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+        if (!unit) {
+            unit = amountsAndUnits?.vitaminAndAcidNutrientUnits[food.vitaminAndAcidNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+        }
+        if (!unit) {
+            unit = amountsAndUnits?.mineralNutrientUnits[food.mineralNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+        }
+    
+        return unit?.unit;
+    }
+
+    function handleNutrientUnitChange(nutrientId, value) {
+        onNutrientUnitChange(id, nutrientId, value);
+    }
+
+    function getNutrientAmount(nutrient) {
+        // return convertUnits(convertAmount(convertUnits(nutrient.amount, 'g', nutrient.unit), convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount), nutrient.unit, getNutrientUnit(nutrient._id));
+        const newNutrientUnit = getNutrientUnit(nutrient._id);
+        const amountInOriginalUnit = convertAmount(nutrient.amount, convertUnits(100, 'g', amountsAndUnits?.unit), amountsAndUnits?.amount);
+
+        return convertUnits(amountInOriginalUnit, nutrient.unit, newNutrientUnit);
+    }
+
     return (
-        <div
-            style={{
-                marginTop: '5px',
-                marginBottom: '5px'
-            }}
+        <TabCard 
+            depth={5}
+            title={food.name}
         >
-            <div className="tab-title tab-selected">
-                {food.name}
-            </div>
-            <div className="tab-content">
-                <AminoLevelsViewer 
-                    aminos={Object.keys(food)
-                    .filter(key => [
-                        'histidine',
-                        'isoleucine',
-                        'leucine',
-                        'lysine',
-                        'methionine',
-                        'phenylalanine',
-                        'threonine',
-                        'tryptophan',
-                        'valine'
-                    ].includes(key))
-                    .map(key => ({
-                        name: `${key.substring(0, 1).toUpperCase()}${key.substring(1)}`,
-                        amount: food[key],
-                        unit: 'g'
-                    }))}
-                />
-            </div>
+            {children}
 
             <br />
-            {onCreateWithButtonClick && 
-                <button
-                    onClick={() => onCreateWithButtonClick(food._id)}
+            <TabNav onClick={handleTabClick}>
+                <Tab
+                    active={tab === 'protein'}
+                    id={'protein'}
                 >
-                    Create With This Food
-                </button>
-            }
-        </div>
-    )
+                    Protein
+                </Tab>
+                <Tab
+                    active={tab === 'vitaoil'}
+                    id={'vitaoil'}
+                >
+                    Vitamins/Acids
+                </Tab>
+                <Tab
+                    active={tab === 'minerals'}
+                    id={'minerals'}
+                >
+                    Minerals
+                </Tab>
 
+                <TabContent>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap'
+                        }}
+                    >
+                        {tab === 'protein' && (
+                            <>
+                                {food.proteinNutrients.map(nutrient => (
+                                    <NutrientViewer
+                                        id={nutrient._id}
+                                        name={nutrient.name}
+                                        unit={getNutrientUnit(nutrient._id)}
+                                        amount={getNutrientAmount(nutrient)}
+                                        onUnitChange={handleNutrientUnitChange}
+                                    />
+                                ))}
+                            </>
+                        )}
+
+                        {tab === 'vitaoil' && (
+                            <>
+                                {food.vitaminAndAcidNutrients.map(nutrient => (
+                                    <NutrientViewer
+                                        id={nutrient._id}
+                                        name={nutrient.name}
+                                        unit={getNutrientUnit(nutrient._id)}
+                                        amount={getNutrientAmount(nutrient)}
+                                        onUnitChange={handleNutrientUnitChange}
+                                    />
+                                ))}
+                            </>
+                        )}
+
+                        {tab === 'minerals' && (
+                            <>
+                                {food.mineralNutrients.map(nutrient => (
+                                    <NutrientViewer
+                                        id={nutrient._id}
+                                        name={nutrient.name}
+                                        unit={getNutrientUnit(nutrient._id)}
+                                        amount={getNutrientAmount(nutrient)}
+                                        onUnitChange={handleNutrientUnitChange}
+                                    />
+                                ))}
+                            </>
+                        )}
+                    </div>
+                </TabContent>
+            </TabNav>
+        </TabCard>
+    )
 }

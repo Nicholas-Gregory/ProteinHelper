@@ -40,12 +40,17 @@ router.put('/:id', auth, async (req, res, next) => {
             throw new AuthenticationError('Must be logged in as user to edit profile');
         }
 
-        const user = await User.findByIdAndUpdate(userId, data, { 
+        const user = await User.findByIdAndUpdate(userId, { $set: data }, { 
             runValidators: true,
             new: true 
         });
 
-        res.status(200).json({ bio: user.bio });
+        console.log(user);
+
+        res.status(200).json({ 
+            bio: user.bio,
+            goals: user.goals
+        });
     } catch (error) {
         next(error);
     }

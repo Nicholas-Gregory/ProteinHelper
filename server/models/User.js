@@ -2,43 +2,20 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const goalsSchema = new Schema({
-    histidine: {
-        type: Number,
-        default: 1.022
+    name: {
+        type: String,
+        required: true
     },
-    isoleucine: {
+    amount: {
         type: Number,
-        default: 1.387
+        required: true
     },
-    leucine: {
-        type: Number,
-        default: 3.066
-    },
-    lysine: {
-        type: Number,
-        default: 2.774
-    },
-    methionine: {
-        type: Number,
-        default: 1.387
-    },
-    phenylalanine: {
-        type: Number,
-        default: 2.409
-    },
-    threonine: {
-        type: Number,
-        default: 1.46
-    },
-    tryptophan: {
-        type: Number,
-        default: 0.365
-    },
-    valine: {
-        type: Number,
-        default: 1.752
+    unit: {
+        type: String,
+        required: true,
+        match: /^g|mg|µg|oz|lb$/
     }
-})
+});
 
 const userSchema = new Schema({
     username: {
@@ -69,8 +46,7 @@ const userSchema = new Schema({
         }]
     },
     goals: {
-        type: goalsSchema, 
-        default: () => ({})
+        type: [goalsSchema]
     },
     following: {
         type: [{

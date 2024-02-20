@@ -1,80 +1,80 @@
 import { useState } from "react";
-import { useAuth } from "../contexts/UserContext"
+import { useAuth } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login({}) {
+    const { login } = useAuth();
     const [usernameOrEmailInput, setUsernameOrEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState(null);
-    const { login } = useAuth();
+    const navigate = useNavigate();
 
-    async function handleLoginSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        let response
-        if (usernameOrEmailInput.includes('@')) {
-            response = await login({
-                email: usernameOrEmailInput,
-                password: passwordInput
-            })
-        } else {
-            response = await login({
-                username: usernameOrEmailInput,
-                password: passwordInput
-            })
-        }
+        const response = await login({
+            username: usernameOrEmailInput,
+            email: usernameOrEmailInput,
+            password: passwordInput
+        });
+
+        setError(null);
 
         if (response.error) {
-            switch (response.type) {
-                case 'AuthenticationError':
-                    setError('Incorrect username/password/email');
-                    break;
-                default:
-                    setError('There was an error');
-            }
-        } else {
-            setUsernameOrEmailInput('');
-            setPasswordInput('');
+            setError(response.type);
+            return
         }
+
+        navigate(`/user/${response.user.id}`);
     }
-
-    function handleUsernameOrEmailInputChange(e) {
-        setUsernameOrEmailInput(e.target.value);
-
-        setError(null);
-    }
-
-    function handlePasswordInputChange(e) {
-        setPasswordInput(e.target.value);
-
-        setError(null);
-    }
-
+    
     return (
         <>
-            <form>
+            <h2>
+                Login
+            </h2>
+
+            <form
+                onSubmit={handleSubmit}
+            >
+                <label htmlFor='username-or-email-input'>
+                    Your Username or Email: &nbsp;
+                </label>
+                <br />
                 <input
+                    id="username-or-email-input"
                     type="text"
-                    id="username-or-email"
-                    placeholder="Username or Email"
                     value={usernameOrEmailInput}
-                    onChange={handleUsernameOrEmailInputChange}
+                    onChange={e => setUsernameOrEmailInput(e.target.value)}
+                    placeholder="Type Your Username/Email"
                 />
 
+                <br />
+                <br />
+                <label htmlFor="password-input">
+                    Your Password: &nbsp;
+                </label>
                 <br />
                 <input
+                    id="password-input"
                     type="password"
-                    id="password"
-                    placeholder="Password"
                     value={passwordInput}
-                    onChange={handlePasswordInputChange}
+                    onChange={e => setPasswordInput(e.target.value)}
+                    placeholder="Type Your Password"
                 />
 
                 <br />
                 <br />
-                <button onClick={handleLoginSubmit}>Submit</button>
+                <button>
+                    Submit
+                </button>
             </form>
 
-            {error && <div>{error}</div>}
+            {error && (
+                <p>
+                    {error}
+                </p>
+            )}
         </>
     )
 }

@@ -4,13 +4,13 @@ const { auth } = require('../../../middleware');
 const { Food } = require('../../../models');
 
 router.get('/named', auth, async (req, res, next) => {
-    const terms = req.query.terms
-    .split(',')
-    .map(keyword => ({ name: RegExp(keyword, 'i')}));
+    const term = req.query.term
 
-    let result;
+    let result = [];
     try {
-        result = await Food.find({ $or: terms });
+        if (term) {
+            result = await Food.find({ name: RegExp(term, 'i') });
+        }
     } catch (error) {
         next(error);
     }
