@@ -5,6 +5,7 @@ import Tab from "../components/Tab";
 import TabCard from '../components/TabCard';
 import TabContent from '../components/TabContent';
 import NutrientViewer from "../components/NutrientViewer";
+import { NUTRIENT_NAMES } from "../utils/nutrients";
 
 export default function UserCombinations({}) {
     const user = useOutletContext();
@@ -95,37 +96,15 @@ export default function UserCombinations({}) {
                             }}
                         >
                             {combinationTabs[index] === 'protein' && (
-                                getTotalsElements(combination, 'proteinNutrients', [
-                                    'Protein',
-                                    'Histidine',
-                                    'Isoleucine',
-                                    'Leucine',
-                                    'Lysine',
-                                    'Methionine',
-                                    'Phenylalanine',
-                                    'Threonine',
-                                    'Tryptophan',
-                                    'Valine'
-                                ])
+                                getTotalsElements(combination, 'proteinNutrients', NUTRIENT_NAMES.PROTEIN)
                             )}
 
                             {combinationTabs[index] === 'vitaoil' && (
-                                getTotalsElements(combination, 'vitaminAndAcidNutrients', [
-                                    'Vitamin B-12',
-                                    'Vitamin D',
-                                    'DHA Omega-3',
-                                    'ALA Omega-3',
-                                    'EPA Omega-3',
-                                ])
+                                getTotalsElements(combination, 'vitaminAndAcidNutrients', NUTRIENT_NAMES.VITAMIN_ACID)
                             )}
 
                             {combinationTabs[index] === 'minerals' && (
-                                getTotalsElements(combination, 'mineralNutrients', [
-                                    'Calcium, Ca',
-                                    'Iron, Fe',
-                                    'Zinc, Zn',
-                                    'Iodine'
-                                ])
+                                getTotalsElements(combination, 'mineralNutrients', NUTRIENT_NAMES.MINERAL)
                             )}
                         </div>
                     </TabContent>

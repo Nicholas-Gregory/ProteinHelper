@@ -1,3 +1,31 @@
+export const NUTRIENT_NAMES = {
+    PROTEIN: [
+        'Total Protein',
+        'Histidine',
+        'Isoleucine',
+        'Leucine',
+        'Lysine',
+        'Methionine',
+        'Phenylalanine',
+        'Threonine',
+        'Tryptophan',
+        'Valine'
+    ],
+    VITAMIN_ACID: [
+        'Vitamin B-12',
+        'Vitamin D',
+        'DHA Omega-3',
+        'ALA Omega-3',
+        'EPA Omega-3',
+    ],
+    MINERAL: [
+        'Calcium, Ca',
+        'Iron, Fe',
+        'Zinc, Zn',
+        'Iodine'
+    ]
+}
+
 export function getNutrientCategory(food, nutrientId) {
     let nutrientsArrayName;
     let nutrientIndex;
