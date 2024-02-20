@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FoodViewer from "./FoodViewer";
 import TabCard from "./TabCard";
 import UnitAmountForm from "./UnitAmountForm";
-import { convertUnits } from "../utils/conversions";
-import UnitSelect from "./UnitSelect";
+import { convertAmount, convertUnits } from "../utils/conversions";
 import TabNav from "../contexts/TabNav";
 import TabContent from "./TabContent";
 import NutrientViewer from "./NutrientViewer";
 import Tab from "./Tab";
 import { apiCall } from "../utils/http";
 import { useAuth } from "../contexts/UserContext";
+import { NUTRIENT_NAMES } from "../utils/nutrients";
 
 export default function Creator({
     combination,
@@ -17,9 +17,9 @@ export default function Creator({
     onFoodUnitChange,
     onNutrientUnitChange
 }) {
-    const [totalsProteinNutrientUnits, setTotalsProteinNutrientUnits] = useState(getTotalsNutrientUnitsArray('proteinNutrientUnits'));
-    const [totalsVitaminAndAcidNutrientUnits, setTotalsVitaminAndAcidNutrientUnits] = useState(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits'));
-    const [totalsMineralNutrientUnits, setTotalsMineralNutrientUnits] = useState(getTotalsNutrientUnitsArray('mineralNutrientUnits'));
+    const [totalsProteinNutrientUnits, setTotalsProteinNutrientUnits] = useState(getTotalsNutrientUnitsArray('proteinNutrientUnits', NUTRIENT_NAMES.PROTEIN));
+    const [totalsVitaminAndAcidNutrientUnits, setTotalsVitaminAndAcidNutrientUnits] = useState(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits', NUTRIENT_NAMES.VITAMIN_ACID));
+    const [totalsMineralNutrientUnits, setTotalsMineralNutrientUnits] = useState(getTotalsNutrientUnitsArray('mineralNutrientUnits', NUTRIENT_NAMES.MINERAL));
     const [totalsTab, setTotalsTab] = useState('protein');
     const [naming, setNaming] = useState(false);
     const [namingInput, setNamingInput] = useState('');
@@ -28,28 +28,57 @@ export default function Creator({
     const namingBoxWidth = 250;
     const namingBoxHeight = 150;
 
-    function getTotalsNutrientUnitsArray(arrayName) {
-        let result = [...combination.foods[0][arrayName]];
+    useEffect(() => {
+        setTotalsProteinNutrientUnits(getTotalsNutrientUnitsArray('proteinNutrientUnits', NUTRIENT_NAMES.PROTEIN));
+        setTotalsVitaminAndAcidNutrientUnits(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits', NUTRIENT_NAMES.VITAMIN_ACID));
+        setTotalsMineralNutrientUnits(getTotalsNutrientUnitsArray('mineralNutrientUnits', NUTRIENT_NAMES.MINERAL));
+    }, [combination]);
 
-        for (let i = 1; i < combination.foods.length; i++) {
-            result = [...result, combination.foods[i][arrayName].filter(nutrient => (
-                !result.some(secondNutrient => nutrient._id === secondNutrient._id)
-            ))];
+    function getTotalsNutrientUnitsArray(arrayName, nameArray) {
+        let result = nameArray.map(name => ({ name }));
+        
+        for (let i = 0; i < combination.foods.length; i++) {
+            result = result
+            .map(nutrient => ({
+                name: nutrient.name,
+                unit: (combination.foods[i][arrayName]
+                .find(n => n.name === nutrient.name) || { unit: null })
+                .unit
+            }));
         }
 
-        return result;
+        return result.filter(n => n.unit);
     }
 
     function getTotalsNutrientArray(arrayName) {
-        let result = [...combination.foods[0].food[arrayName]];
+        let result;
+        if (arrayName === 'proteinNutrients') {
+            result = totalsProteinNutrientUnits.map(nutrient => ({
+                name: nutrient.name,
+                amount: 0,
+                unit: nutrient.unit
+            }));
+        } else if (arrayName === 'vitaminAndAcidNutrients') {
+            result = totalsVitaminAndAcidNutrientUnits.map(nutrient => ({
+                name: nutrient.name,
+                amount: 0,
+                unit: nutrient.unit
+            }));
+        } else if (arrayName === 'mineralNutrients') {
+            result = totalsMineralNutrientUnits.map(nutrient => ({
+                name: nutrient.name,
+                amount: 0,
+                unit: nutrient.unit
+            }));
+        }
 
-        for (let i = 1; i < combination.foods.length; i++) {
-            result = result.map(nutrient => {
-                return ({
+        for (let food of combination.foods) {
+            result = result.map(nutrient => ({
                 ...nutrient,
-                amount: nutrient.amount + (combination.foods[i].food[arrayName]
-                .find(n => n.name === nutrient.name) || { amount: 0 }).amount
-            })});
+                amount: nutrient.amount + convertAmount((food.food[arrayName]
+                    .find(n => n.name === nutrient.name) || { amount: 0 })
+                    .amount, convertUnits(100, 'g', food.unit), food.amount)
+            }))
         }
 
         return result;

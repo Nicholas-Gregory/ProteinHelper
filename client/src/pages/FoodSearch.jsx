@@ -22,14 +22,17 @@ export default function FoodSearch({}) {
             amount: 100,
             unit: 'g',
             proteinNutrientUnits: food.proteinNutrients.map(nutrient => ({
+                name: nutrient.name,
                 unit: nutrient.unit,
                 id: nutrient._id
             })),
             vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrients.map(nutrient => ({
+                name: nutrient.name,
                 unit: nutrient.unit,
                 id: nutrient._id
             })),
             mineralNutrientUnits: food.mineralNutrients.map(nutrient => ({
+                name: nutrient.name,
                 unit: nutrient.unit,
                 id: nutrient._id
             }))
