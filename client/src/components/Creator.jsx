@@ -29,12 +29,12 @@ export default function Creator({
     const namingBoxHeight = 150;
 
     useEffect(() => {
-        setTotalsProteinNutrientUnits(getTotalsNutrientUnitsArray('proteinNutrientUnits', NUTRIENT_NAMES.PROTEIN));
-        setTotalsVitaminAndAcidNutrientUnits(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits', NUTRIENT_NAMES.VITAMIN_ACID));
-        setTotalsMineralNutrientUnits(getTotalsNutrientUnitsArray('mineralNutrientUnits', NUTRIENT_NAMES.MINERAL));
+        setTotalsProteinNutrientUnits(getTotalsNutrientUnitsArray('proteinNutrientUnits', NUTRIENT_NAMES.PROTEIN, totalsProteinNutrientUnits));
+        setTotalsVitaminAndAcidNutrientUnits(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits', NUTRIENT_NAMES.VITAMIN_ACID, totalsVitaminAndAcidNutrientUnits));
+        setTotalsMineralNutrientUnits(getTotalsNutrientUnitsArray('mineralNutrientUnits', NUTRIENT_NAMES.MINERAL, totalsMineralNutrientUnits));
     }, [combination]);
 
-    function getTotalsNutrientUnitsArray(arrayName, nameArray) {
+    function getTotalsNutrientUnitsArray(arrayName, nameArray, oldArray) {
         let result = nameArray.map(name => ({ name }));
         
         for (let i = 0; i < combination.foods.length; i++) {
@@ -42,7 +42,7 @@ export default function Creator({
             .map(nutrient => ({
                 name: nutrient.name,
                 unit: (combination.foods[i][arrayName]
-                .find(n => n.name === nutrient.name) || { unit: null })
+                .find(n => n.name === nutrient.name) || (oldArray ? oldArray.find(n => n.name === nutrient.name) : null) || { unit: null })
                 .unit
             }));
         }
@@ -52,23 +52,36 @@ export default function Creator({
 
     function getTotalsNutrientArray(arrayName) {
         let result;
+
+        const getUnit = nutrient => {
+            let result;
+
+            for (let food of combination.foods) {
+                result = food.food[arrayName].find(n => n.name === nutrient.name);
+
+                if (result) break;
+            }
+
+            return result.unit;
+        }
+
         if (arrayName === 'proteinNutrients') {
             result = totalsProteinNutrientUnits.map(nutrient => ({
                 name: nutrient.name,
                 amount: 0,
-                unit: nutrient.unit
+                unit: getUnit(nutrient)
             }));
         } else if (arrayName === 'vitaminAndAcidNutrients') {
             result = totalsVitaminAndAcidNutrientUnits.map(nutrient => ({
                 name: nutrient.name,
                 amount: 0,
-                unit: nutrient.unit
+                unit: getUnit(nutrient)
             }));
         } else if (arrayName === 'mineralNutrients') {
             result = totalsMineralNutrientUnits.map(nutrient => ({
                 name: nutrient.name,
                 amount: 0,
-                unit: nutrient.unit
+                unit: getUnit(nutrient)
             }));
         }
 
