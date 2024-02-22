@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FoodViewer from "./FoodViewer";
-import TabCard from "./TabCard";
+import TabCard from "../contexts/TabCard";
 import UnitAmountForm from "./UnitAmountForm";
 import { convertAmount, convertUnits } from "../utils/conversions";
 import TabNav from "../contexts/TabNav";
@@ -10,6 +10,8 @@ import Tab from "./Tab";
 import { apiCall } from "../utils/http";
 import { useAuth } from "../contexts/UserContext";
 import { NUTRIENT_NAMES } from "../utils/nutrients";
+import TabCardTitle from "./TabCardTitle";
+import TabCardContent from "./TabCardContent";
 
 export default function Creator({
     combination,
@@ -190,129 +192,133 @@ export default function Creator({
                     )}
                 </div>
             )}
-            <TabCard
-                depth={4}
-                title={combination.name || 'New Combination'}
-            >
-                <button onClick={() => setNaming('naming')}>
-                    Save
-                </button>
-                
-                <br />
-                <br />
-                <strong>
-                    Foods
-                </strong>
-                <hr />
-                {combination.foods.map((food, index) => (
-                    <FoodViewer
-                        id={index}
-                        food={food.food}
-                        amountsAndUnits={{
-                            unit: food.unit,
-                            amount: food.amount,
-                            proteinNutrientUnits: food.proteinNutrientUnits,
-                            vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrientUnits,
-                            mineralNutrientUnits: food.mineralNutrientUnits
-                        }}
-                        onNutrientUnitChange={(foodId, nutrientId, value) => onNutrientUnitChange(foodId, nutrientId, value)}
-                    >
-                        <button>
-                            Remove
-                        </button>
-
-                        <br />
-                        <br />
-                        <UnitAmountForm
+            <TabCard color='cadetblue'>
+                <TabCardTitle>
+                    <h4>
+                        {combination.name || 'New Combination'}
+                    </h4>
+                </TabCardTitle>
+                <TabCardContent>
+                    <button onClick={() => setNaming('naming')}>
+                        Save
+                    </button>
+                    
+                    <br />
+                    <br />
+                    <strong>
+                        Foods
+                    </strong>
+                    <hr />
+                    {combination.foods.map((food, index) => (
+                        <FoodViewer
                             id={index}
-                            unit={food.unit}
-                            amount={food.amount}
-                            onAmountChange={(id, value) => onFoodAmountChange(id, value)}
-                            onUnitChange={(id, value) => onFoodUnitChange(id, value)}
-                        />
-                    </FoodViewer>
-                ))}
-                
-                {combination.foods.length > 0 && (
-                    <>
-                        <br />
-                        <br />
-                        <strong>
-                            Totals
-                        </strong>
-                        <hr />
-                        <TabNav
-                            onClick={id => setTotalsTab(id)}
+                            food={food.food}
+                            amountsAndUnits={{
+                                unit: food.unit,
+                                amount: food.amount,
+                                proteinNutrientUnits: food.proteinNutrientUnits,
+                                vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrientUnits,
+                                mineralNutrientUnits: food.mineralNutrientUnits
+                            }}
+                            onNutrientUnitChange={(foodId, nutrientId, value) => onNutrientUnitChange(foodId, nutrientId, value)}
                         >
-                            <Tab
-                                id='protein'
-                                active={totalsTab === 'protein'}
-                            >
-                                Protein
-                            </Tab>
-                            <Tab
-                                id='vitaoil'
-                                active={totalsTab === 'vitaoil'}
-                            >
-                                Vitamins/Acids
-                            </Tab>
-                            <Tab
-                                id='minerals'
-                                active={totalsTab === 'minerals'}
-                            >
-                                Minerals
-                            </Tab>
+                            <button>
+                                Remove
+                            </button>
 
-                            <TabContent>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexWrap: 'wrap'
-                                    }}
+                            <br />
+                            <br />
+                            <UnitAmountForm
+                                id={index}
+                                unit={food.unit}
+                                amount={food.amount}
+                                onAmountChange={(id, value) => onFoodAmountChange(id, value)}
+                                onUnitChange={(id, value) => onFoodUnitChange(id, value)}
+                            />
+                        </FoodViewer>
+                    ))}
+                    
+                    {combination.foods.length > 0 && (
+                        <>
+                            <br />
+                            <br />
+                            <strong>
+                                Totals
+                            </strong>
+                            <hr />
+                            <TabNav
+                                onClick={id => setTotalsTab(id)}
+                            >
+                                <Tab
+                                    id='protein'
+                                    active={totalsTab === 'protein'}
                                 >
-                                    {totalsTab === 'protein' && (
-                                        getTotalsNutrientArray('proteinNutrients').map((nutrient, index) => (
-                                            <NutrientViewer
-                                                id={index}
-                                                name={nutrient.name}
-                                                unit={totalsProteinNutrientUnits[index].unit}
-                                                amount={convertUnits(nutrient.amount, nutrient.unit, totalsProteinNutrientUnits[index].unit)}
-                                                onUnitChange={(id, value) => setTotalsProteinNutrientUnits(totalsProteinNutrientUnits
-                                                    .map((unit, index) => id === index ? { ...unit, unit: value } : unit))}
-                                            />
-                                        ))
-                                    )}
+                                    Protein
+                                </Tab>
+                                <Tab
+                                    id='vitaoil'
+                                    active={totalsTab === 'vitaoil'}
+                                >
+                                    Vitamins/Acids
+                                </Tab>
+                                <Tab
+                                    id='minerals'
+                                    active={totalsTab === 'minerals'}
+                                >
+                                    Minerals
+                                </Tab>
 
-                                    {totalsTab === 'vitaoil' && (
-                                        getTotalsNutrientArray('vitaminAndAcidNutrients').map((nutrient, index) => (
-                                            <NutrientViewer
-                                                id={index}
-                                                name={nutrient.name}
-                                                unit={totalsVitaminAndAcidNutrientUnits[index].unit}
-                                                amount={convertUnits(nutrient.amount, nutrient.unit, totalsVitaminAndAcidNutrientUnits[index].unit)}
-                                                onUnitChange={(id, value) => setTotalsVitaminAndAcidNutrientUnits(totalsVitaminAndAcidNutrientUnits
-                                                    .map((unit, index) => id === index ? { ...unit, unit: value } : unit))}
-                                            />
-                                        ))
-                                    )}
+                                <TabContent>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexWrap: 'wrap'
+                                        }}
+                                    >
+                                        {totalsTab === 'protein' && (
+                                            getTotalsNutrientArray('proteinNutrients').map((nutrient, index) => (
+                                                <NutrientViewer
+                                                    id={index}
+                                                    name={nutrient.name}
+                                                    unit={totalsProteinNutrientUnits[index].unit}
+                                                    amount={convertUnits(nutrient.amount, nutrient.unit, totalsProteinNutrientUnits[index].unit)}
+                                                    onUnitChange={(id, value) => setTotalsProteinNutrientUnits(totalsProteinNutrientUnits
+                                                        .map((unit, index) => id === index ? { ...unit, unit: value } : unit))}
+                                                />
+                                            ))
+                                        )}
 
-                                    {totalsTab === 'minerals' && (
-                                        getTotalsNutrientArray('mineralNutrients').map((nutrient, index) => (
-                                            <NutrientViewer
-                                                id={index}
-                                                name={nutrient.name}
-                                                unit={totalsMineralNutrientUnits[index].unit}
-                                                amount={convertUnits(nutrient.amount, nutrient.unit, totalsMineralNutrientUnits[index].unit)}
-                                                onUnitChange={(id, value) => setTotalsMineralNutrientUnits(totalsMineralNutrientUnits
-                                                    .map((unit, index) => id === index ? { ...unit, unit: value } : unit))}
-                                            />
-                                        ))
-                                    )}
-                                </div>
-                            </TabContent>
-                        </TabNav>
-                    </>
-                )}
+                                        {totalsTab === 'vitaoil' && (
+                                            getTotalsNutrientArray('vitaminAndAcidNutrients').map((nutrient, index) => (
+                                                <NutrientViewer
+                                                    id={index}
+                                                    name={nutrient.name}
+                                                    unit={totalsVitaminAndAcidNutrientUnits[index].unit}
+                                                    amount={convertUnits(nutrient.amount, nutrient.unit, totalsVitaminAndAcidNutrientUnits[index].unit)}
+                                                    onUnitChange={(id, value) => setTotalsVitaminAndAcidNutrientUnits(totalsVitaminAndAcidNutrientUnits
+                                                        .map((unit, index) => id === index ? { ...unit, unit: value } : unit))}
+                                                />
+                                            ))
+                                        )}
+
+                                        {totalsTab === 'minerals' && (
+                                            getTotalsNutrientArray('mineralNutrients').map((nutrient, index) => (
+                                                <NutrientViewer
+                                                    id={index}
+                                                    name={nutrient.name}
+                                                    unit={totalsMineralNutrientUnits[index].unit}
+                                                    amount={convertUnits(nutrient.amount, nutrient.unit, totalsMineralNutrientUnits[index].unit)}
+                                                    onUnitChange={(id, value) => setTotalsMineralNutrientUnits(totalsMineralNutrientUnits
+                                                        .map((unit, index) => id === index ? { ...unit, unit: value } : unit))}
+                                                />
+                                            ))
+                                        )}
+                                    </div>
+                                </TabContent>
+                            </TabNav>
+                        </>
+                    )}
+                </TabCardContent>
             </TabCard>
         </>
     )

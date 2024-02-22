@@ -3,12 +3,14 @@ import TabNav from "../contexts/TabNav";
 import Tab from "../components/Tab";
 import TabContent from "../components/TabContent";
 import { Fragment, useEffect, useState } from "react";
-import TabCard from "../components/TabCard";
+import TabCard from "../contexts/TabCard";
 import SearchBar from "../components/SearchBar";
 import useData from "../hooks/useData";
 import FoodViewer from "../components/FoodViewer";
 import UnitAmountForm from "../components/UnitAmountForm";
 import { getNutrientCategory } from "../utils/nutrients";
+import TabCardTitle from "../components/TabCardTitle";
+import TabCardContent from "../components/TabCardContent";
 
 export default function FoodSearch({}) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -95,11 +97,13 @@ export default function FoodSearch({}) {
 
     return (
         <>
-            <TabCard
-                depth={4}
-                title={"Food Search"}
-            >
-                <>
+            <TabCard color='cadetblue'>
+                <TabCardTitle>
+                    <h4>
+                        Food Search
+                    </h4>
+                </TabCardTitle>
+                <TabCardContent>
                     <TabNav onClick={handleTabClick}>
                         <Tab 
                             id="keyword"
@@ -160,7 +164,7 @@ export default function FoodSearch({}) {
                             {error}
                         </p>
                     )}
-                </>
+                </TabCardContent>
             </TabCard>
         </>
     )

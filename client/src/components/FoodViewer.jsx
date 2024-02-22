@@ -3,8 +3,10 @@ import TabNav from "../contexts/TabNav";
 import NutrientViewer from "./NutrientViewer";
 import Tab from "./Tab";
 import TabContent from "./TabContent";
-import TabCard from "./TabCard";
+import TabCard from "../contexts/TabCard";
 import { convertAmount, convertUnits } from "../utils/conversions";
+import TabCardTitle from "./TabCardTitle";
+import TabCardContent from "./TabCardContent";
 
 export default function FoodViewer({ 
     id,
@@ -46,84 +48,88 @@ export default function FoodViewer({
     }
 
     return (
-        <TabCard 
-            depth={5}
-            title={food.name}
-        >
-            {children}
+        <TabCard color='cadetblue'>
+            <TabCardTitle>
+                <h5>
+                    {food.name}
+                </h5>
+            </TabCardTitle>
+            <TabCardContent>
+                {children}
 
-            <br />
-            <TabNav onClick={handleTabClick}>
-                <Tab
-                    active={tab === 'protein'}
-                    id={'protein'}
-                >
-                    Protein
-                </Tab>
-                <Tab
-                    active={tab === 'vitaoil'}
-                    id={'vitaoil'}
-                >
-                    Vitamins/Acids
-                </Tab>
-                <Tab
-                    active={tab === 'minerals'}
-                    id={'minerals'}
-                >
-                    Minerals
-                </Tab>
-
-                <TabContent>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap'
-                        }}
+                <br />
+                <TabNav onClick={handleTabClick}>
+                    <Tab
+                        active={tab === 'protein'}
+                        id={'protein'}
                     >
-                        {tab === 'protein' && (
-                            <>
-                                {food.proteinNutrients.map(nutrient => (
-                                    <NutrientViewer
-                                        id={nutrient._id}
-                                        name={nutrient.name}
-                                        unit={getNutrientUnit(nutrient._id)}
-                                        amount={getNutrientAmount(nutrient)}
-                                        onUnitChange={handleNutrientUnitChange}
-                                    />
-                                ))}
-                            </>
-                        )}
+                        Protein
+                    </Tab>
+                    <Tab
+                        active={tab === 'vitaoil'}
+                        id={'vitaoil'}
+                    >
+                        Vitamins/Acids
+                    </Tab>
+                    <Tab
+                        active={tab === 'minerals'}
+                        id={'minerals'}
+                    >
+                        Minerals
+                    </Tab>
 
-                        {tab === 'vitaoil' && (
-                            <>
-                                {food.vitaminAndAcidNutrients.map(nutrient => (
-                                    <NutrientViewer
-                                        id={nutrient._id}
-                                        name={nutrient.name}
-                                        unit={getNutrientUnit(nutrient._id)}
-                                        amount={getNutrientAmount(nutrient)}
-                                        onUnitChange={handleNutrientUnitChange}
-                                    />
-                                ))}
-                            </>
-                        )}
+                    <TabContent>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexWrap: 'wrap'
+                            }}
+                        >
+                            {tab === 'protein' && (
+                                <>
+                                    {food.proteinNutrients.map(nutrient => (
+                                        <NutrientViewer
+                                            id={nutrient._id}
+                                            name={nutrient.name}
+                                            unit={getNutrientUnit(nutrient._id)}
+                                            amount={getNutrientAmount(nutrient)}
+                                            onUnitChange={handleNutrientUnitChange}
+                                        />
+                                    ))}
+                                </>
+                            )}
 
-                        {tab === 'minerals' && (
-                            <>
-                                {food.mineralNutrients.map(nutrient => (
-                                    <NutrientViewer
-                                        id={nutrient._id}
-                                        name={nutrient.name}
-                                        unit={getNutrientUnit(nutrient._id)}
-                                        amount={getNutrientAmount(nutrient)}
-                                        onUnitChange={handleNutrientUnitChange}
-                                    />
-                                ))}
-                            </>
-                        )}
-                    </div>
-                </TabContent>
-            </TabNav>
+                            {tab === 'vitaoil' && (
+                                <>
+                                    {food.vitaminAndAcidNutrients.map(nutrient => (
+                                        <NutrientViewer
+                                            id={nutrient._id}
+                                            name={nutrient.name}
+                                            unit={getNutrientUnit(nutrient._id)}
+                                            amount={getNutrientAmount(nutrient)}
+                                            onUnitChange={handleNutrientUnitChange}
+                                        />
+                                    ))}
+                                </>
+                            )}
+
+                            {tab === 'minerals' && (
+                                <>
+                                    {food.mineralNutrients.map(nutrient => (
+                                        <NutrientViewer
+                                            id={nutrient._id}
+                                            name={nutrient.name}
+                                            unit={getNutrientUnit(nutrient._id)}
+                                            amount={getNutrientAmount(nutrient)}
+                                            onUnitChange={handleNutrientUnitChange}
+                                        />
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                    </TabContent>
+                </TabNav>
+            </TabCardContent>
         </TabCard>
     )
 }
