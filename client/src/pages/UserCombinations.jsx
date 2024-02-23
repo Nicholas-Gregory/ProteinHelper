@@ -8,10 +8,41 @@ import NutrientViewer from "../components/NutrientViewer";
 import { NUTRIENT_NAMES } from "../utils/nutrients";
 import TabCardContent from "../components/TabCardContent";
 import TabCardTitle from "../components/TabCardTitle";
+import { convertUnits } from "../utils/conversions";
 
 export default function UserCombinations({}) {
     const user = useOutletContext();
     const [combinationTabs, setCombinationTabs] = useState([]);
+    const [units, setUnits] = useState([]);
+
+    useEffect(() => {
+        if (user) {
+            user.creations.forEach(creation => (
+                creation.foods.forEach(food => {
+                    food.food.proteinNutrients.forEach(nutrient => (
+                        setUnits(units => [...units, {
+                            id: nutrient._id,
+                            unit: nutrient.unit
+                        }])
+                    ));
+
+                    food.food.vitaminAndAcidNutrients.forEach(nutrient => (
+                        setUnits(units => [...units, {
+                            id: nutrient._id,
+                            unit: nutrient.unit
+                        }])
+                    ));
+
+                    food.food.mineralNutrients.forEach(nutrient => (
+                        setUnits(units => [...units, {
+                            id: nutrient._id,
+                            unit: nutrient.unit
+                        }])
+                    ));
+                })
+            ));
+        }
+    }, [user]);
 
     useEffect(() => {
         if (user) {
@@ -35,7 +66,10 @@ export default function UserCombinations({}) {
                     .amount,
                     unit: (food.food[nutrientArrayName]
                     .find(nutrient => nutrient.name === total.name) || { unit: null })
-                    .unit
+                    .unit,
+                    id: (food.food[nutrientArrayName]
+                    .find(nutrient => nutrient.name === total.name) || { _id: null })
+                    ._id
                 }
             ))
         ), nutrientNameArray.map(nutrient => ({
@@ -45,10 +79,11 @@ export default function UserCombinations({}) {
         .filter(nutrient => nutrient.unit)
         .map((nutrient, index) => (
             <NutrientViewer
-                id={index}
+                id={nutrient.id}
                 name={nutrient.name}
-                unit={nutrient.unit}
-                amount={nutrient.amount}
+                unit={units.find(unit => unit.id === nutrient.id).unit}
+                amount={convertUnits(nutrient.amount, nutrient.unit, units.find(unit => unit.id === nutrient.id).unit)}
+                onUnitChange={(id, value) => setUnits(units.map(unit => unit.id === id ? { ...unit, unit: value } : unit))}
             />
         ));
     }
