@@ -24,12 +24,13 @@ export default function FoodViewer({
     function getNutrientUnit(nutrientId) {
         let unit;
 
-        unit = amountsAndUnits?.proteinNutrientUnits[food.proteinNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+        // unit = amountsAndUnits?.proteinNutrientUnits[food.proteinNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+        unit = amountsAndUnits?.proteinNutrientUnits.find(unit => unit._id === nutrientId);
         if (!unit) {
-            unit = amountsAndUnits?.vitaminAndAcidNutrientUnits[food.vitaminAndAcidNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+            unit = amountsAndUnits?.vitaminAndAcidNutrientUnits.find(unit => unit._id === nutrientId);
         }
         if (!unit) {
-            unit = amountsAndUnits?.mineralNutrientUnits[food.mineralNutrients.findIndex(nutrient => nutrientId === nutrient._id)];
+            unit = amountsAndUnits?.mineralNutrientUnits.find(unit => unit._id === nutrientId);
         }
     
         return unit?.unit;
