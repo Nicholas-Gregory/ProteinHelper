@@ -12,11 +12,13 @@ import TabContent from "../components/TabContent";
 import { NUTRIENT_NAMES } from "../utils/nutrients";
 import { convertAmount, convertUnits } from "../utils/conversions";
 import NutrientViewer from "../components/NutrientViewer";
+import UnitAmountForm from "../components/UnitAmountForm";
+import { apiCall } from "../utils/http";
 
 export default function Combination({}) {
-    const { authorize } = useAuth();
+    const { authorize, user: { id: userId } } = useAuth();
     const { combinationId } = useParams();
-    const { data, error } = useData('GET', `/creation/${combinationId}`, null, authorize());
+    const { data, error, reload } = useData('GET', `/creation/${combinationId}`, null, authorize());
     const [proteinNutrientUnits, setProteinNutrientUnits] = useState([]);
     const [vitaminAndAcidNutrientUnits, setVitaminAndAcidNutrientUnits] = useState([]);
     const [mineralNutrientUnits, setMineralNutrientUnits] = useState([]);
@@ -25,6 +27,10 @@ export default function Combination({}) {
     const [totalsVitaminAcid, setTotalsVitaminAcid] = useState([]);
     const [totalsMineral, setTotalsMineral] = useState([]);
     const [totalsUnits, setTotalsUnits] = useState([]);
+    const [editing, setEditing] = useState(false);
+    const [editingFoodUnitsAndAmounts, setEditingFoodUnitsAndAmounts] = useState([]);
+    const [editingName, setEditingName] = useState('');
+    const [saveError, setSaveError] = useState(null);
 
     useEffect(() => {
         if (data) {
@@ -64,6 +70,9 @@ export default function Combination({}) {
                 ...vitacid.map(({ id, unit }) => ({ id, unit })),
                 ...mineral.map(({ id, unit }) => ({ id, unit }))
             ]);
+
+            setEditingFoodUnitsAndAmounts(data.foods.map(({ unit, amount, food }) => ({ unit, amount, food })))
+            setEditingName(data.name);
         }
     }, [data]);
 
@@ -137,21 +146,90 @@ export default function Combination({}) {
         setTotalsUnits(units => units.map(unit => unit.id === nutrientId ? { ...unit, unit: value } : unit))
     }
 
+    function handleFoodAmountChange(id, value) {
+        setEditingFoodUnitsAndAmounts(editingFoodUnitsAndAmounts.map((food, index) => (
+            index === id ? (
+                {
+                    ...food,
+                    amount: value
+                }
+            ) : (
+                food
+            )
+        )));
+    }
+
+    function handleFoodUnitChange(id, value) {
+        setEditingFoodUnitsAndAmounts(editingFoodUnitsAndAmounts.map((food, index) => (
+            index === id ? (
+                {
+                    ...food,
+                    unit: value
+                }
+            ) : (
+                food
+            )
+        )));
+    }
+
+    async function handleSaveClick() {
+        const response = await apiCall('PUT', `/creation/${combinationId}`, {
+            name: editingName,
+            foods: editingFoodUnitsAndAmounts
+        },  authorize());
+
+        if (response.error) {
+            setSaveError(response.type);
+            return;
+        }
+
+        setEditing(false);
+        await reload();
+    }
+
     return (
         <>
+            {saveError && (
+                <p>
+                    {saveError}
+                </p>
+            )}
             <TabCard color={'cadetblue'}>
                 <TabCardTitle>
-                    <h3>
-                        {data?.name}
-                    </h3>
+                    {editing ? (
+                        <input
+                            type="text"
+                            placeholder="Combination Name"
+                            value={editingName}
+                            onChange={e => setEditingName(e.target.value)}
+                        />
+                    ) : (
+                        <h3>
+                            {data?.name}
+                        </h3>
+                    )}
                 </TabCardTitle>
 
                 <TabCardContent>
+                    {userId === data?.user && (
+                        <>
+                            {editing ? (
+                                <button onClick={handleSaveClick}>
+                                    Save
+                                </button>
+                            ) : (
+                                <button onClick={() => setEditing(true)}>
+                                    Edit
+                                </button>
+                            )}
+                        </>
+                    )}
+
                     <h4>
                         Foods
                     </h4>
                     <hr />
-                    {data?.foods.map(food => (
+                    {data?.foods.map((food, index) => (
                         <FoodViewer
                             food={food.food}
                             amountsAndUnits={{
@@ -163,9 +241,23 @@ export default function Combination({}) {
                             }}
                             onNutrientUnitChange={handleNutrientUnitChange}
                         >
-                            <p>
-                                Amount: {food.amount}{food.unit}
-                            </p>
+                            {editing ? (
+                                <>
+                                    <br />
+                                    <br />
+                                    <UnitAmountForm
+                                        id={index}
+                                        unit={editingFoodUnitsAndAmounts[index].unit}
+                                        amount={editingFoodUnitsAndAmounts[index].amount}
+                                        onAmountChange={(id, value) => handleFoodAmountChange(id, value)}
+                                        onUnitChange={(id, value) => handleFoodUnitChange(id, value)}
+                                    />
+                                </>
+                            ) : (
+                                <p>
+                                    Amount: {food.amount}{food.unit}
+                                </p>
+                            )}
                         </FoodViewer>
                     ))}
 

@@ -19,5 +19,15 @@ export default function useData(method, route, body) {
         })();
     }, [method, route, body]);
 
-    return { data, error };
+    async function reload() {
+        const response = await apiCall(method, route, body, authorize());
+
+        if (response.error) {
+            setError(response.type);
+        } else {
+            setData(response);
+        }
+    }
+
+    return { data, error, reload };
 }
