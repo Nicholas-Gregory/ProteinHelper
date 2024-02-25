@@ -26,17 +26,17 @@ export default function FoodSearch({}) {
             proteinNutrientUnits: food.proteinNutrients.map(nutrient => ({
                 name: nutrient.name,
                 unit: nutrient.unit,
-                id: nutrient._id
+                _id: nutrient._id
             })),
             vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrients.map(nutrient => ({
                 name: nutrient.name,
                 unit: nutrient.unit,
-                id: nutrient._id
+                _id: nutrient._id
             })),
             mineralNutrientUnits: food.mineralNutrients.map(nutrient => ({
                 name: nutrient.name,
                 unit: nutrient.unit,
-                id: nutrient._id
+                _id: nutrient._id
             }))
         })));
     }, [data]);
