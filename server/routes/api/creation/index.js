@@ -34,8 +34,6 @@ router.put('/:creationId', auth, async (req, res, next) => {
             throw new ResourceNotFoundError(`No Creation with id ${creationId} exists.`);
         }
 
-        console.log(new ObjectId(req.userId).equals(creation.user));
-
         if (!new ObjectId(req.userId).equals(creation.user)) {
             throw new AuthenticationError('Must be logged in as owner of Creation to edit it.');
         }
