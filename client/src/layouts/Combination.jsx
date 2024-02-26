@@ -187,6 +187,10 @@ export default function Combination({}) {
         await reload();
     }
 
+    function handleRemoveClick(index) {
+        setEditingFoodUnitsAndAmounts(editingFoodUnitsAndAmounts.filter((food, foodIndex) => index !== foodIndex))
+    }
+
     return (
         <>
             {saveError && (
@@ -229,7 +233,7 @@ export default function Combination({}) {
                         Foods
                     </h4>
                     <hr />
-                    {data?.foods.map((food, index) => (
+                    {editingFoodUnitsAndAmounts?.map((food, index) => (
                         <FoodViewer
                             food={food.food}
                             amountsAndUnits={{
@@ -243,6 +247,9 @@ export default function Combination({}) {
                         >
                             {editing ? (
                                 <>
+                                    <button onClick={() => handleRemoveClick(index)}>
+                                        Remove
+                                    </button>
                                     <br />
                                     <br />
                                     <UnitAmountForm
