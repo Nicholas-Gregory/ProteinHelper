@@ -47,6 +47,13 @@ export default function CombineNew({}) {
         })
     }
 
+    function handleRemoveFoodClick(foodIndex) {
+        setCombination({
+            ...combination,
+            foods: combination.foods.filter((food, index) => index !== foodIndex)
+        });
+    }
+
     return (
         <>
             {combination.foods.length > 0 && (
@@ -55,6 +62,7 @@ export default function CombineNew({}) {
                     onFoodAmountChange={handleFoodAmountChange}
                     onFoodUnitChange={handleFoodUnitChange}
                     onNutrientUnitChange={handleNutrientUnitChange}
+                    onRemove={handleRemoveFoodClick}
                 />
             )}
 

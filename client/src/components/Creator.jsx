@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import FoodViewer from "./FoodViewer";
 import TabCard from "../contexts/TabCard";
 import UnitAmountForm from "./UnitAmountForm";
@@ -17,7 +17,8 @@ export default function Creator({
     combination,
     onFoodAmountChange,
     onFoodUnitChange,
-    onNutrientUnitChange
+    onNutrientUnitChange,
+    onRemove
 }) {
     const [totalsProteinNutrientUnits, setTotalsProteinNutrientUnits] = useState(getTotalsNutrientUnitsArray('proteinNutrientUnits', NUTRIENT_NAMES.PROTEIN));
     const [totalsVitaminAndAcidNutrientUnits, setTotalsVitaminAndAcidNutrientUnits] = useState(getTotalsNutrientUnitsArray('vitaminAndAcidNutrientUnits', NUTRIENT_NAMES.VITAMIN_ACID));
@@ -210,32 +211,34 @@ export default function Creator({
                     </strong>
                     <hr />
                     {combination.foods.map((food, index) => (
-                        <FoodViewer
-                            id={index}
-                            food={food.food}
-                            amountsAndUnits={{
-                                unit: food.unit,
-                                amount: food.amount,
-                                proteinNutrientUnits: food.proteinNutrientUnits,
-                                vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrientUnits,
-                                mineralNutrientUnits: food.mineralNutrientUnits
-                            }}
-                            onNutrientUnitChange={(foodId, nutrientId, value) => onNutrientUnitChange(foodId, nutrientId, value)}
-                        >
-                            <button>
-                                Remove
-                            </button>
-
-                            <br />
-                            <br />
-                            <UnitAmountForm
+                        <Fragment key={index}>
+                            <FoodViewer
                                 id={index}
-                                unit={food.unit}
-                                amount={food.amount}
-                                onAmountChange={(id, value) => onFoodAmountChange(id, value)}
-                                onUnitChange={(id, value) => onFoodUnitChange(id, value)}
-                            />
-                        </FoodViewer>
+                                food={food.food}
+                                amountsAndUnits={{
+                                    unit: food.unit,
+                                    amount: food.amount,
+                                    proteinNutrientUnits: food.proteinNutrientUnits,
+                                    vitaminAndAcidNutrientUnits: food.vitaminAndAcidNutrientUnits,
+                                    mineralNutrientUnits: food.mineralNutrientUnits
+                                }}
+                                onNutrientUnitChange={(foodId, nutrientId, value) => onNutrientUnitChange(foodId, nutrientId, value)}
+                            >
+                                <button onClick={() => onRemove(index)}>
+                                    Remove
+                                </button>
+
+                                <br />
+                                <br />
+                                <UnitAmountForm
+                                    id={index}
+                                    unit={food.unit}
+                                    amount={food.amount}
+                                    onAmountChange={(id, value) => onFoodAmountChange(id, value)}
+                                    onUnitChange={(id, value) => onFoodUnitChange(id, value)}
+                                />
+                            </FoodViewer>
+                        </Fragment>
                     ))}
                     
                     {combination.foods.length > 0 && (

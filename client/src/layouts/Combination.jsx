@@ -5,7 +5,7 @@ import TabCard from "../contexts/TabCard";
 import TabCardTitle from "../components/TabCardTitle";
 import TabCardContent from "../components/TabCardContent";
 import FoodViewer from "../components/FoodViewer";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import TabNav from "../contexts/TabNav";
 import Tab from "../components/Tab";
 import TabContent from "../components/TabContent";
@@ -234,38 +234,40 @@ export default function Combination({}) {
                     </h4>
                     <hr />
                     {editingFoodUnitsAndAmounts?.map((food, index) => (
-                        <FoodViewer
-                            food={food.food}
-                            amountsAndUnits={{
-                                amount: food.amount,
-                                unit: food.unit,
-                                proteinNutrientUnits,
-                                vitaminAndAcidNutrientUnits,
-                                mineralNutrientUnits
-                            }}
-                            onNutrientUnitChange={handleNutrientUnitChange}
-                        >
-                            {editing ? (
-                                <>
-                                    <button onClick={() => handleRemoveClick(index)}>
-                                        Remove
-                                    </button>
-                                    <br />
-                                    <br />
-                                    <UnitAmountForm
-                                        id={index}
-                                        unit={editingFoodUnitsAndAmounts[index].unit}
-                                        amount={editingFoodUnitsAndAmounts[index].amount}
-                                        onAmountChange={(id, value) => handleFoodAmountChange(id, value)}
-                                        onUnitChange={(id, value) => handleFoodUnitChange(id, value)}
-                                    />
-                                </>
-                            ) : (
-                                <p>
-                                    Amount: {food.amount}{food.unit}
-                                </p>
-                            )}
-                        </FoodViewer>
+                        <Fragment key={index}>
+                            <FoodViewer
+                                food={food.food}
+                                amountsAndUnits={{
+                                    amount: food.amount,
+                                    unit: food.unit,
+                                    proteinNutrientUnits,
+                                    vitaminAndAcidNutrientUnits,
+                                    mineralNutrientUnits
+                                }}
+                                onNutrientUnitChange={handleNutrientUnitChange}
+                            >
+                                {editing ? (
+                                    <>
+                                        <button onClick={() => handleRemoveClick(index)}>
+                                            Remove
+                                        </button>
+                                        <br />
+                                        <br />
+                                        <UnitAmountForm
+                                            id={index}
+                                            unit={editingFoodUnitsAndAmounts[index].unit}
+                                            amount={editingFoodUnitsAndAmounts[index].amount}
+                                            onAmountChange={(id, value) => handleFoodAmountChange(id, value)}
+                                            onUnitChange={(id, value) => handleFoodUnitChange(id, value)}
+                                        />
+                                    </>
+                                ) : (
+                                    <p>
+                                        Amount: {food.amount}{food.unit}
+                                    </p>
+                                )}
+                            </FoodViewer>
+                        </Fragment>
                     ))}
 
                     <h4>
