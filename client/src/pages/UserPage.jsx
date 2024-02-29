@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import TabNav from "../contexts/TabNav";
 import { useEffect } from "react";
 import usePageName from "../hooks/usePageName";
@@ -22,26 +22,23 @@ export default function UserPage({}) {
 
     return (
         <>
-            <TabNav onClick={id => navigate(`/user/${userId}/${id}`)}>
-                <Tab
-                    id='info'
-                    active={page === 'info'}
-                >
-                    {user?.username}'s Info
+            <TabNav>
+                <Tab active={page === 'info'}>
+                    <Link to={`/user/${userId}/info`}>
+                        {user?.username}'s Info
+                    </Link>
                 </Tab>
-                <Tab
-                    id='combinations'
-                    active={page === 'combinations'}
-                >
-                    {user?.username}'s Combinations
+                <Tab active={page === 'combinations'}>
+                    <Link to={`/user/${userId}/combinations`}>
+                        {user?.username}'s Combinations
+                    </Link>
                 </Tab>
                 
                 {loggedInUser.id === userId && (
-                    <Tab
-                        id='goals'
-                        active={page === 'goals'}
-                    >
-                        My Goals
+                    <Tab active={page === 'goals'}>
+                        <Link to={`/user/${userId}/goals`}>
+                            My Goals
+                        </Link>
                     </Tab>
                 )}
 
