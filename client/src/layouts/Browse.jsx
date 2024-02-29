@@ -1,16 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import usePageName from "../hooks/usePageName";
 import TabNav from "../contexts/TabNav";
 import Tab from "../components/Tab";
 import TabContent from "../components/TabContent";
 
 export default function Browse({}) {
-    const navigate = useNavigate();
     const page = usePageName(2);
-
-    function handleTabClick(id) {
-        navigate(`/explore/browse/${id}`);
-    }
 
     return (
         <>
@@ -18,24 +13,21 @@ export default function Browse({}) {
                 Browse
             </h2>
 
-            <TabNav onClick={handleTabClick}>
-                <Tab
-                    id={'search'}
-                    active={page === 'search'}
-                >
-                    Search
+            <TabNav>
+                <Tab active={page === 'search'}>
+                    <Link to='/explore/browse/search'>
+                        Search
+                    </Link>
                 </Tab>
-                <Tab
-                    id='new'
-                    active={page === 'new'}
-                >
-                    New
+                <Tab active={page === 'new'}>
+                    <Link to='/explore/browse/new'>
+                        New
+                    </Link>
                 </Tab>
-                <Tab
-                    id='friends'
-                    active={page === 'friends'}
-                >
-                    Friends
+                <Tab active={page === 'friends'}>
+                    <Link to='/explore/browse/friends'>
+                        Friends
+                    </Link>
                 </Tab>
 
                 <TabContent>

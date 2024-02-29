@@ -1,11 +1,10 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import TabNav from "../contexts/TabNav";
 import TabContent from "../components/TabContent";
 import Tab from "../components/Tab";
 import usePageName from "../hooks/usePageName";
 
 export default function Explore({}) {
-    const navigate = useNavigate();
     const page = usePageName(1);
 
     return (

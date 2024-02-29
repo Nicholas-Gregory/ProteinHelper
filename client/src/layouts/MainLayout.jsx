@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import TabNav from "../contexts/TabNav";
 import Tab from "../components/Tab";
 import { useAuth } from "../contexts/UserContext";
@@ -14,20 +14,34 @@ export default function MainLayout({}) {
     function handleTabClick(id) {
         if (id === 'profile') {
             navigate(`/user/${user.id}`);
-        } else {
-            navigate(`/${id}`);
         }
     }
 
     return (
         <>
             <TabNav onClick={handleTabClick}>
-                <Tab active={page === 'home'} id='home'>Home</Tab>
-                <Tab active={page === 'explore'} id='explore'>Explore Foods</Tab>
+                <Tab active={page === 'home'}>
+                    <Link to='/home'>
+                        Home
+                    </Link>
+                </Tab>
+                <Tab active={page === 'explore'}>
+                    <Link to='/explore'>
+                        Explore
+                    </Link>
+                </Tab>
                 {user.id ? (
-                    <Tab active={user.id === userId} id='profile'>My Account</Tab>
+                    <Tab active={user.id === userId} id='profile'>
+                        <Link>
+                            My Account
+                        </Link>
+                    </Tab>
                 ) : (
-                    <Tab active={page === 'auth'} id='auth'>Login/Signup</Tab>
+                    <Tab active={page === 'auth'}>
+                        <Link to='/auth'>
+                            Login/Signup
+                        </Link>
+                    </Tab>
                 )}
                 <TabContent>
                     <Outlet />
