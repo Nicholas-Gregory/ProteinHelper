@@ -1,16 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import TabNav from "../contexts/TabNav";
 import usePageName from "../hooks/usePageName";
 import Tab from "../components/Tab";
 import TabContent from "../components/TabContent";
 
 export default function Auth({}) {
-    const navigate = useNavigate();
     const page = usePageName(1);
-
-    function handleTabClick(id) {
-        navigate(`/auth/${id}`);
-    }
 
     return (
         <>
@@ -18,18 +13,16 @@ export default function Auth({}) {
                 Login/Sign Up
             </h1>
 
-            <TabNav onClick={handleTabClick}>
-                <Tab
-                    active={page === 'signup'}
-                    id='signup'
-                >
-                    Sign Up
+            <TabNav>
+                <Tab active={page === 'signup'}>
+                    <Link to='/auth/signup'>
+                        Sign Up
+                    </Link>
                 </Tab>
-                <Tab
-                    active={page === 'login'}
-                    id={'login'}
-                >
-                    Log In
+                <Tab active={page === 'login'}>
+                    <Link to='/auth/login/'>
+                        Log In
+                    </Link>
                 </Tab>
 
                 <TabContent>

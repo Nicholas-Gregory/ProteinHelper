@@ -1,16 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import TabNav from "../contexts/TabNav";
 import TabContent from "../components/TabContent";
 import Tab from "../components/Tab";
 import usePageName from "../hooks/usePageName";
 
 export default function Explore({}) {
-    const navigate = useNavigate();
     const page = usePageName(1);
-
-    function handleTabClick(id) {
-        navigate(`/explore/${id}`);
-    }
 
     return (
         <>
@@ -18,18 +13,18 @@ export default function Explore({}) {
                 Explore Foods
             </h1>
 
-            <TabNav onClick={handleTabClick}>
+            <TabNav>
                 <Tab 
                     id='combine'
                     active={page === 'combine'}
                 >
-                    Combine
+                    <Link to='/explore/combine'>Combine</Link>
                 </Tab>
                 <Tab 
                     id='browse'
                     active={page === 'browse'}
                 >
-                    Browse
+                    <Link to='/explore/browse'>Browse</Link>
                 </Tab>
                 <TabContent>
                     <Outlet />
